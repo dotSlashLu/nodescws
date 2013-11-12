@@ -1,0 +1,3 @@
+crc32.lo: crc32.c crc32.h
+
+crc32.h:

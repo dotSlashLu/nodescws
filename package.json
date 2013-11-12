@@ -1,0 +1,9 @@
+{
+  "name": "scws",
+  "version": "0.0.0",
+  "author": "Dotslash Lu <dotslash.lu@gmail.com>",
+  "description": "scws(Simple Chinese Word Segmentation) node module",
+  "main": "addon.js",
+  "private": true,
+  "gypfile": true
+}
