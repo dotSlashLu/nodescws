@@ -1,5 +1,14 @@
-var scws = require('./build/Release/scws');
+var scws = require("./build/Release/scws"),
+    fs   = require("fs");
 /*
  * scws(text, charset, dict, ignore_punct, multi);
  * */
-console.log(scws.segment("大家好，我是一个程序员，这个项目是由scws port的node addon。"));
+fs.readFile("./test_doc.txt", {
+  encoding: "utf8"
+}, function(err, data){
+  if (err)
+    return console.error(err);
+  // console.log("going to segment:" + data);
+  var res = scws.segment(data);
+  console.log(res);
+})
