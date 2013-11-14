@@ -1,4 +1,6 @@
+#ifndef BUILDING_NODE_EXTENSION
 #define BUILDING_NODE_EXTENSION
+#endif
 #include <node.h>
 #include <string>
 #include <iostream>
@@ -7,13 +9,12 @@
 #include "libscws/scws.h"
 
 #define RESMEMSTEP 500
+#define MAXDIRLEN 60
 #define ENDSCWS() free(results_raw);\
-        free(text);\
         scws_free(ret);
-
         
 using namespace v8;
-const char *V8StringToCString(v8::Handle<v8::Value>);
+const char *V8StringToCString(v8::Local<v8::Value>);
 
 Handle<Value> Split(const Arguments& args) {
         HandleScope scope;
@@ -22,12 +23,12 @@ Handle<Value> Split(const Arguments& args) {
          *  scws(text, charset, dict, ignore_punct, multi);
          * */
         if (args.Length() < 1) {
-                ThrowException(Exception::TypeError(String::New("Wrong number of arguments")));
+                ThrowException(Exception::TypeError(String::New("[scws] Wrong number of arguments")));
                 return scope.Close(Undefined());
         }
 
         if (!args[0]->IsString()) {
-                ThrowException(Exception::TypeError(String::New("Wrong arguments")));
+                ThrowException(Exception::TypeError(String::New("[scws] Wrong arguments")));
                 return scope.Close(Undefined());
         }
 
@@ -36,17 +37,52 @@ Handle<Value> Split(const Arguments& args) {
          */
         scws_t ret = scws_new();
         scws_set_charset(ret, "utf8");
+
+        v8::String::Utf8Value charset_str(args[1]->ToString());
+        std::string charset_str_std = std::string(*charset_str);
+        char *charset = (char *)charset_str_std.c_str();
+        if (strcmp(charset, "utf8") != 0 && strcmp(charset, "gbk") != 0)
+                charset = "utf8";
+        printf("charset: %s\n", charset);
+
+        // setup dict
+        v8::String::Utf8Value dicts_str(args[2]->ToString());
+        std::string dicts_str_std = std::string(*dicts_str);
+        char *dicts = (char *)dicts_str_std.c_str();
+        int dict_mode;
+        if (strchr(dicts, ':') != NULL) {
+                while (*dicts != '\0') {
+                        char *dict = (void *)malloc(sizeof(char) * MAXDIRLEN); 
+                        int i = 0;
+                        while (i++ < MAXDIRLEN && (dict[i] = *dicts++) != ':')
+                                ;
+                        dict[i] = '\0';
+                        printf("setting dict: %s\n", dict);
+                        if (strstr(dict, ".txt") != NULL)
+                                dict_mode = SCWS_XDICT_TXT; 
+                        else
+                                dict_mode = SCWS_XDICT_XDB;
+                        scws_add_dict(ret, dict, dict_mode);
+                        free(dict);
+                }
+        }
+        else {
+                if (strstr(dicts, ".txt") != NULL)
+                        dict_mode = SCWS_XDICT_TXT;
+                else
+                        dict_mode = SCWS_XDICT_XDB;
+                scws_add_dict(ret, dicts, dict_mode);
+        }
+
         int add_dict_ret = scws_add_dict(ret, "./dicts/dict.utf8.xdb", SCWS_XDICT_XDB);
         scws_set_rule(ret, "./rules/rules.utf8.ini");
         scws_set_ignore(ret, 1);
         if (add_dict_ret < 0)
-                printf("add dict error\n");
+                ThrowException(Exception::Error(String::New("[scws] Can't load dict")));
 
-        v8::String::Utf8Value value_str(args[0]);
+        v8::String::Utf8Value value_str(args[0]->ToString());
         std::string value_str_std = std::string(*value_str);
-        const char *const_text = value_str_std.c_str();
-        char *text = (char *)malloc(sizeof const_text * strlen(const_text));
-        strcpy(text, const_text);
+        char *text = (char *)value_str_std.c_str();
         scws_send_text(ret, text, strlen(text));
 
         scws_res_t res;
@@ -78,8 +114,7 @@ Handle<Value> Split(const Arguments& args) {
         for (int i = 0; i < result_words_count; i++) {
                 scws_result *cur = &results_raw[i];
                 char *str = (char *)malloc(((int)cur->len + 1) * sizeof(char));
-                char *start = &text[(int)cur->off];
-                strncpy(str, start, (int)cur->len);
+                sprintf(str, "%.*s", cur->len, text + cur->off);
                 str[(int)cur->len] = '\0';
 
                 Local<Object> obj = Object::New();
@@ -101,8 +136,9 @@ void Init(Handle<Object> exports) {
                         FunctionTemplate::New(Split)->GetFunction());
 }
 
-const char *V8StringToCString(v8::Handle<v8::Value> value) {
-        v8::String::Utf8Value value_str(value);
+const char *V8StringToCString(v8::Local<v8::Value> value) {
+        HandleScope scope;
+        v8::String::Utf8Value value_str(value->ToString());
         std::string value_str_std = std::string(*value_str);
         std::cout<<"\nread param:\n"<<value_str_std.c_str();
         return value_str_std.c_str();

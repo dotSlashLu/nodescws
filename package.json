@@ -7,7 +7,10 @@
       "type": "git",
       "url": "https://github.com/dotSlashLu/nodescws.git"
   },
-  "main": "addon.js",
+  "main": "build/Release/scws.node",
+  "scripts": {
+    "instll": "node-gyp rebuild"
+  },
   "private": true,
   "gypfile": true,
   "license": "BSD"
