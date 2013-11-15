@@ -36,7 +36,6 @@ Handle<Value> Split(const Arguments& args) {
          * setup scws
          */
         scws_t ret = scws_new();
-        scws_set_charset(ret, "utf8");
 
         v8::String::Utf8Value charset_str(args[1]->ToString());
         std::string charset_str_std = std::string(*charset_str);
@@ -44,6 +43,7 @@ Handle<Value> Split(const Arguments& args) {
         if (strcmp(charset, "utf8") != 0 && strcmp(charset, "gbk") != 0)
                 charset = "utf8";
         printf("charset: %s\n", charset);
+        scws_set_charset(ret, charset);
 
         // setup dict
         v8::String::Utf8Value dicts_str(args[2]->ToString());
@@ -52,16 +52,19 @@ Handle<Value> Split(const Arguments& args) {
         int dict_mode;
         if (strchr(dicts, ':') != NULL) {
                 while (*dicts != '\0') {
-                        char *dict = (void *)malloc(sizeof(char) * MAXDIRLEN); 
+                        char *dict = (char *)malloc(sizeof(char) * MAXDIRLEN);
                         int i = 0;
-                        while (i++ < MAXDIRLEN && (dict[i] = *dicts++) != ':')
-                                ;
-                        dict[i] = '\0';
-                        printf("setting dict: %s\n", dict);
-                        if (strstr(dict, ".txt") != NULL)
-                                dict_mode = SCWS_XDICT_TXT; 
+                        while (i < MAXDIRLEN && (*dicts != ':'))
+                                dict[i++] = *dicts++;
+                        if (*dicts != '\0')
+                                dicts++; // skip the ':'
+                        if (strstr(dict, ".txt") != NULL) {
+                                dict_mode = SCWS_XDICT_TXT;
+                                printf("setting dict: txt mode\n");
+                        }
                         else
                                 dict_mode = SCWS_XDICT_XDB;
+                        printf("setting dict: %s\n", dict);
                         scws_add_dict(ret, dict, dict_mode);
                         free(dict);
                 }
@@ -71,6 +74,7 @@ Handle<Value> Split(const Arguments& args) {
                         dict_mode = SCWS_XDICT_TXT;
                 else
                         dict_mode = SCWS_XDICT_XDB;
+                printf("setting dict: %s\n", dicts);
                 scws_add_dict(ret, dicts, dict_mode);
         }
 
