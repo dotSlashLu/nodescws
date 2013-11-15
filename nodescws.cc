@@ -14,23 +14,20 @@
         scws_free(ret);
         
 using namespace v8;
-const char *V8StringToCString(v8::Local<v8::Value>);
 
-Handle<Value> Split(const Arguments& args) {
+Handle<Value> Segment(const Arguments& args) {
         HandleScope scope;
 
-        /*
-         *  scws(text, charset, dict, rules, ignore_punct, multi);
-         */
         if (args.Length() < 1) {
-                ThrowException(Exception::TypeError(String::New("[scws] Wrong number of arguments")));
+                ThrowException(Exception::TypeError(String::New("[scws ERROR] Wrong number of arguments")));
                 return scope.Close(Undefined());
         }
 
         if (!args[0]->IsString()) {
-                ThrowException(Exception::TypeError(String::New("[scws] Argument 1 should be the string to segment")));
+                ThrowException(Exception::TypeError(String::New("[scws ERROR] Argument 1 should be the string to segment")));
                 return scope.Close(Undefined());
         }
+
 
         /* 
          * setup scws
@@ -43,20 +40,21 @@ Handle<Value> Split(const Arguments& args) {
         std::string Charset(*v8::String::Utf8Value(Settings->Get(String::New("charset"))));
         char *charset = (char *)Charset.c_str();
         if (strcmp(charset, "undefined") == 0) {
-                printf("[scws WARNING] charset not specified\n");
+                printf("[scws WARNING] Charset not specified\n");
                 charset = "utf8";
         }
         else if (strcmp(charset, "utf8") != 0 && strcmp(charset, "gbk") != 0)
                 charset = "utf8";
-        printf("[scws LOG] charset: %s\n", charset);
+        printf("[scws LOG] Setting charset: %s\n", charset);
         scws_set_charset(ret, charset);
 
         // setup dict
         std::string Dicts(*v8::String::Utf8Value(Settings->Get(String::New("dicts"))));
         char *dicts = (char *)Dicts.c_str();
         if (strcmp(dicts, "undefined") == 0) {
-                std::clog<<"[scws WARNING] Dict not specified, loading from the default path\n";
-                int add_dict_ret = scws_add_dict(ret, "./dicts/dict.utf8.xdb", SCWS_XDICT_XDB);
+                printf("[scws WARNING] Dict not specified, loading from the default path\n");
+                if(scws_add_dict(ret, "./dicts/dict.utf8.xdb", SCWS_XDICT_XDB) == -1)
+                        printf("[scws ERROR] Default dict not loaded\n");
         }
         else {
                 int dict_mode;
@@ -64,35 +62,39 @@ Handle<Value> Split(const Arguments& args) {
                         while (*dicts != '\0') {
                                 char *dict = (char *)malloc(sizeof(char) * MAXDIRLEN);
                                 int i = 0;
-                                while (i < MAXDIRLEN && (*dicts != ':'))
+                                while (i < MAXDIRLEN && *dicts != ':' && *dicts != '\0')
                                         dict[i++] = *dicts++;
                                 dict[i++] = '\0';
                                 if (*dicts != '\0')
                                         dicts++; // skip the ':'
+
                                 if (strstr(dict, ".txt") != NULL)
                                         dict_mode = SCWS_XDICT_TXT;
                                 else
                                         dict_mode = SCWS_XDICT_XDB;
-                                printf("[scws LOG] setting dict: %s\n", dict);
-                                scws_add_dict(ret, dict, dict_mode);
+                                printf("[scws LOG] Setting dict: %s\n", dict);
+                                if (scws_add_dict(ret, dict, dict_mode) == -1)
+                                        printf("[scws ERROR] Failed to load dict %s\n", dict);
                                 free(dict);
                         }
                 }
                 else {
-                        if (strstr(dicts, ".txt") != NULL) 
+                        if (strstr(dicts, ".txt") != NULL)
                                 dict_mode = SCWS_XDICT_TXT;
                         else
                                 dict_mode = SCWS_XDICT_XDB;
-                        printf("setting dict: %s\n", dicts);
-                        scws_add_dict(ret, dicts, dict_mode);
-                }               
+                        printf("[scws LOG] Setting dict: %s\n", dicts);
+                        if (scws_add_dict(ret, dicts, dict_mode) == -1) {
+                                printf("[scws ERROR] Failed to load dict %s\n", dicts);
+                        }
+                }
         }
 
-        // set rules 
+        // set rules
         std::string Rule(*v8::String::Utf8Value(Settings->Get(String::New("rule"))));
         char *rule = (char *)Rule.c_str();
         if (strcmp(rule, "undefined") == 0) {
-                std::clog<<"[scws WARNING] Rule not specified, loading from the default path\n";
+                printf("[scws WARNING] Rule not specified, loading from the default path\n");
                 scws_set_rule(ret, "./rules/rules.utf8.ini");
         }
         else {
@@ -123,9 +125,10 @@ Handle<Value> Split(const Arguments& args) {
                         if (result_words_count >= RESMEMSTEP * memsteps) {
                                 long new_size = RESMEMSTEP * (memsteps + 1) * sizeof(scws_result);
                                 if((results_raw = (scws_result *)realloc(results_raw, new_size)) == NULL){
-                                        printf("failed to alloc memory to results");
+                                        printf("[scws ERROR] Failed to allocate memory for results\n");
                                         ENDSCWS();
-                                }; 
+                                        return scope.Close(Array::New(0));
+                                };
                                 memsteps++;
                         }
                         res = res->next;
@@ -157,15 +160,7 @@ Handle<Value> Split(const Arguments& args) {
 
 void Init(Handle<Object> exports) {
         exports->Set(String::NewSymbol("segment"),
-                        FunctionTemplate::New(Split)->GetFunction());
-}
-
-const char *V8StringToCString(v8::Local<v8::Value> value) {
-        HandleScope scope;
-        v8::String::Utf8Value value_str(value->ToString());
-        std::string value_str_std = std::string(*value_str);
-        std::cout<<"\nread param:\n"<<value_str_std.c_str();
-        return value_str_std.c_str();
+                        FunctionTemplate::New(Segment)->GetFunction());
 }
 
 NODE_MODULE(scws, Init)
