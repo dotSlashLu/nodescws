@@ -9,9 +9,14 @@ fs.readFile("./test_doc.txt", {
     return console.error(err);
   start = new Date().valueOf();
   var scws = require("./build/Release/scws");
-  // console.log("going to segment:" + data);
-  var res = scws.segment(data, "utf8", "./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb");
+  var res = scws.segment(data, {
+    charset: "utf8",
+    //dicts: "./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt",
+    dicts: "./dicts/dict.utf8.xdb",
+    rule: "./rules/rules.utf8.ini",
+    ignorePunct: true
+  });
   end = new Date().valueOf();
   console.log("time used: " + (end - start));
-  console.log("10 result: ", res.splice(0, 10));
+  console.log("10 results: ", res.splice(0, 10));
 })
