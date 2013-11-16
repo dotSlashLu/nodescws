@@ -106,6 +106,24 @@ Handle<Value> Segment(const Arguments& args) {
         Local<Boolean> IgnorePunct = Settings->Get(String::New("ignorePunct"))->ToBoolean();
         if (IgnorePunct->BooleanValue())
                 scws_set_ignore(ret, 1);
+        
+        std::string Multi(*v8::String::Utf8Value(Settings->Get(String::New("multi"))));
+        char *multi = (char *)Multi.c_str();
+        if (strcmp(multi, "undefined") == 0)
+                printf("[scws WARNING] Multi mode not set, using default\n");
+        else {
+                int multi_mode = SCWS_MULTI_SHORT;
+                if (strcmp(multi, "short") == 0)
+                        multi_mode = SCWS_MULTI_SHORT;
+                else if(strcmp(multi, "duality") == 0)
+                        multi_mode = SCWS_MULTI_DUALITY;
+                else if(strcmp(multi, "zmain") == 0)
+                        multi_mode = SCWS_MULTI_ZMAIN;
+                else if(strcmp(multi, "zall") == 0)
+                        multi_mode = SCWS_MULTI_ZALL;
+                printf("[scws LOG] Setting multi mode %s\n", multi);
+                scws_set_multi(ret, multi_mode);
+        }
 
         
         std::string Text(*v8::String::Utf8Value(args[0]->ToString()));

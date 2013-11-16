@@ -1,7 +1,5 @@
-    fs   = require("fs");
-/*
- * scws(text, charset, dict, ignore_punct, multi);
- * */
+var fs   = require("fs");
+
 fs.readFile("./test_doc.txt", {
   encoding: "utf8"
 }, function(err, data){
@@ -14,9 +12,10 @@ fs.readFile("./test_doc.txt", {
     //dicts: "./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt",
     dicts: "./dicts/dict.utf8.xdb",
     rule: "./rules/rules.utf8.ini",
-    ignorePunct: true
+    ignorePunct: true,
+    // multi: "duality"
   });
   end = new Date().valueOf();
   console.log("time used: " + (end - start));
-  console.log("10 results: ", res.splice(0, 10));
+  console.log("top results: ", res.splice(0, 60));
 })
