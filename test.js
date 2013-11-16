@@ -13,9 +13,9 @@ fs.readFile("./test_doc.txt", {
     dicts: "./dicts/dict.utf8.xdb",
     rule: "./rules/rules.utf8.ini",
     ignorePunct: true,
-    // multi: "duality"
+    multi: "duality"
   });
   end = new Date().valueOf();
-  console.log("time used: " + (end - start));
+  console.log("time used: " + (end - start) + "ms");
   console.log("top results: ", res.splice(0, 60));
 })

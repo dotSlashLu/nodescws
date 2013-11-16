@@ -28,6 +28,11 @@ Handle<Value> Segment(const Arguments& args) {
                 return scope.Close(Undefined());
         }
 
+        if (!args[1]->IsObject()) {
+                ThrowException(Exception::TypeError(String::New("[scws ERROR] Argument 2 should be an object to specify configurations")));
+                return scope.Close(Undefined());
+        }
+
 
         /* 
          * setup scws

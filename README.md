@@ -36,19 +36,19 @@ Parameters:
 
 Settings:
 
-    charset: String
-        采用的encoding，支持"utf8"，"gbk"， 默认值”gbk“
+    charset: String, Optional
+        采用的encoding，支持"utf8"，"gbk"， 默认值"gbk"
 
-  dicts: String
+    dicts: String, Required
         要采用的词典文件的filename，多个文件之间用':'分隔。支持xdb格式以及txt格式，自制词典请以".txt"作文件后缀。例如“./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt"
         
-  rule: String
+    rule: String, Optional
         要采用的规则文件，详见rules/rules.ini
         
-  ignorePunct: Bool
+    ignorePunct: Bool, Optional
         是否忽略标点
         
-  multi: String
+    multi: String, Optional
         是否进行长词复合切分，例如中国人这个词产生“中国人”，“中国”，“人”多个结果，可选值"short", "duality", "zmain", "zall"
         short: 短词
         duality: 组合相邻的两个单字
