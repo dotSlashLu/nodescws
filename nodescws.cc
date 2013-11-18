@@ -58,7 +58,7 @@ Handle<Value> Segment(const Arguments& args) {
         char *dicts = (char *)Dicts.c_str();
         if (strcmp(dicts, "undefined") == 0) {
                 printf("[scws WARNING] Dict not specified, loading from the default path\n");
-                if(scws_add_dict(ret, "./dicts/dict.utf8.xdb", SCWS_XDICT_XDB) == -1)
+                if(scws_add_dict(ret, "./node_modules/scws/dicts/dict.utf8.xdb", SCWS_XDICT_XDB) == -1)
                         printf("[scws ERROR] Default dict not loaded\n");
         }
         else {
@@ -100,7 +100,7 @@ Handle<Value> Segment(const Arguments& args) {
         char *rule = (char *)Rule.c_str();
         if (strcmp(rule, "undefined") == 0) {
                 printf("[scws WARNING] Rule not specified, loading from the default path\n");
-                scws_set_rule(ret, "./rules/rules.utf8.ini");
+                scws_set_rule(ret, "./node_modules/scws/rules/rules.utf8.ini");
         }
         else {
                 scws_set_rule(ret, rule);

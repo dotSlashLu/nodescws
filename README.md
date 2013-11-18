@@ -24,7 +24,7 @@ On a server with a single core Xeon CPU and 3.0G memory running FreeBSD 6.2, Seg
 
 ## nodescws
 ### Install
-`node-gyp rebuild` or `npm install`
+`npm install scws`
 
 ### Usage
 `scws.segment(text, settings);`
