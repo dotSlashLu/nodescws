@@ -9,7 +9,7 @@
   },
   "main": "build/Release/scws.node",
   "scripts": {
-    "instll": "node-gyp rebuild"
+    "install": "node-gyp rebuild"
   },
   "private": false,
   "gypfile": true,
