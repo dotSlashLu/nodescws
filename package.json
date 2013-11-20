@@ -1,6 +1,6 @@
 {
   "name": "scws",
-  "version": "0.0.0",
+  "version": "0.1.3",
   "author": "Dotslash Lu <dotslash.lu@gmail.com>",
   "description": "scws(Simple Chinese Word Segmentation) node module",
   "repository": {
@@ -11,7 +11,7 @@
   "scripts": {
     "instll": "node-gyp rebuild"
   },
-  "private": true,
+  "private": false,
   "gypfile": true,
   "license": "BSD"
 }
