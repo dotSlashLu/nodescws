@@ -2,6 +2,7 @@
 #define BUILDING_NODE_EXTENSION
 #endif
 #include <node.h>
+#include "nodescws.h"
 #include <string>
 #include <iostream>
 #include <string.h>
@@ -12,29 +13,35 @@
 #define MAXDIRLEN 60
 #define ENDSCWS() free(results_raw);\
         scws_free(ret);
-        
+
 using namespace v8;
 
-Handle<Value> Segment(const Arguments& args) {
+Nodescws::Nodescws(){};
+Nodescws::~Nodescws(){};
+
+void Nodescws::Init(Handle<Object> target) 
+{
+        // Prepare constructor template
+        Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
+        tpl->SetClassName(String::NewSymbol("scws"));
+        tpl->InstanceTemplate()->SetInternalFieldCount(1);
+        // Prototype
+        tpl->PrototypeTemplate()->Set(String::NewSymbol("segment"),
+                FunctionTemplate::New(Segment)->GetFunction());  
+
+        Persistent<Function> constructor = Persistent<Function>::New(tpl->GetFunction());
+        target->Set(String::NewSymbol("init"), constructor);
+}
+
+Handle<Value> Nodescws::New(const Arguments& args) 
+{
         HandleScope scope;
 
-        if (args.Length() < 1) {
-                ThrowException(Exception::TypeError(String::New("[scws ERROR] Wrong number of arguments")));
-                return scope.Close(Undefined());
-        }
-
-        if (!args[0]->IsString()) {
-                ThrowException(Exception::TypeError(String::New("[scws ERROR] Argument 1 should be the string to segment")));
-                return scope.Close(Undefined());
-        }
-
-
-        /* 
-         * setup scws
-         */
+        Nodescws *scws = new Nodescws();
+        
+        // init scws
         scws_t ret = scws_new();
-        // get settings
-        v8::Local<v8::Object> Settings = args[1]->ToObject();
+        v8::Local<v8::Object> Settings = args[0]->ToObject();
 
         // setup charset
         std::string Charset(*v8::String::Utf8Value(Settings->Get(String::New("charset"))));
@@ -53,7 +60,7 @@ Handle<Value> Segment(const Arguments& args) {
         char *dicts = (char *)Dicts.c_str();
         if (strcmp(dicts, "undefined") == 0) {
                 printf("[scws WARNING] Dict not specified, loading from the default path\n");
-                if(scws_add_dict(ret, "./dicts/dict.utf8.xdb", SCWS_XDICT_XDB) == -1)
+                if(scws_add_dict(ret, "./node_modules/scws/dicts/dict.utf8.xdb", SCWS_XDICT_XDB) == -1)
                         printf("[scws ERROR] Default dict not loaded\n");
         }
         else {
@@ -95,7 +102,7 @@ Handle<Value> Segment(const Arguments& args) {
         char *rule = (char *)Rule.c_str();
         if (strcmp(rule, "undefined") == 0) {
                 printf("[scws WARNING] Rule not specified, loading from the default path\n");
-                scws_set_rule(ret, "./rules/rules.utf8.ini");
+                scws_set_rule(ret, "./node_modules/scws/rules/rules.utf8.ini");
         }
         else {
                 scws_set_rule(ret, rule);
@@ -125,7 +132,19 @@ Handle<Value> Segment(const Arguments& args) {
                 scws_set_multi(ret, multi_mode);
         }
 
-        
+        // scws->InstanceTemplate()->SetInternalField(0, ret);
+        scws->instance_ = ret;
+        scws->Wrap(args.This());
+
+        return args.This();
+}
+
+Handle<Value> Nodescws::Segment(const v8::Arguments& args)
+{
+        HandleScope scope;
+
+        Nodescws *scws = node::ObjectWrap::Unwrap<Nodescws>(args.This());
+        scws_t ret = scws->instance_;
         std::string Text(*v8::String::Utf8Value(args[0]->ToString()));
         char *text = (char *)Text.c_str();
         scws_send_text(ret, text, strlen(text));
@@ -172,13 +191,6 @@ Handle<Value> Segment(const Arguments& args) {
                 array->Set(i++, obj);
         }
         ENDSCWS();
-
+        
         return scope.Close(array);
 }
-
-void Init(Handle<Object> exports) {
-        exports->Set(String::NewSymbol("segment"),
-                        FunctionTemplate::New(Segment)->GetFunction());
-}
-
-NODE_MODULE(scws, Init)

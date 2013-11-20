@@ -4,6 +4,7 @@
       "target_name": "scws",
       "sources": [
         "nodescws.cc",
+        "scws.cc",
         "./libscws/charset.c",
         "./libscws/crc32.c", 
         "./libscws/darray.c", 
