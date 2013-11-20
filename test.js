@@ -28,5 +28,4 @@ fs.readFile("./test_doc.txt", {
   console.log("test reuse of scws2: ", res2);
   // destroy scws, recollect memory
   scws.destroy();
->>>>>>> develop
 })
