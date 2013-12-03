@@ -39,7 +39,7 @@
 #define	SCWS_NO_RULE2			SCWS_NO_RULE1
 #define	SCWS_MAX_EWLEN			33
 ///hightman.070706: char token
-#define	SCWS_CHAR_TOKEN(x)		((x)=='('||(x)==')'||(x)=='['||(x)==']'||(x)=='{'||(x)=='}'||(x)==':'||(x)=='"')	
+#define	SCWS_CHAR_TOKEN(x)		((x)=='('||(x)==')'||(x)=='['||(x)==']'||(x)=='{'||(x)=='}'||(x)==':'||(x)=='"')
 ///hightman.070814: max zlen = ?? (4 * zlen * zlen = ??)
 #define	SCWS_MAX_ZLEN			128
 #define	SCWS_EN_IDF(x)			(float)(2.5*logf(x))
@@ -175,25 +175,28 @@ void scws_send_text(scws_t s, const char *text, int len)
 	s->off = 0;
 }
 
-/* get some words, if these is not words, return NULL */
-#define	SCWS_PUT_RES(o,i,l,a)									\
-do {															\
-	scws_res_t res;												\
-	res = (scws_res_t) malloc(sizeof(struct scws_result));		\
-	res->off = o;												\
-	res->idf = i;												\
-	res->len = l;												\
-	strncpy(res->attr, a, 2);									\
-	res->attr[2] = '\0';										\
-	res->next = NULL;											\
-	if (s->res1 == NULL)										\
-		s->res1 = s->res0 = res;								\
-	else														\
-	{															\
-		s->res1->next = res;									\
-		s->res1 = res;											\
-	}															\
-} while(0)
+#define SCWS_PUT_RES(o,i,l,a) \
+char *_word = _mem_ndup(s->txt + o, l); \
+if (!strncmp(a, attr_en, 2)) _str_tolower(_word, _word); \
+if (!s->stop_on_segment || !SCWS_IS_NOSTATS(_word, l)) \
+  do {                              \
+    scws_res_t res;                       \
+    res = (scws_res_t) malloc(sizeof(struct scws_result));    \
+    res->off = o;                       \
+    res->idf = i;                       \
+    res->len = l;                       \
+    strncpy(res->attr, a, 2);                 \
+    res->attr[2] = '\0';                    \
+    res->next = NULL;                     \
+    if (s->res1 == NULL)                    \
+      s->res1 = s->res0 = res;                \
+    else                            \
+    {                             \
+      s->res1->next = res;                  \
+      s->res1 = res;                      \
+    }                             \
+  } while(0); \
+free(_word);
 
 /* single bytes segment (纯单字节字符) */
 #define	PFLAG_WITH_MB		0x01

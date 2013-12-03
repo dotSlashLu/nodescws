@@ -149,6 +149,15 @@ Handle<Value> Nodescws::New(const Arguments& args)
         if (IgnorePunct->BooleanValue())
                 scws_set_ignore(ret, 1);
         
+        Local<Boolean> ApplyStopWord = Settings->Get(String::New("applyStopWord"))->ToBoolean();
+        if (ApplyStopWord->BooleanValue()) {
+                scws_set_stopword(ret, 1);
+                scws_debug(NODESCWS_MSG_LOG, "Set apply stop word\n");
+        }
+        else {
+                scws_set_stopword(ret, 0);
+                scws_debug(NODESCWS_MSG_LOG, "Set not to apply stop word\n");
+        }
 
         std::string Multi(*v8::String::Utf8Value(Settings->Get(String::New("multi"))));
         char *multi = (char *)Multi.c_str();
