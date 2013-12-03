@@ -71,7 +71,7 @@ Settings:
     debug: Bool, Optional
         是否以debug模式运行，若为true则输出scws的log, warning, error到stdout, defult为false
         
-    applyStopword: Bool, optional
+    applyStopWord: Bool, optional
         是否应用rule文件中[nostats]区块所规定的停用词，默认为true
         
 Return: 
@@ -125,7 +125,7 @@ Return:
 - Add stop words support
 - Remove line endings when `ignorePunct` is set true
 
-You can add your own stop words in the entry `[nostats]` in the rule file. Turn off stop words feature by setting `applyStopword` false.
+You can add your own stop words in the entry `[nostats]` in the rule file. Turn off stop words feature by setting `applyStopWord` false.
 
 #### v0.2.0
 New syntax to initialize scws: `scws = new Scws(config); result = scws.segment(text); scws.destroy()` so that we are able to reuse scws instance, thus gaining great improvement in perfermence when recurrently used(approximately 1/4 faster).

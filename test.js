@@ -16,7 +16,7 @@ fs.readFile("./test_doc.txt", {
     ignorePunct: true,
     multi: "duality",
     debug: true,
-    applyStopword: false
+    applyStopWord: true
   });
   // segment text
   res = scws.segment(data);
