@@ -60,6 +60,7 @@ scws_t scws_new()
 	s->mblen = charset_table_get(NULL);
 	s->off = s->len = 0;
 	s->wend = -1;
+  s->stop_on_segment = 1;
 
 	return s;
 }
@@ -165,6 +166,14 @@ void scws_set_duality(scws_t s, int yes)
 
 	if (yes == SCWS_NA)
 		s->mode &= ~SCWS_DUALITY;
+}
+
+void scws_set_stopword(scws_t s, int yes)
+{
+        if (yes == SCWS_YEA)
+                s->stop_on_segment = 1;
+        else
+                s->stop_on_segment = 0;
 }
 
 /* send the text buffer & init some others */
@@ -510,7 +519,7 @@ static void _scws_mset_word(scws_t s, int i, int j)
 			s->zis = -1;
 		}
 	}
-		
+  
 	SCWS_PUT_RES(s->zmap[i].start, item->idf, (s->zmap[j].end - s->zmap[i].start), item->attr);
 
 	// hightman.070902: multi segment
@@ -699,7 +708,7 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 		/* draw the path for debug */
 #ifdef DEBUG
 		if (s->mode & SCWS_DEBUG)
-		{		
+		{
 			fprintf(stderr, "PATH by keyword = %.*s, (weight=%.4f):\n",
 				s->zmap[j].end - s->zmap[i].start, s->txt + s->zmap[i].start, nweight);	
 			for (x = 0, m = f; (n = npath[x]) != 0xff; x++)
@@ -1136,8 +1145,10 @@ scws_res_t scws_get_result(scws_t s)
 		if (txt[off] == 0x0a || txt[off] == 0x0d)
 		{
 			s->off = off + 1;
-			SCWS_PUT_RES(off, 0.0, 1, attr_un);
-			return s->res0;
+      if (!(s->mode & SCWS_IGN_SYMBOL)) {
+        SCWS_PUT_RES(off, 0.0, 1, attr_un);
+			  return s->res0;
+      }
 		}
 		off++;
 	}
