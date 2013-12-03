@@ -15,7 +15,8 @@ fs.readFile("./test_doc.txt", {
     rule: "./rules/rules.utf8.ini",
     ignorePunct: true,
     multi: "duality",
-    debug: true
+    debug: true,
+    applyStopword: false
   });
   // segment text
   res = scws.segment(data);

@@ -39,7 +39,7 @@
 #define	SCWS_NO_RULE2			SCWS_NO_RULE1
 #define	SCWS_MAX_EWLEN			33
 ///hightman.070706: char token
-#define	SCWS_CHAR_TOKEN(x)		((x)=='('||(x)==')'||(x)=='['||(x)==']'||(x)=='{'||(x)=='}'||(x)==':'||(x)=='"')	
+#define	SCWS_CHAR_TOKEN(x)		((x)=='('||(x)==')'||(x)=='['||(x)==']'||(x)=='{'||(x)=='}'||(x)==':'||(x)=='"'||(x)=='\n')
 ///hightman.070814: max zlen = ?? (4 * zlen * zlen = ??)
 #define	SCWS_MAX_ZLEN			128
 #define	SCWS_EN_IDF(x)			(float)(2.5*logf(x))
@@ -60,6 +60,7 @@ scws_t scws_new()
 	s->mblen = charset_table_get(NULL);
 	s->off = s->len = 0;
 	s->wend = -1;
+  s->stop_on_segment = 1;
 
 	return s;
 }
@@ -167,6 +168,14 @@ void scws_set_duality(scws_t s, int yes)
 		s->mode &= ~SCWS_DUALITY;
 }
 
+void scws_set_stopword(scws_t s, int yes)
+{
+        if (yes == SCWS_YEA)
+                s->stop_on_segment = 1;
+        else
+                s->stop_on_segment = 0;
+}
+
 /* send the text buffer & init some others */
 void scws_send_text(scws_t s, const char *text, int len)
 {
@@ -175,25 +184,27 @@ void scws_send_text(scws_t s, const char *text, int len)
 	s->off = 0;
 }
 
-/* get some words, if these is not words, return NULL */
-#define	SCWS_PUT_RES(o,i,l,a)									\
-do {															\
-	scws_res_t res;												\
-	res = (scws_res_t) malloc(sizeof(struct scws_result));		\
-	res->off = o;												\
-	res->idf = i;												\
-	res->len = l;												\
-	strncpy(res->attr, a, 2);									\
-	res->attr[2] = '\0';										\
-	res->next = NULL;											\
-	if (s->res1 == NULL)										\
-		s->res1 = s->res0 = res;								\
-	else														\
-	{															\
-		s->res1->next = res;									\
-		s->res1 = res;											\
-	}															\
-} while(0)
+#define SCWS_PUT_RES(o,i,l,a) \  
+char *_word = _mem_ndup(s->txt + o, l); \
+if (!s->stop_on_segment || !SCWS_IS_NOSTATS(_word, l)) \
+  do {                              \
+    scws_res_t res;                       \
+    res = (scws_res_t) malloc(sizeof(struct scws_result));    \
+    res->off = o;                       \
+    res->idf = i;                       \
+    res->len = l;                       \
+    strncpy(res->attr, a, 2);                 \
+    res->attr[2] = '\0';                    \
+    res->next = NULL;                     \
+    if (s->res1 == NULL)                    \
+      s->res1 = s->res0 = res;                \
+    else                            \
+    {                             \
+      s->res1->next = res;                  \
+      s->res1 = res;                      \
+    }                             \
+  } while(0); \
+free(_word);
 
 /* single bytes segment (纯单字节字符) */
 #define	PFLAG_WITH_MB		0x01
@@ -507,7 +518,7 @@ static void _scws_mset_word(scws_t s, int i, int j)
 			s->zis = -1;
 		}
 	}
-		
+  
 	SCWS_PUT_RES(s->zmap[i].start, item->idf, (s->zmap[j].end - s->zmap[i].start), item->attr);
 
 	// hightman.070902: multi segment
@@ -696,7 +707,7 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 		/* draw the path for debug */
 #ifdef DEBUG
 		if (s->mode & SCWS_DEBUG)
-		{		
+		{
 			fprintf(stderr, "PATH by keyword = %.*s, (weight=%.4f):\n",
 				s->zmap[j].end - s->zmap[i].start, s->txt + s->zmap[i].start, nweight);	
 			for (x = 0, m = f; (n = npath[x]) != 0xff; x++)
@@ -1133,8 +1144,10 @@ scws_res_t scws_get_result(scws_t s)
 		if (txt[off] == 0x0a || txt[off] == 0x0d)
 		{
 			s->off = off + 1;
-			SCWS_PUT_RES(off, 0.0, 1, attr_un);
-			return s->res0;
+      if (!(s->mode & SCWS_IGN_SYMBOL)) {
+        SCWS_PUT_RES(off, 0.0, 1, attr_un);
+			  return s->res0;
+      }
 		}
 		off++;
 	}

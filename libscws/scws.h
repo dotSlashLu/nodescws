@@ -81,6 +81,8 @@ struct scws_st
 	scws_res_t res1;
 	word_t **wmap;
 	struct scws_zchar *zmap;
+
+  int stop_on_segment; // flag applying stop words also on scws_get_result
 };
 
 /* api: init the scws handler */
@@ -100,6 +102,7 @@ void scws_set_ignore(scws_t s, int yes);
 void scws_set_multi(scws_t s, int mode);
 void scws_set_debug(scws_t s, int yes);
 void scws_set_duality(scws_t s, int yes);
+void scws_set_stopword(scws_t s, int yes);
 
 void scws_send_text(scws_t s, const char *text, int len);
 scws_res_t scws_get_result(scws_t s);

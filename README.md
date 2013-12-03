@@ -1,8 +1,8 @@
 # nodescws
 
-## scws
+### scws
 
-#### 关于 About
+##### 关于 About
 scws即Simple Chinese Word Segmentation。是C语言开发的基于词频词典的机械式中文分词引擎。scws的作者为[hightman][1]，采用BSD许可协议发布。nodescws的作者仅是将这个伟大的library包装成为node.js addon，除自己的代码外，不持有任何scws库的著作权。
 
 scws(Simple Chinese Word Segmentation) is a mechanistic Chinese word segement engine written in C. The author of this library is hightman. scws is published under BSD license. As the author of nodescws, I just wrap this great library as a node addon, thus holding no copyright of any of the library's code but my own work.
@@ -12,7 +12,7 @@ scws的主页: [http://www.xunsearch.com/scws][2]
 scws的GitHub: [https://github.com/hightman/scws][3]
 
 
-#### 性能指标 Performance
+##### 性能指标 Performance
 
 在 FreeBSD 6.2 系统，单核单 CPU 至强 3.0G 的服务器上，测试长度为 80,535 的文本。 用附带的命令行工具耗时将约 0.17 秒，若改用 php 扩展方式调用，则耗时约为 0.65 秒。
 分词精度 95.60%，召回率 90.51% (F-1: 0.93)
@@ -22,7 +22,11 @@ On a server with a single core Xeon CPU and 3.0G memory running FreeBSD 6.2, Seg
 ------
 
 ## nodescws
-Current release: v0.2.0 (versions lower than v0.2.0 are no longer maintained. See Changelog)
+Current release: v0.2.1 (versions lower than v0.2.0 are no longer maintained. See Changelog)
+
+- 项目主页: [https://github.com/dotSlashLu/nodescws][4]
+- 使用问题，bug report: [https://github.com/dotSlashLu/nodescws/issues][5]
+
 ### Install
 `npm install scws`
 
@@ -30,7 +34,7 @@ Current release: v0.2.0 (versions lower than v0.2.0 are no longer maintained. Se
     var Scws = require("scws");
     var scws = new Scws.init(settings);
     var results = scws.segment(text);
-    scws.destroy();
+    scws.destroy(); // DO NOT forget this or your memory may be corrupted
 
 Parameters:
 
@@ -43,11 +47,16 @@ Settings:
         采用的encoding，支持"utf8"，"gbk"， 默认值"utf8"
 
     dicts: String, Required
-        要采用的词典文件的filename，多个文件之间用':'分隔。支持xdb格式以及txt格式，自制词典请以".txt"作文件后缀。例如“./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt"
-        scws自带的xdb格式词典附在该extension目录下的./dicts/，有简体和繁体两种选择，如果该项缺失则默认使用自带utf8简体中文词典
+        要采用的词典文件的filename，多个文件之间用':'分隔。
+        支持xdb格式以及txt格式，自制词典请以".txt"作文件后缀。
+        例如“./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt"
+        scws自带的xdb格式词典附在该extension目录下(一般是node_modules/scws/)的./dicts/ ，
+        有简体和繁体两种选择，如果该项缺失则默认使用自带utf8简体中文词典
         
     rule: String, Optional
-        要采用的规则文件，设置对应编码下的地名，人名等。详见该extension目录下rules/rules.ini。若该配置缺失则默认使用自带utf8的规则文件
+        要采用的规则文件，设置对应编码下的地名，人名，停用词等。
+        详见该extension目录下(一般是node_modules/scws/)的rules/rules.utf8.ini。
+        若该配置缺失则默认使用自带utf8的规则文件
         
     ignorePunct: Bool, Optional
         是否忽略标点
@@ -61,6 +70,9 @@ Settings:
         
     debug: Bool, Optional
         是否以debug模式运行，若为true则输出scws的log, warning, error到stdout, defult为false
+        
+    applyStopword: Bool, optional
+        是否应用rule文件中[nostats]区块所规定的停用词，默认为true
         
 Return: 
 
@@ -109,6 +121,12 @@ Return:
     })
     
 ### Changelog
+#### v0.2.1
+- Add stop words support
+- Remove line endings when `ignorePunct` is set true
+
+You can add your own stop words in the entry `[nostats]` in the rule file. Turn off stop words feature by setting `applyStopword` false.
+
 #### v0.2.0
 New syntax to initialize scws: `scws = new Scws(config); result = scws.segment(text); scws.destroy()` so that we are able to reuse scws instance, thus gaining great improvement in perfermence when recurrently used(approximately 1/4 faster).
 
@@ -122,3 +140,5 @@ Published to npm registry. usage: `scws(text, settings);` available setting entr
 [1]: http://www.hightman.cn
 [2]: http://www.xunsearch.com/scws/
 [3]: https://github.com/hightman/scws
+[4]: https://github.com/dotSlashLu/nodescws
+[5]: https://github.com/dotSlashLu/nodescws/issues
