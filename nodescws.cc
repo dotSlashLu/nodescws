@@ -241,7 +241,7 @@ Handle<Value> Nodescws::Segment(const v8::Arguments& args)
                 obj->Set(String::NewSymbol("length"), Number::New(cur->len));
                 obj->Set(String::NewSymbol("attr"), String::New(cur->attr));
                 obj->Set(String::NewSymbol("idf"), Number::New(cur->idf));
-                array->Set(i++, obj);
+                array->Set(i, obj);
         }
 
         free(scws->result_raw_);

@@ -128,6 +128,9 @@ Return `Array`
     })
     
 ### Changelog
+#### v0.2.2
+- Some small bug fixes, including issue #5(Thanks to @Frully)
+
 #### v0.2.1
 - Add stop words support
 - Remove line endings when `ignorePunct` is set true
