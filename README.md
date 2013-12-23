@@ -36,45 +36,52 @@ Current release: v0.2.1 (versions lower than v0.2.0 are no longer maintained. Se
     var results = scws.segment(text);
     scws.destroy(); // DO NOT forget this or your memory may be corrupted
 
-Parameters:
 
-* text: String, 要切分的字符串
-* settings: Object, 分词设置, 支持charset, dicts, rule, ignorePunct, multi, debug
+#### new Scws.init(settings)
+* settings: `Object`, 分词设置, 支持charset, dicts, rule, ignorePunct, multi, debug
+    - charset: `String`, *Optional*
 
-Settings:
+            采用的encoding，支持"utf8"，"gbk"， 默认值"utf8"
 
-    charset: String, Optional
-        采用的encoding，支持"utf8"，"gbk"， 默认值"utf8"
+    - dicts: `String`, *Required*
+    
+            要采用的词典文件的filename，多个文件之间用':'分隔。
+            支持xdb格式以及txt格式，自制词典请以".txt"作文件后缀。
+            例如"./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt"
+            scws自带的xdb格式词典附在该extension目录下(一般是node_modules/scws/)的./dicts/ ，
+            有简体和繁体两种选择，如果该项缺失则默认使用自带utf8简体中文词典
+        
+    - rule: `String`, *Optional*
+    
+            要采用的规则文件，设置对应编码下的地名，人名，停用词等。
+            详见该extension目录下(一般是node_modules/scws/)的rules/rules.utf8.ini。
+            若该配置缺失则默认使用自带utf8的规则文件
+        
+    - ignorePunct: `Bool`, *Optional*
+            
+            是否忽略标点
+        
+    - multi: `String`, *Optional*
+        
+            是否进行长词复合切分，例如中国人这个词产生“中国人”，“中国”，“人”多个结果，可选值"short", "duality", "zmain", "zall":
+                short: 短词
+                duality: 组合相邻的两个单字
+                zmain: 重要单字
+                zall: 全部单字
+        
+    - debug: `Bool`, *Optional*
+        
+            是否以debug模式运行，若为true则输出scws的log, warning, error到stdout, defult为false
+        
+    - applyStopWord: `Bool`, *Optional*
+        
+            是否应用rule文件中[nostats]区块所规定的停用词，默认为true
+            
+#### scws.segment(text)
 
-    dicts: String, Required
-        要采用的词典文件的filename，多个文件之间用':'分隔。
-        支持xdb格式以及txt格式，自制词典请以".txt"作文件后缀。
-        例如“./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt"
-        scws自带的xdb格式词典附在该extension目录下(一般是node_modules/scws/)的./dicts/ ，
-        有简体和繁体两种选择，如果该项缺失则默认使用自带utf8简体中文词典
+* text: `String`, 要切分的字符串
         
-    rule: String, Optional
-        要采用的规则文件，设置对应编码下的地名，人名，停用词等。
-        详见该extension目录下(一般是node_modules/scws/)的rules/rules.utf8.ini。
-        若该配置缺失则默认使用自带utf8的规则文件
-        
-    ignorePunct: Bool, Optional
-        是否忽略标点
-        
-    multi: String, Optional
-        是否进行长词复合切分，例如中国人这个词产生“中国人”，“中国”，“人”多个结果，可选值"short", "duality", "zmain", "zall"
-        short: 短词
-        duality: 组合相邻的两个单字
-        zmain: 重要单字
-        zall: 全部单字
-        
-    debug: Bool, Optional
-        是否以debug模式运行，若为true则输出scws的log, warning, error到stdout, defult为false
-        
-    applyStopWord: Bool, optional
-        是否应用rule文件中[nostats]区块所规定的停用词，默认为true
-        
-Return: 
+Return `Array`
 
     [
         { 

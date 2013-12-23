@@ -1,0 +1,649 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ACLOCAL	libscws/Makefile	/^ACLOCAL = ${SHELL} \/home\/root\/development\/nodescws\/scws\/missing --run aclocal-1.10$/;"	m
+ACLOCAL_M4	libscws/Makefile	/^ACLOCAL_M4 = $(top_srcdir)\/aclocal.m4$/;"	m
+AMTAR	libscws/Makefile	/^AMTAR = ${SHELL} \/home\/root\/development\/nodescws\/scws\/missing --run tar$/;"	m
+AR	libscws/Makefile	/^AR = ar$/;"	m
+AR.host	build/Makefile	/^AR.host ?= ar$/;"	m
+AR.target	build/Makefile	/^AR.target ?= $(AR)$/;"	m
+AUTOCONF	libscws/Makefile	/^AUTOCONF = ${SHELL} \/home\/root\/development\/nodescws\/scws\/missing --run autoconf$/;"	m
+AUTOHEADER	libscws/Makefile	/^AUTOHEADER = ${SHELL} \/home\/root\/development\/nodescws\/scws\/missing --run autoheader$/;"	m
+AUTOMAKE	libscws/Makefile	/^AUTOMAKE = ${SHELL} \/home\/root\/development\/nodescws\/scws\/missing --run automake-1.10$/;"	m
+AWK	libscws/Makefile	/^AWK = gawk$/;"	m
+BUILDING_NODE_EXTENSION	nodescws.cc	2;"	d	file:
+BUILDING_NODE_EXTENSION	scws.cc	2;"	d	file:
+BUILDTYPE	build/Makefile	/^BUILDTYPE ?= Release$/;"	m
+CC	libscws/Makefile	/^CC = gcc$/;"	m
+CC.host	build/Makefile	/^CC.host ?= gcc$/;"	m
+CC.target	build/Makefile	/^CC.target ?= $(CC)$/;"	m
+CCDEPMODE	libscws/Makefile	/^CCDEPMODE = depmode=gcc3$/;"	m
+CCLD	libscws/Makefile	/^CCLD = $(CC)$/;"	m
+CFLAGS	libscws/Makefile	/^CFLAGS = -g -O2$/;"	m
+CFLAGS.host	build/Makefile	/^CFLAGS.host ?=$/;"	m
+CFLAGS.target	build/Makefile	/^CFLAGS.target ?= $(CFLAGS)$/;"	m
+CFLAGS_CC_Debug	build/scws.target.mk	/^CFLAGS_CC_Debug := \\$/;"	m
+CFLAGS_CC_Release	build/scws.target.mk	/^CFLAGS_CC_Release := \\$/;"	m
+CFLAGS_C_Debug	build/scws.target.mk	/^CFLAGS_C_Debug :=$/;"	m
+CFLAGS_C_Release	build/scws.target.mk	/^CFLAGS_C_Release :=$/;"	m
+CFLAGS_Debug	build/scws.target.mk	/^CFLAGS_Debug := \\$/;"	m
+CFLAGS_Release	build/scws.target.mk	/^CFLAGS_Release := \\$/;"	m
+COMPILE	libscws/Makefile	/^COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \\$/;"	m
+CONFIG_CLEAN_FILES	libscws/Makefile	/^CONFIG_CLEAN_FILES = version.h$/;"	m
+CONFIG_HEADER	libscws/Makefile	/^CONFIG_HEADER = $(top_builddir)\/config.h$/;"	m
+CONFIG_W32_H	libscws/config_win32.h	2;"	d
+CPP	libscws/Makefile	/^CPP = gcc -E$/;"	m
+CPPFLAGS	libscws/Makefile	/^CPPFLAGS = $/;"	m
+CRC32	libscws/crc32.c	17;"	d	file:
+CTAGS	libscws/Makefile	/^CTAGS = ctags$/;"	m
+CXX.host	build/Makefile	/^CXX.host ?= g++$/;"	m
+CXX.target	build/Makefile	/^CXX.target ?= $(CXX)$/;"	m
+CXXFLAGS.host	build/Makefile	/^CXXFLAGS.host ?=$/;"	m
+CXXFLAGS.target	build/Makefile	/^CXXFLAGS.target ?= $(CXXFLAGS)$/;"	m
+CYGPATH_W	libscws/Makefile	/^CYGPATH_W = echo$/;"	m
+DEFAULT_INCLUDES	libscws/Makefile	/^DEFAULT_INCLUDES = -I. -I$(top_builddir)$/;"	m
+DEFS	libscws/Makefile	/^DEFS = -DHAVE_CONFIG_H$/;"	m
+DEFS_Debug	build/scws.target.mk	/^DEFS_Debug := \\$/;"	m
+DEFS_Release	build/scws.target.mk	/^DEFS_Release := \\$/;"	m
+DEPDIR	libscws/Makefile	/^DEPDIR = .deps$/;"	m
+DEPFLAGS	build/Makefile	/^DEPFLAGS = -MMD -MF $(depfile).raw$/;"	m
+DISTFILES	libscws/Makefile	/^DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)$/;"	m
+DIST_COMMON	libscws/Makefile	/^DIST_COMMON = $(libscwsinclude_HEADERS) $(srcdir)\/Makefile.am \\$/;"	m
+DIST_SOURCES	libscws/Makefile	/^DIST_SOURCES = $(libscws_la_SOURCES)$/;"	m
+DSYMUTIL	libscws/Makefile	/^DSYMUTIL = $/;"	m
+DUMPBIN	libscws/Makefile	/^DUMPBIN = $/;"	m
+Destroy	nodescws.cc	/^Handle<Value> Nodescws::Destroy(const v8::Arguments& args)$/;"	f	class:Nodescws
+ECHO_C	libscws/Makefile	/^ECHO_C = $/;"	m
+ECHO_N	libscws/Makefile	/^ECHO_N = -n$/;"	m
+ECHO_T	libscws/Makefile	/^ECHO_T = $/;"	m
+EGREP	libscws/Makefile	/^EGREP = \/bin\/grep -E$/;"	m
+EQUAL_RULE_ATTR	libscws/rule.c	369;"	d	file:
+EQUAL_RULE_ATTR	libscws/rule.c	392;"	d	file:
+EQUAL_RULE_NPATH	libscws/rule.c	370;"	d	file:
+EQUAL_RULE_NPATH	libscws/rule.c	393;"	d	file:
+ETAGS	libscws/Makefile	/^ETAGS = etags$/;"	m
+EWOULDBLOCK	libscws/lock.h	38;"	d
+EXEEXT	libscws/Makefile	/^EXEEXT = $/;"	m
+EXTRA_DIST	libscws/Makefile	/^EXTRA_DIST = lock.h config_win32.h$/;"	m
+FGREP	libscws/Makefile	/^FGREP = \/bin\/grep -F$/;"	m
+GREP	libscws/Makefile	/^GREP = \/bin\/grep$/;"	m
+GYP_CFLAGS	build/scws.target.mk	/^$(OBJS): GYP_CFLAGS := $(DEFS_$(BUILDTYPE)) $(INCS_$(BUILDTYPE))  $(CFLAGS_$(BUILDTYPE)) $(CFLAGS_C_$(BUILDTYPE))$/;"	m
+GYP_CXXFLAGS	build/scws.target.mk	/^$(OBJS): GYP_CXXFLAGS := $(DEFS_$(BUILDTYPE)) $(INCS_$(BUILDTYPE))  $(CFLAGS_$(BUILDTYPE)) $(CFLAGS_CC_$(BUILDTYPE))$/;"	m
+GYP_LDFLAGS	build/scws.target.mk	/^$(obj).target\/scws.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))$/;"	m
+HEADERS	libscws/Makefile	/^HEADERS = $(libscwsinclude_HEADERS)$/;"	m
+INCS_Debug	build/scws.target.mk	/^INCS_Debug := \\$/;"	m
+INCS_Release	build/scws.target.mk	/^INCS_Release := \\$/;"	m
+INSTALL	libscws/Makefile	/^INSTALL = \/usr\/bin\/install -c$/;"	m
+INSTALL_DATA	libscws/Makefile	/^INSTALL_DATA = ${INSTALL} -m 644$/;"	m
+INSTALL_HEADER	libscws/Makefile	/^INSTALL_HEADER = $(INSTALL_DATA)$/;"	m
+INSTALL_PROGRAM	libscws/Makefile	/^INSTALL_PROGRAM = ${INSTALL}$/;"	m
+INSTALL_SCRIPT	libscws/Makefile	/^INSTALL_SCRIPT = ${INSTALL}$/;"	m
+INSTALL_STRIP_PROGRAM	libscws/Makefile	/^INSTALL_STRIP_PROGRAM = $(install_sh) -c -s$/;"	m
+Init	nodescws.cc	/^void Nodescws::Init(Handle<Object> target) $/;"	f	class:Nodescws
+InitAll	scws.cc	/^void InitAll(Handle<Object> exports) {$/;"	f
+LD	libscws/Makefile	/^LD = \/usr\/bin\/ld -m elf_x86_64$/;"	m
+LDFLAGS	libscws/Makefile	/^LDFLAGS = $/;"	m
+LDFLAGS.host	build/Makefile	/^LDFLAGS.host ?=$/;"	m
+LDFLAGS.target	build/Makefile	/^LDFLAGS.target ?= $(LDFLAGS)$/;"	m
+LDFLAGS_Debug	build/scws.target.mk	/^LDFLAGS_Debug := \\$/;"	m
+LDFLAGS_Release	build/scws.target.mk	/^LDFLAGS_Release := \\$/;"	m
+LIBOBJS	libscws/Makefile	/^LIBOBJS = $/;"	m
+LIBS	build/scws.target.mk	/^$(obj).target\/scws.node: LIBS := $(LIBS)$/;"	m
+LIBS	build/scws.target.mk	/^LIBS :=$/;"	m
+LIBS	libscws/Makefile	/^LIBS = -lm $/;"	m
+LIBTOOL	libscws/Makefile	/^LIBTOOL = $(SHELL) $(top_builddir)\/libtool --preserve-dup-deps $(QUIET:y=--quiet)$/;"	m
+LINK	build/Makefile	/^LINK ?= flock $(builddir)\/linker.lock $(CXX.target)$/;"	m
+LINK	libscws/Makefile	/^LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \\$/;"	m
+LINK.host	build/Makefile	/^LINK.host ?= g++$/;"	m
+LINK.target	build/Makefile	/^LINK.target ?= $(LINK)$/;"	m
+LIPO	libscws/Makefile	/^LIPO = $/;"	m
+LN_S	libscws/Makefile	/^LN_S = ln -s$/;"	m
+LOCK_EX	libscws/lock.h	32;"	d
+LOCK_H	libscws/lock.h	22;"	d
+LOCK_NB	libscws/lock.h	33;"	d
+LOCK_SH	libscws/lock.h	31;"	d
+LOCK_UN	libscws/lock.h	34;"	d
+LTCOMPILE	libscws/Makefile	/^LTCOMPILE = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \\$/;"	m
+LTLIBOBJS	libscws/Makefile	/^LTLIBOBJS = $/;"	m
+LTLIBRARIES	libscws/Makefile	/^LTLIBRARIES = $(lib_LTLIBRARIES)$/;"	m
+MAKEFLAGS	build/Makefile	/^MAKEFLAGS=-r$/;"	m
+MAKEINFO	libscws/Makefile	/^MAKEINFO = ${SHELL} \/home\/root\/development\/nodescws\/scws\/missing --run makeinfo$/;"	m
+MAXDIRLEN	nodescws.cc	14;"	d	file:
+MKDIR_P	libscws/Makefile	/^MKDIR_P = \/bin\/mkdir -p$/;"	m
+NM	libscws/Makefile	/^NM = \/usr\/bin\/nm -B$/;"	m
+NMEDIT	libscws/Makefile	/^NMEDIT = $/;"	m
+NODESCWS_H	nodescws.h	2;"	d
+NODESCWS_MSG_ERR	nodescws.h	3;"	d
+NODESCWS_MSG_LOG	nodescws.h	5;"	d
+NODESCWS_MSG_WARNING	nodescws.h	4;"	d
+NORMAL_INSTALL	libscws/Makefile	/^NORMAL_INSTALL = :$/;"	m
+NORMAL_UNINSTALL	libscws/Makefile	/^NORMAL_UNINSTALL = :$/;"	m
+New	nodescws.cc	/^Handle<Value> Nodescws::New(const Arguments& args) $/;"	f	class:Nodescws
+Nodescws	nodescws.cc	/^Nodescws::Nodescws(){};$/;"	f	class:Nodescws
+Nodescws	nodescws.h	/^class Nodescws : public node::ObjectWrap {$/;"	c
+OBJEXT	libscws/Makefile	/^OBJEXT = o$/;"	m
+OBJS	build/scws.target.mk	/^OBJS := \\$/;"	m
+OTOOL	libscws/Makefile	/^OTOOL = $/;"	m
+OTOOL64	libscws/Makefile	/^OTOOL64 = $/;"	m
+PACKAGE	libscws/Makefile	/^PACKAGE = scws$/;"	m
+PACKAGE_BUGREPORT	libscws/Makefile	/^PACKAGE_BUGREPORT = http:\/\/www.xunsearch.com\/scws$/;"	m
+PACKAGE_NAME	libscws/Makefile	/^PACKAGE_NAME = scws$/;"	m
+PACKAGE_STRING	libscws/Makefile	/^PACKAGE_STRING = scws 1.2.2$/;"	m
+PACKAGE_TARNAME	libscws/Makefile	/^PACKAGE_TARNAME = scws$/;"	m
+PACKAGE_URL	libscws/Makefile	/^PACKAGE_URL = $/;"	m
+PACKAGE_VERSION	libscws/Makefile	/^PACKAGE_VERSION = 1.2.2$/;"	m
+PATH_SEPARATOR	libscws/Makefile	/^PATH_SEPARATOR = :$/;"	m
+PFLAG_ADDSYM	libscws/scws.c	215;"	d	file:
+PFLAG_ALNUM	libscws/scws.c	212;"	d	file:
+PFLAG_ALPHA	libscws/scws.c	216;"	d	file:
+PFLAG_DIGIT	libscws/scws.c	214;"	d	file:
+PFLAG_LONGALPHA	libscws/scws.c	218;"	d	file:
+PFLAG_LONGDIGIT	libscws/scws.c	217;"	d	file:
+PFLAG_VALID	libscws/scws.c	213;"	d	file:
+PFLAG_WITH_MB	libscws/scws.c	211;"	d	file:
+POOL_BLK_SIZ	libscws/pool.h	16;"	d
+POST_INSTALL	libscws/Makefile	/^POST_INSTALL = :$/;"	m
+POST_UNINSTALL	libscws/Makefile	/^POST_UNINSTALL = :$/;"	m
+PRE_INSTALL	libscws/Makefile	/^PRE_INSTALL = :$/;"	m
+PRE_UNINSTALL	libscws/Makefile	/^PRE_UNINSTALL = :$/;"	m
+RANLIB	libscws/Makefile	/^RANLIB = ranlib$/;"	m
+RESMEMSTEP	nodescws.cc	13;"	d	file:
+SCWS_BUGREPORT	libscws/version.h	3;"	d
+SCWS_CHARLEN	libscws/scws.c	30;"	d	file:
+SCWS_CHAR_TOKEN	libscws/scws.c	42;"	d	file:
+SCWS_DEBUG	libscws/scws.h	22;"	d
+SCWS_DUALITY	libscws/scws.h	23;"	d
+SCWS_EN_IDF	libscws/scws.c	45;"	d	file:
+SCWS_IGN_SYMBOL	libscws/scws.h	19;"	d
+SCWS_IS_ALNUM	libscws/scws.c	31;"	d	file:
+SCWS_IS_ALPHA	libscws/scws.c	32;"	d	file:
+SCWS_IS_DIGIT	libscws/scws.c	34;"	d	file:
+SCWS_IS_ECHAR	libscws/scws.c	36;"	d	file:
+SCWS_IS_NOSTATS	libscws/scws.c	29;"	d	file:
+SCWS_IS_SPECIAL	libscws/scws.c	28;"	d	file:
+SCWS_IS_UALPHA	libscws/scws.c	33;"	d	file:
+SCWS_IS_WHEAD	libscws/scws.c	35;"	d	file:
+SCWS_MAX_EWLEN	libscws/scws.c	40;"	d	file:
+SCWS_MAX_ZLEN	libscws/scws.c	44;"	d	file:
+SCWS_MULTI_DUALITY	libscws/scws.h	28;"	d
+SCWS_MULTI_MASK	libscws/scws.h	31;"	d
+SCWS_MULTI_NONE	libscws/scws.h	26;"	d
+SCWS_MULTI_SHORT	libscws/scws.h	27;"	d
+SCWS_MULTI_ZALL	libscws/scws.h	30;"	d
+SCWS_MULTI_ZMAIN	libscws/scws.h	29;"	d
+SCWS_NA	libscws/scws.h	36;"	d
+SCWS_NO_RULE1	libscws/scws.c	37;"	d	file:
+SCWS_NO_RULE2	libscws/scws.c	39;"	d	file:
+SCWS_PUT_RES	libscws/scws.c	187;"	d	file:
+SCWS_RULE_MAX	libscws/rule.h	14;"	d
+SCWS_RULE_NOSTATS	libscws/rule.h	16;"	d
+SCWS_RULE_SPECIAL	libscws/rule.h	15;"	d
+SCWS_VERSION	libscws/version.h	2;"	d
+SCWS_WORD_FULL	libscws/xdict.h	16;"	d
+SCWS_WORD_LONG	libscws/xdict.h	20;"	d
+SCWS_WORD_MALLOCED	libscws/xdict.h	22;"	d
+SCWS_WORD_PART	libscws/xdict.h	17;"	d
+SCWS_WORD_RULE	libscws/xdict.h	19;"	d
+SCWS_WORD_USED	libscws/xdict.h	18;"	d
+SCWS_XDICT_MEM	libscws/xdict.h	35;"	d
+SCWS_XDICT_PRIME	libscws/xdict.h	31;"	d
+SCWS_XDICT_SET	libscws/xdict.h	37;"	d
+SCWS_XDICT_TXT	libscws/xdict.h	36;"	d
+SCWS_XDICT_XDB	libscws/xdict.h	34;"	d
+SCWS_YEA	libscws/scws.h	35;"	d
+SCWS_ZFLAG_ENGLISH	libscws/xdict.h	29;"	d
+SCWS_ZFLAG_N2	libscws/xdict.h	25;"	d
+SCWS_ZFLAG_NR2	libscws/xdict.h	26;"	d
+SCWS_ZFLAG_PUT	libscws/xdict.h	24;"	d
+SCWS_ZFLAG_SYMBOL	libscws/xdict.h	30;"	d
+SCWS_ZFLAG_WHEAD	libscws/xdict.h	27;"	d
+SCWS_ZFLAG_WPART	libscws/xdict.h	28;"	d
+SCWS_ZIS_USED	libscws/scws.h	33;"	d
+SCWS_ZRULE_EXCLUDE	libscws/rule.h	23;"	d
+SCWS_ZRULE_INCLUDE	libscws/rule.h	22;"	d
+SCWS_ZRULE_NONE	libscws/rule.h	19;"	d
+SCWS_ZRULE_PREFIX	libscws/rule.h	20;"	d
+SCWS_ZRULE_RANGE	libscws/rule.h	24;"	d
+SCWS_ZRULE_SUFFIX	libscws/rule.h	21;"	d
+SED	libscws/Makefile	/^SED = \/bin\/sed$/;"	m
+SET_MAKE	libscws/Makefile	/^SET_MAKE = $/;"	m
+SHARED_LIB_VERSION	libscws/Makefile	/^SHARED_LIB_VERSION = 2:0:1$/;"	m
+SHELL	libscws/Makefile	/^SHELL = \/bin\/sh$/;"	m
+SOURCES	libscws/Makefile	/^SOURCES = $(libscws_la_SOURCES)$/;"	m
+STRIP	libscws/Makefile	/^STRIP = strip$/;"	m
+S_ISREG	libscws/config_win32.h	15;"	d
+Segment	nodescws.cc	/^Handle<Value> Nodescws::Segment(const v8::Arguments& args)$/;"	f	class:Nodescws
+TARGET	build/scws.target.mk	/^TARGET := scws$/;"	m
+TOOLSET	build/Makefile	/^TOOLSET := target$/;"	m
+TOOLSET	build/scws.target.mk	/^$(OBJS): TOOLSET := $(TOOLSET)$/;"	m
+TOOLSET	build/scws.target.mk	/^$(builddir)\/scws.node: TOOLSET := $(TOOLSET)$/;"	m
+TOOLSET	build/scws.target.mk	/^$(obj).target\/scws.node: TOOLSET := $(TOOLSET)$/;"	m
+TOOLSET	build/scws.target.mk	/^TOOLSET := target$/;"	m
+VERSION	libscws/Makefile	/^VERSION = 1.2.2$/;"	m
+XDB_FLOAT_CHECK	libscws/xdb.h	16;"	d
+XDB_MAXKLEN	libscws/xdb.h	18;"	d
+XDB_TAGNAME	libscws/xdb.h	17;"	d
+XDB_VERSION	libscws/xdb.h	19;"	d
+XDICT_PATH_MAX	libscws/xdict.c	32;"	d	file:
+XDICT_PATH_MAX	libscws/xdict.c	34;"	d	file:
+_FLAG_BOTH	libscws/xdict.c	338;"	d	file:
+_FLAG_FULL	libscws/xdict.c	339;"	d	file:
+_FLAG_MALLOC	libscws/xdict.c	341;"	d	file:
+_FLAG_PART	libscws/xdict.c	340;"	d	file:
+_SCWS_CHARSET_20070528_H_	libscws/charset.h	9;"	d
+_SCWS_CRC32_20100128_H_	libscws/crc32.h	9;"	d
+_SCWS_DARRAY_20070525_H_	libscws/darray.h	9;"	d
+_SCWS_LIBSCWS_20070531_H_	libscws/scws.h	9;"	d
+_SCWS_POOL_20070525_H_	libscws/pool.h	9;"	d
+_SCWS_RULE_20070525_H_	libscws/rule.h	9;"	d
+_SCWS_XDB_20070525_H_	libscws/xdb.h	9;"	d
+_SCWS_XDICT_20070528_H_	libscws/xdict.h	9;"	d
+_SCWS_XTREE_20070525_H_	libscws/xtree.h	9;"	d
+__PARSE_XATTR__	libscws/scws.c	1336;"	d	file:
+___ZRULE_CHECKER1___	libscws/scws.c	755;"	d	file:
+___ZRULE_CHECKER2___	libscws/scws.c	759;"	d	file:
+___ZRULE_CHECKER3___	libscws/scws.c	763;"	d	file:
+_attr_belong	libscws/scws.c	/^static inline int _attr_belong(const char *a, word_attr *at)$/;"	f	file:
+_mblen_table_gbk	libscws/charset.c	/^static unsigned char _mblen_table_gbk[] = $/;"	v	file:
+_mblen_table_utf8	libscws/charset.c	/^static unsigned char _mblen_table_utf8[] = $/;"	v	file:
+_mem_ndup	libscws/scws.c	/^static inline void *_mem_ndup(const char *src, int len)$/;"	f	file:
+_mem_ndup	libscws/scws.c	241;"	d	file:
+_mem_ndup	libscws/xdb.c	/^static inline void *_mem_ndup(const char *src, int len)$/;"	f	file:
+_mem_ndup	libscws/xdb.c	475;"	d	file:
+_pool_append_clean	libscws/pool.c	/^static void _pool_append_clean(pool_t p, void *obj)$/;"	f	file:
+_pool_heap_new	libscws/pool.c	/^static void _pool_heap_new(pool_t p)$/;"	f	file:
+_realpath	libscws/xdict.c	/^static void _realpath(const char *src, char *dst)$/;"	f	file:
+_realpath	libscws/xdict.c	108;"	d	file:
+_rule_index_get	libscws/rule.c	/^static inline int _rule_index_get(rule_t r, const char *name)$/;"	f	file:
+_scws_alnum_multi	libscws/scws.c	/^static void _scws_alnum_multi(scws_t s, int start, int wlen)$/;"	f	file:
+_scws_mget_word	libscws/scws.c	/^static int _scws_mget_word(scws_t s, int i, int j)$/;"	f	file:
+_scws_mseg_zone	libscws/scws.c	/^static void _scws_mseg_zone(scws_t s, int f, int t)$/;"	f	file:
+_scws_msegment	libscws/scws.c	/^static void _scws_msegment(scws_t s, int end, int zlen)$/;"	f	file:
+_scws_mset_word	libscws/scws.c	/^static void _scws_mset_word(scws_t s, int i, int j)$/;"	f	file:
+_scws_ssegment	libscws/scws.c	/^static void _scws_ssegment(scws_t s, int end)$/;"	f	file:
+_str_tolower	libscws/scws.c	/^static void _str_tolower(char *src, char *dst)$/;"	f	file:
+_str_toupper	libscws/scws.c	/^static void _str_toupper(char *src, char *dst)$/;"	f	file:
+_strtok_r	libscws/xdict.c	/^static char *_strtok_r(char *s, char *delim, char **lasts)$/;"	f	file:
+_strtok_r	libscws/xdict.c	38;"	d	file:
+_tops_cmp	libscws/scws.c	/^static int _tops_cmp(a, b)$/;"	f	file:
+_tops_load_all	libscws/scws.c	/^static void _tops_load_all(xtree_t xt, scws_top_t *values)$/;"	f	file:
+_tops_load_node	libscws/scws.c	/^static void _tops_load_node(node_t node, scws_top_t *values, int *start)$/;"	f	file:
+_xdb_count_nodes	libscws/xdb.c	/^static void _xdb_count_nodes(xdb_t x, xptr_t ptr, int *count)$/;"	f	file:
+_xdb_draw_node	libscws/xdb.c	/^static void _xdb_draw_node(xdb_t x, xptr_t ptr, struct draw_arg *arg, int depth, char *icon1)$/;"	f	file:
+_xdb_flock	libscws/lock.c	/^int _xdb_flock(int fd, int operation)$/;"	f
+_xdb_hasher	libscws/xdb.c	/^static int _xdb_hasher(xdb_t x, const char *s, int len)$/;"	f	file:
+_xdb_load_nodes	libscws/xdb.c	/^static void _xdb_load_nodes(xdb_t x, xptr_t ptr, xcmper_st *nodes, int *count)$/;"	f	file:
+_xdb_node_cmp	libscws/xdb.c	/^static int _xdb_node_cmp(a, b)$/;"	f	file:
+_xdb_read_data	libscws/xdb.c	/^static void _xdb_read_data(xdb_t x, void *buf, unsigned int off, int len)$/;"	f	file:
+_xdb_rec_find	libscws/xdb.c	/^static xrec_t _xdb_rec_find(xdb_t x, const char *key, int len, xrec_t rec)$/;"	f	file:
+_xdb_rec_get	libscws/xdb.c	/^static void _xdb_rec_get(xdb_t x, xrec_t rec, const char *key, int len)$/;"	f	file:
+_xdb_reset_nodes	libscws/xdb.c	/^static void _xdb_reset_nodes(xdb_t x, xcmper_st *nodes, int low, int high, unsigned int poff)$/;"	f	file:
+_xdb_to_xtree_node	libscws/xdb.c	/^static void _xdb_to_xtree_node(xdb_t x, xtree_t xt, xptr_t ptr)$/;"	f	file:
+_xdict_open_txt	libscws/xdict.c	/^static xdict_t _xdict_open_txt(const char *fpath, int mode, unsigned char *ml)$/;"	f	file:
+_xtree_count_nodes	libscws/xtree.c	/^static void _xtree_count_nodes(node_t node, int *count)$/;"	f	file:
+_xtree_draw_node	libscws/xtree.c	/^static void _xtree_draw_node(node_t node, struct draw_arg *arg, int depth, char *icon1)$/;"	f	file:
+_xtree_hasher	libscws/xtree.c	/^static int _xtree_hasher(xtree_t xt, const char *s, int len)$/;"	f	file:
+_xtree_load_nodes	libscws/xtree.c	/^static void _xtree_load_nodes(node_t node, node_t *nodes, int *count)$/;"	f	file:
+_xtree_node_cmp	libscws/xtree.c	/^static int _xtree_node_cmp(node_t *a, node_t *b)$/;"	f	file:
+_xtree_node_find	libscws/xtree.c	/^static node_t _xtree_node_find(xtree_t xt, node_t **pnode, const char *key, int len)$/;"	f	file:
+_xtree_node_search	libscws/xtree.c	/^static node_t _xtree_node_search(node_t head, node_t **pnode, const char *key, int len)$/;"	f	file:
+_xtree_reset_nodes	libscws/xtree.c	/^static void _xtree_reset_nodes(node_t *nodes, int low, int high, node_t *curr)$/;"	f	file:
+_xtree_to_xdb_node	libscws/xtree.c	/^static void _xtree_to_xdb_node(node_t node, xdb_t x)$/;"	f	file:
+abs_builddir	build/Makefile	/^abs_builddir := $(abspath $(builddir))$/;"	m
+abs_builddir	libscws/Makefile	/^abs_builddir = \/home\/root\/development\/nodescws\/scws\/libscws$/;"	m
+abs_obj	build/Makefile	/^abs_obj := $(abspath $(obj))$/;"	m
+abs_srcdir	build/Makefile	/^abs_srcdir := $(abspath $(srcdir))$/;"	m
+abs_srcdir	libscws/Makefile	/^abs_srcdir = \/home\/root\/development\/nodescws\/scws\/libscws$/;"	m
+abs_top_builddir	libscws/Makefile	/^abs_top_builddir = \/home\/root\/development\/nodescws\/scws$/;"	m
+abs_top_srcdir	libscws/Makefile	/^abs_top_srcdir = \/home\/root\/development\/nodescws\/scws$/;"	m
+ac_ct_CC	libscws/Makefile	/^ac_ct_CC = gcc$/;"	m
+ac_ct_DUMPBIN	libscws/Makefile	/^ac_ct_DUMPBIN = $/;"	m
+all_deps	build/Makefile	/^all_deps :=$/;"	m
+am__aclocal_m4_deps	libscws/Makefile	/^am__aclocal_m4_deps = $(top_srcdir)\/configure.ac$/;"	m
+am__cd	libscws/Makefile	/^am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd$/;"	m
+am__configure_deps	libscws/Makefile	/^am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \\$/;"	m
+am__depfiles_maybe	libscws/Makefile	/^am__depfiles_maybe = depfiles$/;"	m
+am__include	libscws/Makefile	/^am__include = include$/;"	m
+am__installdirs	libscws/Makefile	/^am__installdirs = "$(DESTDIR)$(libdir)" \\$/;"	m
+am__leading_dot	libscws/Makefile	/^am__leading_dot = .$/;"	m
+am__quote	libscws/Makefile	/^am__quote = $/;"	m
+am__strip_dir	libscws/Makefile	/^am__strip_dir = `echo $$p | sed -e 's|^.*\/||'`;$/;"	m
+am__tar	libscws/Makefile	/^am__tar = ${AMTAR} chof - "$$tardir"$/;"	m
+am__untar	libscws/Makefile	/^am__untar = ${AMTAR} xf -$/;"	m
+am__vpath_adj	libscws/Makefile	/^am__vpath_adj = case $$p in \\$/;"	m
+am__vpath_adj_setup	libscws/Makefile	/^am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;$/;"	m
+am_libscws_la_OBJECTS	libscws/Makefile	/^am_libscws_la_OBJECTS = charset.lo crc32.lo pool.lo scws.lo xdict.lo \\$/;"	m
+attr	libscws/rule.h	/^	char attr[3];$/;"	m	struct:scws_rule_item
+attr	libscws/rule.h	/^	rule_attr_t attr;$/;"	m	struct:scws_rule
+attr	libscws/scws.h	/^	char attr[2];$/;"	m	struct:scws_topword
+attr	libscws/scws.h	/^	char attr[3];$/;"	m	struct:scws_result
+attr	libscws/xdict.h	/^	char attr[3];$/;"	m	struct:scws_word
+attr1	libscws/rule.h	/^	char attr1[2];$/;"	m	struct:scws_rule_attr
+attr2	libscws/rule.h	/^	char attr2[2];$/;"	m	struct:scws_rule_attr
+attr_en	libscws/scws.c	/^static const char *attr_en = "en";$/;"	v	file:
+attr_na	libscws/scws.c	/^static const char *attr_na = "!";$/;"	v	file:
+attr_nr	libscws/scws.c	/^static const char *attr_nr = "nr";$/;"	v	file:
+attr_un	libscws/scws.c	/^static const char *attr_un = "un";$/;"	v	file:
+base	libscws/xdb.h	/^	int base;				\/* basenum for hash count *\/$/;"	m	struct:__anon1
+base	libscws/xdb.h	/^	int base;$/;"	m	struct:xdb_header
+base	libscws/xtree.h	/^	int base;		\/* base number for hasher (prime number recommend) *\/$/;"	m	struct:__anon2
+bindir	libscws/Makefile	/^bindir = ${exec_prefix}\/bin$/;"	m
+bit	libscws/rule.h	/^	unsigned int bit;	\/* my bit  *\/$/;"	m	struct:scws_rule_item
+block	libscws/pool.h	/^	char block[0];$/;"	m	struct:pheap
+build	libscws/Makefile	/^build = x86_64-unknown-linux-gnu$/;"	m
+build_alias	libscws/Makefile	/^build_alias = $/;"	m
+build_cpu	libscws/Makefile	/^build_cpu = x86_64$/;"	m
+build_os	libscws/Makefile	/^build_os = linux-gnu$/;"	m
+build_triplet	libscws/Makefile	/^build_triplet = x86_64-unknown-linux-gnu$/;"	m
+build_vendor	libscws/Makefile	/^build_vendor = unknown$/;"	m
+builddir	build/Makefile	/^builddir ?= $(builddir_name)\/$(BUILDTYPE)$/;"	m
+builddir	libscws/Makefile	/^builddir = .$/;"	m
+builddir_name	build/Makefile	/^builddir_name ?= .$/;"	m
+charset_table_get	libscws/charset.c	/^unsigned char *charset_table_get(const char *cs)$/;"	f
+check	libscws/xdb.h	/^	float check;$/;"	m	struct:xdb_header
+clean	libscws/pool.h	/^	struct pclean *clean;$/;"	m	struct:__anon3	typeref:struct:__anon3::pclean
+cmd_alink	build/Makefile	/^cmd_alink = rm -f $@ && $(AR.$(TOOLSET)) crs $@ $(filter %.o,$^)$/;"	m
+cmd_alink_thin	build/Makefile	/^cmd_alink_thin = rm -f $@ && $(AR.$(TOOLSET)) crsT $@ $(filter %.o,$^)$/;"	m
+cmd_cc	build/Makefile	/^cmd_cc = $(CC.$(TOOLSET)) $(GYP_CFLAGS) $(DEPFLAGS) $(CFLAGS.$(TOOLSET)) -c -o $@ $<$/;"	m
+cmd_copy	build/Makefile	/^cmd_copy = rm -rf "$@" && cp -af "$<" "$@"$/;"	m
+cmd_cxx	build/Makefile	/^cmd_cxx = $(CXX.$(TOOLSET)) $(GYP_CXXFLAGS) $(DEPFLAGS) $(CXXFLAGS.$(TOOLSET)) -c -o $@ $<$/;"	m
+cmd_link	build/Makefile	/^cmd_link = $(LINK.$(TOOLSET)) $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -o $@ -Wl,--start-group $(LD_INPUTS) -Wl,--end-group $(LIBS)$/;"	m
+cmd_regen_makefile	build/Makefile	/^cmd_regen_makefile = \/usr\/local\/lib\/node_modules\/node-gyp\/gyp\/gyp -fmake --ignore-environment "--toplevel-dir=." -I\/home\/root\/development\/projects\/nodescws\/build\/config.gypi -I\/usr\/local\/lib\/node_modules\/node-gyp\/addon.gypi -I\/home\/root\/.node-gyp\/0.10.5\/common.gypi "--depth=." "-Goutput_dir=." "--generator-output=build" "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=\/home\/root\/.node-gyp\/0.10.5" "-Dmodule_root_dir=\/home\/root\/development\/projects\/nodescws" binding.gyp$/;"	m
+cmd_solink	build/Makefile	/^cmd_solink = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ -Wl,--whole-archive $(LD_INPUTS) -Wl,--no-whole-archive $(LIBS)$/;"	m
+cmd_solink_module	build/Makefile	/^cmd_solink_module = $(LINK.$(TOOLSET)) -shared $(GYP_LDFLAGS) $(LDFLAGS.$(TOOLSET)) -Wl,-soname=$(@F) -o $@ -Wl,--start-group $(filter-out FORCE_DO_CMD, $^) -Wl,--end-group $(LIBS)$/;"	m
+cmd_touch	build/Makefile	/^cmd_touch = touch $@$/;"	m
+command_changed	build/Makefile	/^command_changed = $(or $(subst $(cmd_$(1)),,$(cmd_$(call replace_spaces,$@))),\\$/;"	m
+count	libscws/xdb.c	/^	int count;$/;"	m	struct:draw_arg	file:
+count	libscws/xtree.c	/^	int count;$/;"	m	struct:draw_arg	file:
+count	libscws/xtree.h	/^	int count;		\/* total nodes *\/$/;"	m	struct:__anon2
+crc32tab	libscws/crc32.c	/^static const unsigned int crc32tab[256] = {$/;"	v	file:
+d	libscws/scws.h	/^	xdict_t d;$/;"	m	struct:scws_st
+d_files	build/Makefile	/^d_files := $(wildcard $(foreach f,$(all_deps),$(depsdir)\/$(f).d))$/;"	m
+darray_free	libscws/darray.c	/^void darray_free(void **arr)$/;"	f
+darray_new	libscws/darray.c	/^void **darray_new(int row, int col, int size)$/;"	f
+datadir	libscws/Makefile	/^datadir = ${datarootdir}$/;"	m
+datarootdir	libscws/Makefile	/^datarootdir = ${prefix}\/share$/;"	m
+debug	nodescws.cc	/^int debug = 0;$/;"	v
+depcomp	libscws/Makefile	/^depcomp = $(SHELL) $(top_srcdir)\/depcomp$/;"	m
+depfile	build/Makefile	/^depfile = $(depsdir)\/$(call replace_spaces,$@).d$/;"	m
+depsdir	build/Makefile	/^depsdir := $(builddir)\/.deps$/;"	m
+depth	libscws/xdb.c	/^	int depth;$/;"	m	struct:draw_arg	file:
+depth	libscws/xtree.c	/^	int depth;$/;"	m	struct:draw_arg	file:
+dirty	libscws/pool.h	/^	int dirty;			\/* total wasted *\/$/;"	m	struct:__anon3
+dirx	build/Makefile	/^dirx = $(call unreplace_spaces,$(dir $(call replace_spaces,$1)))$/;"	m
+do_cmd	build/Makefile	/^define do_cmd$/;"	m
+do_postbuilds	build/Makefile	/^define do_postbuilds$/;"	m
+docdir	libscws/Makefile	/^docdir = ${datarootdir}\/doc\/${PACKAGE_TARNAME}$/;"	m
+draw_arg	libscws/xdb.c	/^struct draw_arg$/;"	s	file:
+draw_arg	libscws/xtree.c	/^struct draw_arg$/;"	s	file:
+dvidir	libscws/Makefile	/^dvidir = ${docdir}$/;"	m
+empty	build/Makefile	/^empty :=$/;"	m
+end	libscws/scws.h	/^	int end;$/;"	m	struct:scws_zchar
+escape_quotes	build/Makefile	/^escape_quotes = $(subst ','\\'',$(1))$/;"	m
+escape_vars	build/Makefile	/^escape_vars = $(subst $$,$$$$,$(1))$/;"	m
+exact_echo	build/Makefile	/^exact_echo = printf '%s\\n' '$(call escape_quotes,$(1))'$/;"	m
+exc	libscws/rule.h	/^	unsigned int exc;	\/* exclude *\/$/;"	m	struct:scws_rule_item
+exec_prefix	libscws/Makefile	/^exec_prefix = ${prefix}$/;"	m
+fd	libscws/xdb.h	/^	int fd;					\/* file descriptoin *\/$/;"	m	struct:__anon1
+fixup_dep	build/Makefile	/^define fixup_dep$/;"	m
+flag	libscws/rule.h	/^	short flag;$/;"	m	struct:scws_rule_item
+flag	libscws/xdb.c	/^	int flag;$/;"	m	struct:draw_arg	file:
+flag	libscws/xdict.h	/^	unsigned char flag;$/;"	m	struct:scws_word
+flag	libscws/xtree.c	/^	int flag;$/;"	m	struct:draw_arg	file:
+fmap	libscws/xdb.h	/^	char *fmap;				\/* file content image by mmap (read only) *\/$/;"	m	struct:__anon1
+fs	test.js	/^var fs   = require("fs")$/;"	v
+fsize	libscws/xdb.h	/^	unsigned int fsize;		\/* total filesize *\/$/;"	m	struct:__anon1
+fsize	libscws/xdb.h	/^	unsigned int fsize;$/;"	m	struct:xdb_header
+fsync	libscws/lock.h	39;"	d
+ftruncate	libscws/lock.h	40;"	d
+heap	libscws/pool.h	/^	struct pheap *heap;	$/;"	m	struct:__anon3	typeref:struct:__anon3::pheap
+host	libscws/Makefile	/^host = x86_64-unknown-linux-gnu$/;"	m
+host_alias	libscws/Makefile	/^host_alias = $/;"	m
+host_cpu	libscws/Makefile	/^host_cpu = x86_64$/;"	m
+host_os	libscws/Makefile	/^host_os = linux-gnu$/;"	m
+host_triplet	libscws/Makefile	/^host_triplet = x86_64-unknown-linux-gnu$/;"	m
+host_vendor	libscws/Makefile	/^host_vendor = unknown$/;"	m
+htmldir	libscws/Makefile	/^htmldir = ${docdir}$/;"	m
+idf	libscws/rule.h	/^	float idf;$/;"	m	struct:scws_rule_item
+idf	libscws/scws.h	/^	float idf;$/;"	m	struct:scws_result
+idf	libscws/xdict.h	/^	float idf;$/;"	m	struct:scws_word
+inc	libscws/rule.h	/^	unsigned int inc;	\/* include *\/$/;"	m	struct:scws_rule_item
+includedir	libscws/Makefile	/^includedir = ${prefix}\/include$/;"	m
+infodir	libscws/Makefile	/^infodir = ${datarootdir}\/info$/;"	m
+inline	libscws/config_win32.h	8;"	d
+install_sh	libscws/Makefile	/^install_sh = $(SHELL) \/home\/root\/development\/nodescws\/scws\/install-sh$/;"	m
+install_sh_DATA	libscws/Makefile	/^install_sh_DATA = $(install_sh) -c -m 644$/;"	m
+install_sh_PROGRAM	libscws/Makefile	/^install_sh_PROGRAM = $(install_sh) -c$/;"	m
+install_sh_SCRIPT	libscws/Makefile	/^install_sh_SCRIPT = $(install_sh) -c$/;"	m
+instance_	nodescws.h	/^        scws_t instance_; $/;"	m	class:Nodescws
+items	libscws/rule.h	/^	struct scws_rule_item items[SCWS_RULE_MAX];$/;"	m	struct:scws_rule	typeref:struct:scws_rule::scws_rule_item
+key	libscws/xdb.c	/^	char *key;$/;"	m	struct:xdb_cmper	file:
+key	libscws/xtree.h	/^	char *key;$/;"	m	struct:tree_node
+left	libscws/xtree.h	/^	node_t left;$/;"	m	struct:tree_node
+len	libscws/scws.h	/^	int len;$/;"	m	struct:scws_st
+len	libscws/scws.h	/^	unsigned char len;$/;"	m	struct:scws_result
+len	libscws/xdb.h	/^	unsigned int len;$/;"	m	struct:xdb_pointer
+libLTLIBRARIES_INSTALL	libscws/Makefile	/^libLTLIBRARIES_INSTALL = $(INSTALL)$/;"	m
+lib_LTLIBRARIES	libscws/Makefile	/^lib_LTLIBRARIES = libscws.la$/;"	m
+libdir	libscws/Makefile	/^libdir = ${exec_prefix}\/lib$/;"	m
+libexecdir	libscws/Makefile	/^libexecdir = ${exec_prefix}\/libexec$/;"	m
+libscws_la_LDFLAGS	libscws/Makefile	/^libscws_la_LDFLAGS =  -no-undefined -version-info 2:0:1$/;"	m
+libscws_la_LIBADD	libscws/Makefile	/^libscws_la_LIBADD =$/;"	m
+libscws_la_LINK	libscws/Makefile	/^libscws_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \\$/;"	m
+libscws_la_OBJECTS	libscws/Makefile	/^libscws_la_OBJECTS = $(am_libscws_la_OBJECTS)$/;"	m
+libscws_la_SOURCES	libscws/Makefile	/^libscws_la_SOURCES = charset.c crc32.c pool.c scws.c xdict.c darray.c rule.c lock.c xdb.c xtree.c$/;"	m
+libscwsincludeHEADERS_INSTALL	libscws/Makefile	/^libscwsincludeHEADERS_INSTALL = $(INSTALL_HEADER)$/;"	m
+libscwsinclude_HEADERS	libscws/Makefile	/^libscwsinclude_HEADERS = charset.h crc32.h pool.h scws.h xdict.h darray.h rule.h xdb.h xtree.h version.h$/;"	m
+libscwsincludedir	libscws/Makefile	/^libscwsincludedir = \/usr\/local\/include\/scws$/;"	m
+localedir	libscws/Makefile	/^localedir = ${datarootdir}\/locale$/;"	m
+localstatedir	libscws/Makefile	/^localstatedir = ${prefix}\/var$/;"	m
+logf	libscws/config_win32.h	19;"	d
+lt_ECHO	libscws/Makefile	/^lt_ECHO = echo$/;"	m
+mandir	libscws/Makefile	/^mandir = ${datarootdir}\/man$/;"	m
+mblen	libscws/scws.h	/^	unsigned char *mblen;$/;"	m	struct:scws_st
+mblen_tab	libscws/charset.c	/^struct mblen_tab$/;"	s	file:
+mblen_tab_list	libscws/charset.c	/^static struct mblen_tab mblen_tab_list[] =$/;"	v	typeref:struct:mblen_tab	file:
+me	libscws/xdb.h	/^	xptr_st me;$/;"	m	struct:xdb_record
+mkdir_p	libscws/Makefile	/^mkdir_p = \/bin\/mkdir -p$/;"	m
+mkinstalldirs	libscws/Makefile	/^mkinstalldirs = $(install_sh) -d$/;"	m
+mode	libscws/scws.h	/^	unsigned int mode;$/;"	m	struct:scws_st
+mode	libscws/xdb.h	/^	int mode;				\/* xdb_open for write or read-only *\/$/;"	m	struct:__anon1
+name	libscws/charset.c	/^	char *name;$/;"	m	struct:mblen_tab	file:
+name	libscws/rule.h	/^	char name[17];$/;"	m	struct:scws_rule_item
+next	libscws/rule.h	/^	rule_attr_t next;$/;"	m	struct:scws_rule_attr
+next	libscws/scws.h	/^	scws_res_t next;$/;"	m	struct:scws_result
+next	libscws/scws.h	/^	scws_top_t next;$/;"	m	struct:scws_topword
+next	libscws/xdict.h	/^	struct scws_xdict *next;$/;"	m	struct:scws_xdict	typeref:struct:scws_xdict::scws_xdict
+node_st	libscws/xtree.h	/^typedef struct tree_node node_st, *node_t;$/;"	t	typeref:struct:tree_node
+node_t	libscws/xtree.h	/^typedef struct tree_node node_st, *node_t;$/;"	t	typeref:struct:
+npath	libscws/rule.h	/^	unsigned char npath[2];$/;"	m	struct:scws_rule_attr
+nxt	libscws/pool.h	/^	struct pclean *nxt;$/;"	m	struct:pclean	typeref:struct:pclean::pclean
+obj	build/Makefile	/^obj := $(builddir)\/obj$/;"	m
+obj	libscws/pool.h	/^	void *obj;$/;"	m	struct:pclean
+off	libscws/scws.h	/^	int off;$/;"	m	struct:scws_result
+off	libscws/scws.h	/^	int off;$/;"	m	struct:scws_st
+off	libscws/xdb.h	/^	unsigned int off;$/;"	m	struct:xdb_pointer
+oldincludedir	libscws/Makefile	/^oldincludedir = \/usr\/include$/;"	m
+p	libscws/xtree.h	/^	pool_t p;		\/* pool for memory manager *\/$/;"	m	struct:__anon2
+pclean	libscws/pool.h	/^struct pclean$/;"	s
+pdfdir	libscws/Makefile	/^pdfdir = ${docdir}$/;"	m
+pheap	libscws/pool.h	/^struct pheap$/;"	s
+pkgdatadir	libscws/Makefile	/^pkgdatadir = $(datadir)\/scws$/;"	m
+pkgincludedir	libscws/Makefile	/^pkgincludedir = $(includedir)\/scws$/;"	m
+pkglibdir	libscws/Makefile	/^pkglibdir = $(libdir)\/scws$/;"	m
+pmalloc	libscws/pool.c	/^void *pmalloc(pool_t p, int size)$/;"	f
+pmalloc_x	libscws/pool.c	/^void *pmalloc_x(pool_t p, int size, char c)$/;"	f
+pmalloc_z	libscws/pool.c	/^void *pmalloc_z(pool_t p, int size)$/;"	f
+poff	libscws/xdb.h	/^	unsigned int poff;$/;"	m	struct:xdb_record
+pool_free	libscws/pool.c	/^void pool_free(pool_t p)$/;"	f
+pool_new	libscws/pool.c	/^pool_t pool_new()$/;"	f
+pool_st	libscws/pool.h	/^}	pool_st, *pool_t;$/;"	t	typeref:struct:__anon3
+pool_t	libscws/pool.h	/^}	pool_st, *pool_t;$/;"	t	typeref:struct:__anon3
+prefix	libscws/Makefile	/^prefix = \/usr\/local$/;"	m
+prereq_changed	build/Makefile	/^prereq_changed = $(filter-out FORCE_DO_CMD,$(filter-out $|,$?))$/;"	m
+prime	libscws/xdb.h	/^	int prime;				\/* base prime for hash mod *\/$/;"	m	struct:__anon1
+prime	libscws/xdb.h	/^	int prime;$/;"	m	struct:xdb_header
+prime	libscws/xtree.h	/^	int prime;		\/* good prime number for hasher *\/$/;"	m	struct:__anon2
+program_transform_name	libscws/Makefile	/^program_transform_name = s,x,x,$/;"	m
+psdir	libscws/Makefile	/^psdir = ${docdir}$/;"	m
+pstrdup	libscws/pool.c	/^char *pstrdup(pool_t p, const char *src)$/;"	f
+pstrndup	libscws/pool.c	/^char *pstrndup(pool_t p, const char *src, int len)$/;"	f
+ptr	libscws/xdb.c	/^	xptr_st ptr;$/;"	m	struct:xdb_cmper	file:
+quiet	build/Makefile	/^  quiet=$/;"	m
+quiet	build/Makefile	/^  quiet=quiet_$/;"	m
+quiet_cmd_alink	build/Makefile	/^quiet_cmd_alink = AR($(TOOLSET)) $@$/;"	m
+quiet_cmd_alink_thin	build/Makefile	/^quiet_cmd_alink_thin = AR($(TOOLSET)) $@$/;"	m
+quiet_cmd_cc	build/Makefile	/^quiet_cmd_cc = CC($(TOOLSET)) $@$/;"	m
+quiet_cmd_copy	build/Makefile	/^quiet_cmd_copy = COPY $@$/;"	m
+quiet_cmd_cxx	build/Makefile	/^quiet_cmd_cxx = CXX($(TOOLSET)) $@$/;"	m
+quiet_cmd_link	build/Makefile	/^quiet_cmd_link = LINK($(TOOLSET)) $@$/;"	m
+quiet_cmd_regen_makefile	build/Makefile	/^quiet_cmd_regen_makefile = ACTION Regenerating $@$/;"	m
+quiet_cmd_solink	build/Makefile	/^quiet_cmd_solink = SOLINK($(TOOLSET)) $@$/;"	m
+quiet_cmd_solink_module	build/Makefile	/^quiet_cmd_solink_module = SOLINK_MODULE($(TOOLSET)) $@$/;"	m
+quiet_cmd_touch	build/Makefile	/^quiet_cmd_touch = TOUCH $@$/;"	m
+r	libscws/scws.h	/^	rule_t r;$/;"	m	struct:scws_st
+ratio	libscws/rule.h	/^	short ratio;$/;"	m	struct:scws_rule_attr
+ref	libscws/rule.h	/^	int ref;	\/\/ hightman.20130110: refcount (zero to really free\/close)$/;"	m	struct:scws_rule
+ref	libscws/xdict.h	/^	int ref;	\/\/ hightman.20130110: refcount (zero to really free\/close)$/;"	m	struct:scws_xdict
+replace_spaces	build/Makefile	/^replace_spaces = $(subst $(space),?,$1)$/;"	m
+res0	libscws/scws.h	/^	scws_res_t res0;$/;"	m	struct:scws_st
+res1	libscws/scws.h	/^	scws_res_t res1;$/;"	m	struct:scws_st
+result_raw_	nodescws.h	/^        scws_result *result_raw_;$/;"	m	class:Nodescws
+right	libscws/xtree.h	/^	node_t right;$/;"	m	struct:tree_node
+rule_attr_t	libscws/rule.h	/^typedef struct scws_rule_attr *rule_attr_t;$/;"	t	typeref:struct:scws_rule_attr
+rule_item_t	libscws/rule.h	/^}	*rule_item_t;$/;"	t	typeref:struct:scws_rule_item
+rule_st	libscws/rule.h	/^}	rule_st, *rule_t;$/;"	t	typeref:struct:scws_rule
+rule_t	libscws/rule.h	/^}	rule_st, *rule_t;$/;"	t	typeref:struct:scws_rule
+sbindir	libscws/Makefile	/^sbindir = ${exec_prefix}\/sbin$/;"	m
+scws_add_dict	libscws/scws.c	/^int scws_add_dict(scws_t s, const char *fpath, int mode)$/;"	f
+scws_crc32	libscws/crc32.c	/^unsigned int scws_crc32(const char *str)$/;"	f
+scws_debug	nodescws.cc	/^void scws_debug(int level, const char *msg, ...)$/;"	f
+scws_fork	libscws/scws.c	/^scws_t scws_fork(scws_t p)$/;"	f
+scws_free	libscws/scws.c	/^void scws_free(scws_t s)$/;"	f
+scws_free_result	libscws/scws.c	/^void scws_free_result(scws_res_t result)$/;"	f
+scws_free_tops	libscws/scws.c	/^void scws_free_tops(scws_top_t tops)$/;"	f
+scws_get_result	libscws/scws.c	/^scws_res_t scws_get_result(scws_t s)$/;"	f
+scws_get_tops	libscws/scws.c	/^scws_top_t scws_get_tops(scws_t s, int limit, char *xattr)$/;"	f
+scws_get_words	libscws/scws.c	/^scws_top_t scws_get_words(scws_t s, char *xattr)$/;"	f
+scws_has_word	libscws/scws.c	/^int scws_has_word(scws_t s, char *xattr)$/;"	f
+scws_new	libscws/scws.c	/^scws_t scws_new()$/;"	f
+scws_res_t	libscws/scws.h	/^typedef struct scws_result *scws_res_t;$/;"	t	typeref:struct:scws_result
+scws_result	libscws/scws.h	/^struct scws_result$/;"	s
+scws_rule	libscws/rule.h	/^typedef struct scws_rule$/;"	s
+scws_rule_attr	libscws/rule.h	/^struct scws_rule_attr$/;"	s
+scws_rule_attr_ratio	libscws/rule.c	/^int scws_rule_attr_ratio(rule_t r, const char *attr1, const char *attr2, const unsigned char *npath)$/;"	f
+scws_rule_check	libscws/rule.c	/^int scws_rule_check(rule_t r, rule_item_t cr, const char *str, int len)$/;"	f
+scws_rule_checkbit	libscws/rule.c	/^int scws_rule_checkbit(rule_t r, const char *str, int len, unsigned int bit)$/;"	f
+scws_rule_fork	libscws/rule.c	/^rule_t scws_rule_fork(rule_t r)$/;"	f
+scws_rule_free	libscws/rule.c	/^void scws_rule_free(rule_t r)$/;"	f
+scws_rule_get	libscws/rule.c	/^rule_item_t scws_rule_get(rule_t r, const char *str, int len)$/;"	f
+scws_rule_item	libscws/rule.h	/^typedef struct scws_rule_item$/;"	s
+scws_rule_new	libscws/rule.c	/^rule_t scws_rule_new(const char *fpath, unsigned char *mblen)$/;"	f
+scws_send_text	libscws/scws.c	/^void scws_send_text(scws_t s, const char *text, int len)$/;"	f
+scws_set_charset	libscws/scws.c	/^void scws_set_charset(scws_t s, const char *cs)$/;"	f
+scws_set_debug	libscws/scws.c	/^void scws_set_debug(scws_t s, int yes)$/;"	f
+scws_set_dict	libscws/scws.c	/^int scws_set_dict(scws_t s, const char *fpath, int mode)$/;"	f
+scws_set_duality	libscws/scws.c	/^void scws_set_duality(scws_t s, int yes)$/;"	f
+scws_set_ignore	libscws/scws.c	/^void scws_set_ignore(scws_t s, int yes)$/;"	f
+scws_set_multi	libscws/scws.c	/^void scws_set_multi(scws_t s, int mode)$/;"	f
+scws_set_rule	libscws/scws.c	/^void scws_set_rule(scws_t s, const char *fpath)$/;"	f
+scws_set_stopword	libscws/scws.c	/^void scws_set_stopword(scws_t s, int yes)$/;"	f
+scws_st	libscws/scws.h	/^struct scws_st$/;"	s
+scws_st	libscws/scws.h	/^typedef struct scws_st scws_st, *scws_t;$/;"	t	typeref:struct:scws_st
+scws_t	libscws/scws.h	/^typedef struct scws_st scws_st, *scws_t;$/;"	t	typeref:struct:
+scws_top_t	libscws/scws.h	/^typedef struct scws_topword *scws_top_t;$/;"	t	typeref:struct:scws_topword
+scws_topword	libscws/scws.h	/^struct scws_topword$/;"	s
+scws_word	libscws/xdict.h	/^typedef struct scws_word$/;"	s
+scws_xdict	libscws/xdict.h	/^typedef struct scws_xdict$/;"	s
+scws_zchar	libscws/scws.h	/^struct scws_zchar$/;"	s
+sharedstatedir	libscws/Makefile	/^sharedstatedir = ${prefix}\/com$/;"	m
+size	libscws/pool.h	/^	int size;			\/* total allocated *\/$/;"	m	struct:__anon3
+size	libscws/pool.h	/^	int size;$/;"	m	struct:pheap
+space	build/Makefile	/^space := $(empty) $(empty)$/;"	m
+srcdir	build/Makefile	/^srcdir := ..$/;"	m
+srcdir	libscws/Makefile	/^srcdir = .$/;"	m
+start	libscws/scws.h	/^	int start;$/;"	m	struct:scws_zchar
+stop_on_segment	libscws/scws.h	/^  int stop_on_segment; \/\/ flag applying stop words also on scws_get_result$/;"	m	struct:scws_st
+strcasecmp	libscws/config_win32.h	11;"	d
+strncasecmp	libscws/config_win32.h	12;"	d
+subdir	libscws/Makefile	/^subdir = libscws$/;"	m
+sysconfdir	libscws/Makefile	/^sysconfdir = ${prefix}\/etc$/;"	m
+table	libscws/charset.c	/^	unsigned char *table;$/;"	m	struct:mblen_tab	file:
+tag	libscws/xdb.h	/^	char tag[3];$/;"	m	struct:xdb_header
+target_alias	libscws/Makefile	/^target_alias = $/;"	m
+tf	libscws/rule.h	/^	float tf;$/;"	m	struct:scws_rule_item
+tf	libscws/xdict.h	/^	float tf;$/;"	m	struct:scws_word
+times	libscws/scws.h	/^	short times;$/;"	m	struct:scws_topword
+top_build_prefix	libscws/Makefile	/^top_build_prefix = ..\/$/;"	m
+top_builddir	libscws/Makefile	/^top_builddir = ..$/;"	m
+top_srcdir	libscws/Makefile	/^top_srcdir = ..$/;"	m
+transform	libscws/Makefile	/^transform = $(program_transform_name)$/;"	m
+tree	libscws/rule.h	/^	xtree_t tree;$/;"	m	struct:scws_rule
+tree_node	libscws/xtree.h	/^struct tree_node$/;"	s
+trees	libscws/xtree.h	/^	node_t *trees;	\/* trees [total=prime+1] *\/$/;"	m	struct:__anon2
+txt	libscws/scws.h	/^	unsigned char *txt;$/;"	m	struct:scws_st
+unreplace_spaces	build/Makefile	/^unreplace_spaces = $(subst ?,$(space),$1)$/;"	m
+unused	libscws/xdb.h	/^	char unused[12];$/;"	m	struct:xdb_header
+used	libscws/pool.h	/^	int used;$/;"	m	struct:pheap
+value	libscws/xdb.h	/^	xptr_st value;$/;"	m	struct:xdb_record
+value	libscws/xtree.h	/^	void *value;$/;"	m	struct:tree_node
+ver	libscws/xdb.h	/^	unsigned char ver;$/;"	m	struct:xdb_header
+version	libscws/xdb.h	/^	int version;			\/* version: low 4bytes *\/$/;"	m	struct:__anon1
+vlen	libscws/xtree.h	/^	int vlen;$/;"	m	struct:tree_node
+weight	libscws/scws.h	/^	float weight;$/;"	m	struct:scws_topword
+wend	libscws/scws.h	/^	int wend;$/;"	m	struct:scws_st
+wmap	libscws/scws.h	/^	word_t **wmap;$/;"	m	struct:scws_st
+word	libscws/scws.h	/^	char *word;$/;"	m	struct:scws_topword
+word_attr	libscws/scws.c	/^typedef char word_attr[4];$/;"	t	file:
+word_st	libscws/xdict.h	/^}	word_st, *word_t;$/;"	t	typeref:struct:scws_word
+word_t	libscws/xdict.h	/^}	word_st, *word_t;$/;"	t	typeref:struct:scws_word
+xcmper_st	libscws/xdb.c	/^}	xcmper_st;$/;"	t	typeref:struct:xdb_cmper	file:
+xdb_close	libscws/xdb.c	/^void xdb_close(xdb_t x)$/;"	f
+xdb_cmper	libscws/xdb.c	/^typedef struct xdb_cmper$/;"	s	file:
+xdb_create	libscws/xdb.c	/^xdb_t xdb_create(const char *fpath, int base, int prime)$/;"	f
+xdb_draw	libscws/xdb.c	/^void xdb_draw(xdb_t x)$/;"	f
+xdb_get	libscws/xdb.c	/^void *xdb_get(xdb_t x, const char *key, unsigned int *vlen)$/;"	f
+xdb_header	libscws/xdb.h	/^struct xdb_header$/;"	s
+xdb_nget	libscws/xdb.c	/^void *xdb_nget(xdb_t x, const char *key, int len, unsigned int *vlen)$/;"	f
+xdb_nput	libscws/xdb.c	/^void xdb_nput(xdb_t x, void *value, unsigned int vlen, const char *key, int len)$/;"	f
+xdb_open	libscws/xdb.c	/^xdb_t xdb_open(const char *fpath, int mode)$/;"	f
+xdb_optimize	libscws/xdb.c	/^void xdb_optimize(xdb_t x)$/;"	f
+xdb_pointer	libscws/xdb.h	/^typedef struct xdb_pointer$/;"	s
+xdb_put	libscws/xdb.c	/^void xdb_put(xdb_t x, const char *value, const char *key)$/;"	f
+xdb_record	libscws/xdb.h	/^typedef struct xdb_record$/;"	s
+xdb_st	libscws/xdb.h	/^}	xdb_st, *xdb_t;$/;"	t	typeref:struct:__anon1
+xdb_t	libscws/xdb.h	/^}	xdb_st, *xdb_t;$/;"	t	typeref:struct:__anon1
+xdb_to_xtree	libscws/xdb.c	/^xtree_t xdb_to_xtree(xdb_t x, xtree_t xt)$/;"	f
+xdb_version	libscws/xdb.c	/^void xdb_version(xdb_t x)$/;"	f
+xdict	libscws/xdict.h	/^	void *xdict;$/;"	m	struct:scws_xdict
+xdict_add	libscws/xdict.c	/^xdict_t xdict_add(xdict_t xd, const char *fpath, int mode, unsigned char *ml)$/;"	f
+xdict_close	libscws/xdict.c	/^void xdict_close(xdict_t xd)$/;"	f
+xdict_fork	libscws/xdict.c	/^xdict_t xdict_fork(xdict_t xd)$/;"	f
+xdict_open	libscws/xdict.c	/^xdict_t xdict_open(const char *fpath, int mode)$/;"	f
+xdict_query	libscws/xdict.c	/^word_t xdict_query(xdict_t xd, const char *key, int len)$/;"	f
+xdict_st	libscws/xdict.h	/^}	xdict_st, *xdict_t;$/;"	t	typeref:struct:scws_xdict
+xdict_t	libscws/xdict.h	/^}	xdict_st, *xdict_t;$/;"	t	typeref:struct:scws_xdict
+xmode	libscws/xdict.h	/^	int xmode;$/;"	m	struct:scws_xdict
+xptr_st	libscws/xdb.h	/^}	xptr_st, *xptr_t;$/;"	t	typeref:struct:xdb_pointer
+xptr_t	libscws/xdb.h	/^}	xptr_st, *xptr_t;$/;"	t	typeref:struct:xdb_pointer
+xrec_st	libscws/xdb.h	/^}	xrec_st, *xrec_t;$/;"	t	typeref:struct:xdb_record
+xrec_t	libscws/xdb.h	/^}	xrec_st, *xrec_t;$/;"	t	typeref:struct:xdb_record
+xtree_draw	libscws/xtree.c	/^void xtree_draw(xtree_t xt)$/;"	f
+xtree_free	libscws/xtree.c	/^void xtree_free(xtree_t xt)$/;"	f
+xtree_get	libscws/xtree.c	/^void *xtree_get(xtree_t xt, const char *key, int *vlen)$/;"	f
+xtree_new	libscws/xtree.c	/^xtree_t xtree_new(int base, int prime)$/;"	f
+xtree_nget	libscws/xtree.c	/^void *xtree_nget(xtree_t xt, const char *key, int len, int *vlen)$/;"	f
+xtree_nput	libscws/xtree.c	/^void xtree_nput(xtree_t xt, void *value, int vlen, const char *key, int len)$/;"	f
+xtree_optimize	libscws/xtree.c	/^void xtree_optimize(xtree_t xt)$/;"	f
+xtree_put	libscws/xtree.c	/^void xtree_put(xtree_t xt, const char *value, const char *key)$/;"	f
+xtree_st	libscws/xtree.h	/^}	xtree_st, *xtree_t;$/;"	t	typeref:struct:__anon2
+xtree_t	libscws/xtree.h	/^}	xtree_st, *xtree_t;$/;"	t	typeref:struct:__anon2
+xtree_to_xdb	libscws/xtree.c	/^void xtree_to_xdb(xtree_t xt, const char *fpath)$/;"	f
+zis	libscws/scws.h	/^	int zis;$/;"	m	struct:scws_st
+zmap	libscws/scws.h	/^	struct scws_zchar *zmap;$/;"	m	struct:scws_st	typeref:struct:scws_st::scws_zchar
+zmax	libscws/rule.h	/^	char zmax;$/;"	m	struct:scws_rule_item
+zmin	libscws/rule.h	/^	char zmin;$/;"	m	struct:scws_rule_item
+~Nodescws	nodescws.cc	/^Nodescws::~Nodescws(){};$/;"	f	class:Nodescws
