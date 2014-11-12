@@ -1,26 +1,28 @@
 #ifndef BUILDING_NODE_EXTENSION
 #define BUILDING_NODE_EXTENSION
 #endif
+
 #include <node.h>
-#include "nodescws.h"
 #include <string>
 #include <iostream>
-#include <string.h>
-#include <stdlib.h>
-#include <stdarg.h>
+#include <cstring>
+#include <cstdlib>
+#include <cstdarg>
+#include "nodescws.h"
 #include "libscws/scws.h"
 
 #define RESMEMSTEP 500
 #define MAXDIRLEN 60
 
 using namespace v8;
+using std::string;
 
 Nodescws::Nodescws(){};
 Nodescws::~Nodescws(){};
 
 int debug = 0;
 
-void scws_debug(int level, char *msg, ...)
+void scws_debug(int level, const char *msg, ...)
 {
         if (debug)
         {
@@ -80,15 +82,15 @@ Handle<Value> Nodescws::New(const Arguments& args)
 
         // setup charset
         std::string Charset(*v8::String::Utf8Value(Settings->Get(String::New("charset"))));
-        char *charset = (char *)Charset.c_str();
-        if (strcmp(charset, "undefined") == 0) {
+        string charset = Charset.c_str();
+        if (charset ==  "undefined") {
                 scws_debug(NODESCWS_MSG_WARNING, "Charset not specified\n");
                 charset = "utf8";
         }
-        else if (strcmp(charset, "utf8") != 0 && strcmp(charset, "gbk") != 0)
+        else if (charset == "utf8" && charset ==  "gbk")
                 charset = "utf8";
-        scws_debug(NODESCWS_MSG_LOG, "Setting charset: %s\n", charset);
-        scws_set_charset(ret, charset);
+        scws_debug(NODESCWS_MSG_LOG, "Setting charset: %s\n", charset.c_str());
+        scws_set_charset(ret, charset.c_str());
 
         // setup dict
         std::string Dicts(*v8::String::Utf8Value(Settings->Get(String::New("dicts"))));

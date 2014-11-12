@@ -13,6 +13,10 @@
 #	include "config_win32.h"
 #endif
  
+#ifdef __cplusplus
+extern C {
+#endif
+
 #include "scws.h"
 #include "xdict.h"
 #include "rule.h"
@@ -1578,3 +1582,8 @@ void scws_free_tops(scws_top_t tops)
 		free(cur);
 	}
 }
+
+
+#ifdef __cplusplus
+}
+#endif

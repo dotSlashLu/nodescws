@@ -69,7 +69,7 @@ rule_t scws_rule_fork(rule_t r);
 void scws_rule_free(rule_t r);
 
 /* get the rule tree record by str */
-rule_item_t scws_rule_get(rule_t r, const char *str, int len);
+rule_item_t scws_rule_get(rule_t r, unsigned char *str, int len);
 
 /* check bit */
 int scws_rule_checkbit(rule_t r, const char *str, int len, unsigned int bit);

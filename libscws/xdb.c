@@ -13,6 +13,10 @@
 #	include "config_win32.h"
 #endif
 
+#ifdef __cplusplus
+extern C {
+#endif
+
 #include "xdb.h"
 #include "lock.h"
 #include <stdio.h>
@@ -634,3 +638,7 @@ xtree_t xdb_to_xtree(xdb_t x, xtree_t xt)
 	return xt;
 }
 
+
+#ifdef __cplusplus
+}
+#endif

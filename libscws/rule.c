@@ -13,11 +13,14 @@
 #    include "config_win32.h"
 #endif
 
+#ifdef __cplusplus
+extern C {
+#endif
+
 #include "rule.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 static inline int _rule_index_get(rule_t r, const char *name)
 {
 	int i;
@@ -39,7 +42,9 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
 	rule_item_t cr;
 	int i, j, rbl, aflag;
 	rule_attr_t a, rtail;
-	unsigned char buf[512], *str, *ptr, *qtr;
+	unsigned char buf[512], *str, *ptr, *qtr; // a lot of str ops are used against
+                                            // signed chars, consider replace it
+                                            // with char 
 
 	/* loaded or open file failed */
 	if ((fp = fopen(fpath, "r")) == NULL)
@@ -187,8 +192,9 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
 				r->attr = rtail = a;
 			else
 			{
-				rtail->next = a;
-				rtail = a;
+        rtail = (rule_attr_t) malloc(sizeof(struct scws_rule_attr));
+        rtail->next = a;
+        rtail = a;
 			}
 
 			continue;
@@ -290,7 +296,7 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
 		{
 			while (str < ptr)
 			{
-				j = mblen[(*str)];
+				j = mblen[(int)(*str)];
 
 #ifdef DEBUG
 				/* try to check repeat */
@@ -341,7 +347,7 @@ void scws_rule_free(rule_t r)
 }
 
 /* get the rule */
-rule_item_t scws_rule_get(rule_t r, const char *str, int len)
+rule_item_t scws_rule_get(rule_t r, unsigned char *str, int len)
 {
 	if (!r)
 		return NULL;
@@ -405,3 +411,7 @@ int scws_rule_check(rule_t r, rule_item_t cr, const char *str, int len)
 
 	return 1;
 }
+
+#ifdef __cplusplus
+}
+#endif

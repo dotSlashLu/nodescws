@@ -9,13 +9,18 @@
 #	include "config.h"
 #endif
 
+#ifndef WIN32
+#	include <unistd.h>
+#endif
+
+#ifdef __cplusplus
+extern C {
+#endif
+
 #include "xtree.h"
 #include "xdb.h"
 #include <stdio.h>
 #include <stdlib.h>
-#ifndef WIN32
-#	include <unistd.h>
-#endif
 #include <string.h>
 
 /* private static functions */
@@ -335,3 +340,7 @@ void xtree_to_xdb(xtree_t xt, const char *fpath)
 	xdb_close(x);
 }
 
+
+#ifdef __cplusplus
+}
+#endif
