@@ -12,7 +12,7 @@
 #include "libscws/scws.h"
 
 #define RESMEMSTEP 500
-#define MAXDIRLEN 60
+#define MAXDIRLEN 1024
 
 using namespace v8;
 using std::string;

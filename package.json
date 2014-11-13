@@ -9,7 +9,8 @@
   },
   "main": "build/Release/scws.node",
   "scripts": {
-    "install": "node-gyp rebuild"
+    "install": "node-gyp rebuild",
+    "test": "node ./test/test.js"
   },
   "keywords": [
     "scws",
