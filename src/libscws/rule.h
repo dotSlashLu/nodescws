@@ -8,8 +8,14 @@
 #ifndef	_SCWS_RULE_20070525_H_
 #define	_SCWS_RULE_20070525_H_
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* xtree required */
 #include "xtree.h"
+#include "../cjson/cJSON.h"
 
 #define	SCWS_RULE_MAX			32
 #define	SCWS_RULE_SPECIAL		0x80000000
@@ -26,41 +32,47 @@
 /* data structure */
 typedef struct scws_rule_item
 {
-	short flag;
-	char zmin;
-	char zmax;
-	char name[17];
-	char attr[3];
-	float tf;
-	float idf;
-	unsigned int bit;	/* my bit  */
-	unsigned int inc;	/* include */
-	unsigned int exc;	/* exclude */
+        short flag;
+        char zmin;      // 成词长度
+        char zmax;
+        char name[17];
+        char attr[3];
+        float tf;
+        float idf;
+        unsigned int bit;	/* my bit  */
+        unsigned int inc;	/* include */
+        unsigned int exc;	/* exclude */
 }	*rule_item_t;
 
 /* special attrs ratio list(single chain, 12bytes) */
 typedef struct scws_rule_attr *rule_attr_t;
 struct scws_rule_attr
 {
-	char attr1[2];
-	char attr2[2];
-	unsigned char npath[2];
-	short ratio;
-	rule_attr_t next;
+        char attr1[2];
+        char attr2[2];
+        unsigned char npath[2];
+        short ratio;
+        rule_attr_t next;
 };
 
 typedef struct scws_rule
 {
-	xtree_t tree;
-	rule_attr_t attr;
-	struct scws_rule_item items[SCWS_RULE_MAX];
-	int ref;	// hightman.20130110: refcount (zero to really free/close)
+        xtree_t tree;
+        rule_attr_t attr;
+        struct scws_rule_item items[SCWS_RULE_MAX];
+        int ref;	// hightman.20130110: refcount (zero to really free/close)
 }	rule_st, *rule_t;
 
 /* scws ruleset: api */
 
 /* create & load ruleset, by fpath & charset */
 rule_t scws_rule_new(const char *fpath, unsigned char *mblen);
+
+/*
+ * @author: dotslash.lu <dotslash.lu@gmail.com>
+ * load rule file from JSON
+ * */
+rule_t scws_rule_json_new(const char *fpath);
 
 /* fork ruleset */
 rule_t scws_rule_fork(rule_t r);
@@ -80,4 +92,9 @@ int scws_rule_attr_ratio(rule_t r, const char *attr1, const char *attr2, const u
 /* check exclude or include */
 int scws_rule_check(rule_t r, rule_item_t cr, const char *str, int len);
 
+void scws_set_rule_attrs(rule_item_t rule, cJSON *attrs);
+
+#ifdef __cplusplus
+}
+#endif
 #endif

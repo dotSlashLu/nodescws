@@ -2,4 +2,4 @@
 *.swo
 build/
 tags
-cscope.out
+*.out

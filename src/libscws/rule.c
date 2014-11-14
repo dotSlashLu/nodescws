@@ -17,10 +17,13 @@
 extern C {
 #endif
 
-#include "rule.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+
+#include "../cjson/cJSON.h"
+#include "rule.h"
 
 static inline int _rule_index_get(rule_t r, const char *name)
 {
@@ -36,8 +39,186 @@ static inline int _rule_index_get(rule_t r, const char *name)
         return -1;
 }
 
+rule_t scws_rule_json_new(const char *fpath)
+{
+        FILE *fp;
+        cJSON *rule_json;
+        rule_t rules;
+        rule_item_t rule;
+
+        // read file
+        if ((fp = fopen(fpath, "r")) == NULL)
+                return NULL;
+        fseek(fp, 0, SEEK_END);
+        long len = ftell(fp);
+        fseek(fp, 0, SEEK_SET);
+        char *content = (char*)malloc(len + 1);
+        fread(content, 1, len, fp);
+        fclose(fp);
+        rule_json = cJSON_Parse(content);                       // parse json
+        
+        // alloc rules
+        rules = (rule_t)malloc(sizeof(rule_st));
+        memset(rules, 0, sizeof(rule_st));
+        rules->ref = 1;                                     // gc counter
+        if ((rules->tree = xtree_new(0, 1)) == NULL) {
+                free(rules);
+                return NULL;
+        }
+
+        char *directives[] = {
+                "special",      // 
+                "nostats",      // 停用词
+                "attrs",        // 词性语法规则
+                "noname",       // 名字停用词
+                "symbol",       // 双字节符号
+                "pubname",      // 姓和外文名共同部分
+                "pubname2",     // 
+                "pubname3",     // 
+                "surname",      // 单姓
+                "surname2",     // 复姓
+                "areaname",     // 地区
+                "areaname2",    // 双字地区
+                "munit",        // 量词
+                "chnum0",       // 中文数词
+                "chnum1",
+                "chnum2",
+                "chnum3",
+                "chnum4",
+                "chnum5",
+                "alpha",        // 多字节字母
+                "foreign"       // 外文名
+        };
+        char *directive_attrs[] = {
+                // "line"       // We don't need read by line or read by char any more
+                                // every entry in json is an array
+                "type",
+                "exclude",
+                "include",
+                "znum",
+                "tf",
+                "idf",
+                "attr"
+        };
+        size_t i;
+        char *directive;
+        for (i = 0; i < (sizeof(directives) / sizeof(char *)); i++) {
+                directive = directives[i];
+                printf("Processing rule entry: %s\n", directive);
+                cJSON *json_rule_entry = cJSON_GetObjectItem(rule_json, directive);
+                if (json_rule_entry == NULL) continue;
+
+                
+                strcpy(rules->items[i].name, directive);
+                rules->items[i].tf = 5.0;
+                rules->items[i].idf = 3.5;
+                strncpy(rules->items[i].attr, "un", 2);
+
+                // set rule.bit
+                if (!strcmp(directive, "special"))
+                        rules->items[i].bit = SCWS_RULE_SPECIAL;
+                else if (!strcmp(directive, "attrs"))
+                        rules->items[i].bit = SCWS_RULE_NOSTATS;
+                else {
+                        rules->items[i].bit = (1 << i);
+                        i++;
+                }
+
+                rule = NULL;
+                cJSON *json_rule_attrs; 
+                if ((json_rule_attrs = cJSON_GetObjectItem(json_rule_entry, "attrs")) != NULL 
+                        && json_rule_attrs->type == cJSON_Object)
+                        // TODO
+                        continue;
+                         
+                scws_set_rule_attrs(rule, cJSON *attrs);
+        }
+
+        return NULL;
+}
+void scws_set_rule_attrs(rule_item_t rule, cJSON *attrs)
+{
+        int len, i;
+        cJSON *result;
+        char *line, *ptr1, *ptr2;
+        rule_attr_t rule_attr, rule_tail;
+
+        if (attrs->type != cJSON_Array) return;
+        len = cJSON_GetArrayLength();
+        for (i = 0; i < len; i++) {
+                result = cJSON_GetArrayItem(attrs);
+                line = result->valuestring; 
+                while (isspace(line)) line++;
+                if ((ptr1 = strchr(line, '+')) == NULL) return;
+                *ptr1++ = '\0';
+                
+                if ((ptr2 = strchr(line, '=')) == NULL) return;
+                *ptr2++ = '\0';
+
+                // init rule_attr
+                rule_attr = (rule_attr_t)malloc(sizeof(struct scws_rule_attr));
+                memset(rule_attr, 0, sizeof(struct scws_rule_attr));
+
+                // set ratio
+                rule_attr->ratio = (short)atoi(ptr2);
+                if (rule_attr->ratio < 1) 
+                        rule_attr->ratio = 1;
+                rule_attr->npath[0] = rule_attr->npath[1] = 0xff;
+                
+                // read attr1 & npath1
+                rule_attr->attr1[0] = *line++;
+                if (*line && *line != '(' && !isspace(*line))
+                        rule_attr[1] = *line++;
+                while (*line && *line != '(') line++;
+                if (*line == '(') {
+                        line++;
+                        if ((ptr2 = strchr(str, ')')) != NULL) {
+                                *ptr2 = '\0'
+                                rule_attr->npath[0] = (unsigned char)atoi(str);
+                                if (rule_attr->npath[0] > 0)
+                                        rule_attr->npath[0]--;
+                                else
+                                        rule_attr->npath[0] = 0xff;
+                        }
+                }
+
+                /* read attr1 & npath2? */
+                line = ptr;
+                while (isspace(*line)) line++;
+                rule_attr->attr2[0] = *str++;
+                if (*line && *line != '(' && !isspace(line))
+                        rule_attr->attr2[1] = *line++;
+                while (*line && *line != '(') line++;
+                if (*line == '(')
+                {
+                        line++;
+                        if ((ptr2 = linechr(line, ')')) != NULL)
+                        {
+                                *ptr2 = '\0';
+                                rule_attr->npath[1] = (unsigned char) atoi(line);
+                                if (rule_attr->npath[1] > 0)
+                                        rule_attr->npath[1]--;
+                                else
+                                        rule_attr->npath[1] = 0xff;
+                        }
+                }
+
+                /* append to the chain list */
+                if (rule->attr == NULL)
+                        rule->attr = rule_tail = rule_attr;
+                else
+                {
+                        // defined but not used
+                        rule_tail = (rule_attr_t) malloc(sizeof(lineuct scws_rule_attr));
+                        rule_tail->next = rule_attr;
+                        rule_tail = rule_attr;
+                }
+        }
+}
+
 rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
 {
+        scws_rule_json_new("src/cjson/tests/test.json");
         FILE *fp;
         rule_t r;
         rule_item_t cr;
