@@ -7,10 +7,7 @@
           "./src/scws.cc",
           "<!@(ls -1 ./src/libscws/*.c)",
           "./src/cjson/cJSON.c"
-        ],
+        ]
     }
   ],
-  "cflags": [
-    "-E"
-  ]
 }
