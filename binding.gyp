@@ -9,5 +9,5 @@
           "./src/cjson/cJSON.c"
         ]
     }
-  ],
+  ]
 }

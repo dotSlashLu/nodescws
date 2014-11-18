@@ -183,7 +183,7 @@ void scws_set_json_rule_attrs(rule_t rules, rule_item_t rule, cJSON *attrs)
 
 rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
 {
-        scws_json_rule_new("src/cjson/tests/test.json");
+        scws_json_rule_new("rules/rules.utf8.json");
         FILE *fp;
         rule_t r;
         rule_item_t cr;
