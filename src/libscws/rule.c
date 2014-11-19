@@ -41,29 +41,13 @@ static inline int _rule_index_get(rule_t r, const char *name)
 
 rule_t scws_json_rule_new(const char *fpath)
 {
-
-        /*
-        *       JSON rule format:
-         {
-                rule1: {
-                        attrs: {
-                                attr_name: [val1, val2],
-                                attr_name2: []
-                        },
-                        value: []
-                },
-                rule2: {},
-                ...
-         }
-        */
-
         FILE *fp;
         cJSON *rule_json;
         rule_t rules;
         rule_item_t rule;
 
         // read file
-        if ((fp = fopen(fpath, "r")) == NULL)
+        if ((fp = fopen(fpath, "r")) == NULL) 
                 return NULL;
         fseek(fp, 0, SEEK_END);
         long len = ftell(fp);
@@ -71,24 +55,32 @@ rule_t scws_json_rule_new(const char *fpath)
         char *content = (char*)malloc(len + 1);
         fread(content, 1, len, fp);
         fclose(fp);
-        rule_json = cJSON_Parse(content);                       // parse json
+        rule_json = cJSON_Parse(content);                            // parse json
+        if ((rule_json == NULL) || 
+            rule_json->type != cJSON_Object) {
+                printf("Parse failed\n");
+                return NULL;
+        }
         
         // alloc rules
         rules = (rule_t)malloc(sizeof(rule_st));
         memset(rules, 0, sizeof(rule_st));
-        rules->ref = 1;                                         // gc counter
+        rules->ref = 1;                                              // gc counter
         if ((rules->tree = xtree_new(0, 1)) == NULL) {
                 free(rules);
                 return NULL;
         }
 
-        size_t i;
+        size_t i = 0;
         const char *directive;
-        for (i = 0; i < (sizeof(scws_rule_directives) / sizeof(char *)); i++) {
-                directive = scws_rule_directives[i];
-                printf("Processing rule entry: %s\n", directive);
-                cJSON *json_rule_entry = cJSON_GetObjectItem(rule_json, directive);
-                if (json_rule_entry == NULL) continue;
+        cJSON *rule_json_ents, *rule_json_ent;
+        if ((rule_json_ents = rule_json->child) == NULL) return NULL;
+        rule_json_ent = rule_json_ents;
+        while ((rule_json_ent = rule_json_ent->next) != NULL) {
+                directive = rule_json_ent->string;
+                printf("Setting JSON rule entry: %s\n", directive);
+                // cJSON *json_rule_entry = cJSON_GetObjectItem(rule_json, directive);
+                // if (json_rule_entry == NULL) continue;
 
                 
                 strcpy(rules->items[i].name, directive);
@@ -108,9 +100,10 @@ rule_t scws_json_rule_new(const char *fpath)
 
                 rule = &rules->items[i];
                 cJSON *json_rule_attrs; 
-                if ((json_rule_attrs = cJSON_GetObjectItem(json_rule_entry, "attrs")) != NULL 
+                if ((json_rule_attrs = cJSON_GetObjectItem(rule_json_ent, "attrs")) != NULL 
                         && json_rule_attrs->type == cJSON_Object)
                         scws_set_json_rule_attrs(rules, rule, json_rule_attrs);
+                i++;
         }
 
         return rules;
@@ -121,17 +114,10 @@ void scws_set_json_rule_attrs(rule_t rules, rule_item_t rule, cJSON *attrs)
         char *attrname;
         cJSON *obj_attr;
 
-        if (attrs == NULL) return;
-        /*
-        // int i;
-        // for (i = 0; i < (sizeof(scws_rule_directive_attrs) / sizeof(char *)); i++) {
-        //         if (!(obj_attr = cJSON_GetObjectItem(scws_rule_directive_attrs[i])) ||
-        //                 obj_attr->type != cJSON_Object)
-        //                 return;
-        //         attrname = scws_rule_directive_attrs[i];
-        */
-        while ((obj_attr = attrs->next) != NULL) {
+        obj_attr = attrs->child;
+        while ((obj_attr = obj_attr->next) != NULL) {
                 attrname = obj_attr->string;
+                printf("Setting JSON rule attr: %s\n", attrname);
                 if (!strcmp(attrname, "tf"))
                         rule->tf = (float)obj_attr->valuedouble;
                 else if (!strcmp(attrname, "idf"))
