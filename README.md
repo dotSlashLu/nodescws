@@ -3,21 +3,19 @@
 ### scws
 
 ##### 关于 About
-scws即Simple Chinese Word Segmentation。是C语言开发的基于词频词典的机械式中文分词引擎。scws的作者为[hightman][1]，采用BSD许可协议发布。nodescws的作者仅是将这个伟大的library包装成为node.js addon，除自己的代码外，不持有任何scws库的著作权。
+scws即Simple Chinese Word Segmentation。是C语言开发的基于词频词典的机械式中文分词引擎。scws的作者为[hightman][1]，采用BSD许可协议发布。nodescws的作者在libscws上添加功能并添加了node.js binding，除自己的代码外，不持有任何libscws的著作权。
 
-scws(Simple Chinese Word Segmentation) is a mechanistic Chinese word segement engine written in C. The author of this library is hightman. scws is published under BSD license. As the author of nodescws, I just wrap this great library as a node addon, thus holding no copyright of any of the library's code but my own work.
+scws(Simple Chinese Word Segmentation) is a mechanistic Chinese word segement engine written in C. The author of this library is hightman. scws is published under BSD license. As the author of nodescws, I just added some features to the lib and wrap this great library as a node addon, thus holding no copyright of any of the library's code but my own work.
 
-scws的主页: [http://www.xunsearch.com/scws][2]
-
-scws的GitHub: [https://github.com/hightman/scws][3]
+scws的主页: [http://www.xunsearch.com/scws][2], GitHub: [https://github.com/hightman/scws][3]
 
 
 ##### 性能指标 Performance
 
-在 FreeBSD 6.2 系统，单核单 CPU 至强 3.0G 的服务器上，测试长度为 80,535 的文本。 用附带的命令行工具耗时将约 0.17 秒，若改用 php 扩展方式调用，则耗时约为 0.65 秒。
+在 FreeBSD 6.2 系统，单核单 CPU 至强 3.0G 的服务器上，测试长度为 80,535 的文本。 用附带的命令行工具耗时将约 0.17 秒。
 分词精度 95.60%，召回率 90.51% (F-1: 0.93)
 
-On a server with a single core Xeon CPU and 3.0G memory running FreeBSD 6.2, Segmenting a 80,535 text using the cli tool based on this library took 0.17 seconds, while using php extension, it's 0.65 seconds, with the accuracy of 95.60% and recall of 90.51%(F-1 0.93).
+On a server with a single core Xeon CPU and 3.0G memory running FreeBSD 6.2, Segmenting a 80,535 text using the cli tool based on this library took 0.17 seconds, with the accuracy of 95.60% and recall of 90.51%(F-1 0.93).
 
 ------
 

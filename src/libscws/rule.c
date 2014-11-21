@@ -42,7 +42,7 @@ static inline int _rule_index_get(rule_t r, const char *name)
 rule_t scws_json_rule_new(const char *fpath)
 {
         FILE *fp;
-        cJSON *rule_json;
+        cJSON *json_rules;
         rule_t rules;
         rule_item_t rule;
 
@@ -55,9 +55,9 @@ rule_t scws_json_rule_new(const char *fpath)
         char *content = (char*)malloc(len + 1);
         fread(content, 1, len, fp);
         fclose(fp);
-        rule_json = cJSON_Parse(content);                            // parse json
-        if ((rule_json == NULL) || 
-            rule_json->type != cJSON_Object) {
+        json_rules = cJSON_Parse(content);                            // parse json
+        if ((json_rules == NULL) || 
+            json_rules->type != cJSON_Object) {
                 printf("Parse failed\n");
                 return NULL;
         }
@@ -73,17 +73,17 @@ rule_t scws_json_rule_new(const char *fpath)
 
         size_t i = 0;
         const char *directive;
-        cJSON *rule_json_ents, *rule_json_ent;
-        if ((rule_json_ents = rule_json->child) == NULL) return NULL;
-        rule_json_ent = rule_json_ents;
-        while ((rule_json_ent = rule_json_ent->next) != NULL) {
-                directive = rule_json_ent->string;
-                printf("Setting JSON rule entry: %s\n", directive);
-                // cJSON *json_rule_entry = cJSON_GetObjectItem(rule_json, directive);
+        cJSON *json_rule_ents, *json_rule_ent, *json_rule_values;
+        if ((json_rule_ents = json_rules->child) == NULL) return NULL;
+        json_rule_ent = json_rule_ents;
+        while ((json_rule_ent) != NULL) {
+                directive = json_rule_ent->string;
+                printf("\n\nSetting JSON rule entry: %s\n", directive);
+                // cJSON *json_rule_entry = cJSON_GetObjectItem(json_rules, directive);
                 // if (json_rule_entry == NULL) continue;
 
                 
-                strcpy(rules->items[i].name, directive);
+                strcpy(rules->items[i].name, json_rule_ent->string);
                 rules->items[i].tf = 5.0;
                 rules->items[i].idf = 3.5;
                 strncpy(rules->items[i].attr, "un", 2);
@@ -93,53 +93,155 @@ rule_t scws_json_rule_new(const char *fpath)
                         rules->items[i].bit = SCWS_RULE_SPECIAL;
                 else if (!strcmp(directive, "attrs"))
                         rules->items[i].bit = SCWS_RULE_NOSTATS;
-                else {
+                else
                         rules->items[i].bit = (1 << i);
-                        i++;
-                }
 
-                rule = &rules->items[i];
+                rule = &(rules->items[i]);
                 cJSON *json_rule_attrs; 
-                if ((json_rule_attrs = cJSON_GetObjectItem(rule_json_ent, "attrs")) != NULL 
+                if ((json_rule_attrs = cJSON_GetObjectItem(json_rule_ent, "attrs")) != NULL 
                         && json_rule_attrs->type == cJSON_Object)
                         scws_set_json_rule_attrs(rules, rule, json_rule_attrs);
+
+                if ((json_rule_values = cJSON_GetObjectItem(json_rule_ent, "value")) != NULL)
+                        scws_set_json_rule(rules, rule, json_rule_values);
                 i++;
+                json_rule_ent = json_rule_ent->next;
         }
 
+        xtree_optimize(rules->tree);
+        cJSON_Delete(json_rules);
         return rules;
+}
+
+void scws_set_json_rule(rule_t rules, rule_item_t rule, cJSON *rulevalue)
+{
+        char *rulename = rule->name, *valuestring, *ptr, *qtr;
+        size_t valuelen, i;
+
+        printf("Setting: %s\n", rulename);
+
+        if (rulevalue == NULL) return;
+        // attrs
+        if (!strcmp(rulename, "attrs")) {
+                if (rulevalue->type != cJSON_Array 
+                        || (valuelen = cJSON_GetArraySize(rulevalue)) == 0)
+                        return;
+                // while ((rulevalue = rulevalue->next) != NULL) {
+                for (i = 0; i < valuelen; i++) {
+                        valuestring = cJSON_GetArrayItem(rulevalue, i)->valuestring;
+                        printf("value line: %s\n", valuestring);
+                        if ((ptr = strchr(valuestring, '+')) == NULL) continue;
+                        *ptr++ = '\0';
+                        if ((qtr = strchr(valuestring, '=')) == NULL) continue;
+                        *qtr++ = '\0';
+
+                        rule_attr_t value, rtail;
+                        value = (rule_attr_t)calloc(1, sizeof(struct scws_rule_attr));
+
+                        while (isspace(*qtr)) qtr++;
+                        value->ratio = (short)atoi(qtr);
+                        if (value->ratio < 1)
+                                value->ratio = 1;
+                        value->npath[0] = value->npath[1] = 0xff;
+
+                        value->attr1[0] = *valuestring++;
+                        if (*valuestring && *valuestring != ')' && isspace(*valuestring))
+                                value->attr1[1] = *valuestring++;
+                        while (*valuestring && *valuestring != '(') valuestring++;
+                        if (*valuestring == '(') {
+                                valuestring++;
+                                if ((qtr = strchr(valuestring, ')')) != NULL) {
+                                        *qtr = '\0';
+                                        value->npath[0] = (unsigned char)atoi(valuestring);
+                                        if (value->npath[0] > 0)
+                                                value->npath[0]--;
+                                        else
+                                                value->npath[0] = 0xff;
+                                }
+                        }
+
+                        valuestring = ptr;
+                        while (isspace(*valuestring)) valuestring++;
+                        value->attr2[0] = *valuestring++;
+                        if (*valuestring && *valuestring != '(' && *valuestring != ' ' && *valuestring != '\t')
+                                value->attr2[1] = *valuestring++;
+                        while (*valuestring && *valuestring != '(') valuestring++;
+                        if (*valuestring == '(')
+                        {
+                                valuestring++;
+                                if ((qtr = strchr(valuestring, ')')) != NULL)
+                                {
+                                        *qtr = '\0';
+                                        value->npath[1] = (unsigned char)atoi(valuestring);
+                                        if (value->npath[1] > 0)
+                                                value->npath[1]--;
+                                        else
+                                                value->npath[1] = 0xff;
+                                }
+                        }
+
+                        /* append to the chain list */
+                        if (rules->attr == NULL)
+                                rules->attr = rtail = value;
+                        else {
+                                rtail = (rule_attr_t)calloc(1, sizeof(struct scws_rule_attr));
+                                rtail->next = value;
+                                rtail = value;
+                        }
+                }
+                return;
+        } // if rulename == attrs
+
+        // valuestring except attrs
+        // array value
+        else if (rulevalue->type == cJSON_Array) {
+                if ((valuelen = cJSON_GetArraySize(rulevalue)) < 1) return;
+                for (i = 0; i < valuelen; i++) {
+                        valuestring = cJSON_GetArrayItem(rulevalue, i)->valuestring;
+                        printf("value line(%d): %s\n", i, valuestring);
+                        while (isspace(*valuestring)) valuestring++;
+                        ptr = valuestring + strlen(valuestring);
+                        while (ptr > valuestring && strchr(" \t\r\n", ptr[-1])) ptr--;
+                        *ptr = '\0';
+
+                        if (ptr == valuestring) continue;
+                        xtree_nput(rules->tree, rule, sizeof(struct scws_rule_item), valuestring, ptr - valuestring);
+                }
+        }
+        // other types?
 }
 
 void scws_set_json_rule_attrs(rule_t rules, rule_item_t rule, cJSON *attrs)
 {        
         char *attrname;
-        cJSON *obj_attr;
+        cJSON *json_attr;
 
-        obj_attr = attrs->child;
-        while ((obj_attr = obj_attr->next) != NULL) {
-                attrname = obj_attr->string;
+        json_attr = attrs->child;
+        while (json_attr != NULL) {
+                attrname = json_attr->string;
                 printf("Setting JSON rule attr: %s\n", attrname);
                 if (!strcmp(attrname, "tf"))
-                        rule->tf = (float)obj_attr->valuedouble;
+                        rule->tf = (float)json_attr->valuedouble;
                 else if (!strcmp(attrname, "idf"))
-                        rule->idf = (float)obj_attr->valuedouble;
+                        rule->idf = (float)json_attr->valuedouble;
                 else if (!strcmp(attrname, "attr"))
-                        strncpy(rule->attr, obj_attr->valuestring, 2);
+                        strncpy(rule->attr, json_attr->valuestring, 2);
                 else if (!strcmp(attrname, "znum")) {
                         // znum: {min: a, max: b} | a
-                        if (obj_attr->type == cJSON_Object) {
-                                if (cJSON_GetObjectItem(obj_attr, "min"))
-                                        rule->zmin = (int)cJSON_GetObjectItem(obj_attr, "min")->valueint;
-                                if (cJSON_GetObjectItem(obj_attr, "max"))
-                                        rule->zmax = (int)cJSON_GetObjectItem(obj_attr, "max")->valueint;
+                        if (json_attr->type == cJSON_Object) {
+                                if (cJSON_GetObjectItem(json_attr, "min"))
+                                        rule->zmin = (int)cJSON_GetObjectItem(json_attr, "min")->valueint;
+                                if (cJSON_GetObjectItem(json_attr, "max"))
+                                        rule->zmax = (int)cJSON_GetObjectItem(json_attr, "max")->valueint;
                         }
 
-                        else if (obj_attr->type == cJSON_Number)
-                                rule->zmin = (int)obj_attr->valueint;
+                        else if (json_attr->type == cJSON_Number)
+                                rule->zmin = (int)json_attr->valueint;
                 }
                 else if (!strcmp(attrname, "type")) {
-                        if (!strncmp(obj_attr->valuestring, "prefix", 6))
+                        if (!strncmp(json_attr->valuestring, "prefix", 6))
                                 rule->flag |= SCWS_ZRULE_PREFIX;
-                        else if(!strncmp(obj_attr->valuestring, "suffix", 6))
+                        else if(!strncmp(json_attr->valuestring, "suffix", 6))
                                 rule->flag |= SCWS_ZRULE_SUFFIX;
                 }
                 else if (!strcmp(attrname, "include") || !strcmp(attrname, "exclude")) {
@@ -155,14 +257,14 @@ void scws_set_json_rule_attrs(rule_t rules, rule_item_t rule, cJSON *attrs)
                         }
                         // loop thru xclude values
                         int k, j;
-                        for (k = 0; k < cJSON_GetArraySize(obj_attr); k++) {
-                                char *cludename = cJSON_GetArrayItem(obj_attr, k)->valuestring;
+                        for (k = 0; k < cJSON_GetArraySize(json_attr); k++) {
+                                char *cludename = cJSON_GetArrayItem(json_attr, k)->valuestring;
                                 if ((j = _rule_index_get(rules, cludename)) >= 0)
                                         *clude |= rules->items[j].bit;
                         }
                 }
+                json_attr = json_attr->next;
         }
-
 }
 
 
@@ -258,7 +360,7 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
                                 }
                         }
                         continue;
-                }
+                } // if buf[0] == [
 
 
                 // is attr (word attr table)
@@ -337,7 +439,7 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
                         }
 
                         continue;
-                } // if (aflag)
+                } // if aflag
 
                 if (cr == NULL)
                         continue;

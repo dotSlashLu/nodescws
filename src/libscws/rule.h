@@ -29,42 +29,6 @@ extern "C" {
 #define	SCWS_ZRULE_EXCLUDE		0x08	/* with exclude */
 #define	SCWS_ZRULE_RANGE		0x10	/* with znum range */
 
-// for JSON rule parsing
-static const char *scws_rule_directives[] = {
-        "special",      // 
-        "nostats",      // 停用词
-        "attrs",        // 词性语法规则
-        "noname",       // 名字停用词
-        "symbol",       // 双字节符号
-        "pubname",      // 姓和外文名共同部分
-        "pubname2",     // 
-        "pubname3",     // 
-        "surname",      // 单姓
-        "surname2",     // 复姓
-        "areaname",     // 地区
-        "areaname2",    // 双字地区
-        "munit",        // 量词
-        "chnum0",       // 中文数词
-        "chnum1",
-        "chnum2",
-        "chnum3",
-        "chnum4",
-        "chnum5",
-        "alpha",        // 多字节字母
-        "foreign"       // 外文名
-};
-static const char *scws_rule_directive_attrs[] = {
-        // "line"       // We don't need read by line or read by char any more
-                        // every entry in json is an array
-        "type",
-        "exclude",
-        "include",
-        "znum",
-        "tf",
-        "idf",
-        "attr"
-};
-
 /* data structure */
 typedef struct scws_rule_item
 {
@@ -129,8 +93,8 @@ int scws_rule_check(rule_t r, rule_item_t cr, const char *str, int len);
  * load JSON rules
  * */
 rule_t scws_json_rule_new(const char *fpath);
-void scws_set_json_rule_attrs(rule_t rules, rule_item_t rule, cJSON *attrs);
-void scws_set_json_rule(rule_item_t rule);
+void scws_set_json_rule(rule_t, rule_item_t, cJSON *);
+void scws_set_json_rule_attrs(rule_t, rule_item_t, cJSON *);
 
 #ifdef __cplusplus
 }

@@ -27,10 +27,10 @@ fs.readFile(__dirname + "/test_doc.txt", {
   res1 = scws.segment("大家好我来自日本，我是日本人");
   res2 = scws.segment("大家好我来自德国，我是德国人");
   end = new Date().valueOf();
-  console.log("time used: " + (end - start) + "ms");
-  console.log("top results from text: ", res.splice(0, 60));
-  console.log("test reuse of scws: ", res1);
-  console.log("test reuse of scws2: ", res2);
+  // console.log("time used: " + (end - start) + "ms");
+  // console.log("top results from text: ", res.splice(0, 60));
+  // console.log("test reuse of scws: ", res1);
+  // console.log("test reuse of scws2: ", res2);
   // destroy scws, recollect memory
   scws.destroy();
 })
