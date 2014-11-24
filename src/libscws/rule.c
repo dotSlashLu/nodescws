@@ -39,26 +39,33 @@ static inline int _rule_index_get(rule_t r, const char *name)
         return -1;
 }
 
-rule_t scws_json_rule_new(const char *fpath)
+rule_t scws_rule_json_new(const char *r, int m)
 {
-        FILE *fp;
         cJSON *json_rules;
         rule_t rules;
         rule_item_t rule;
+        char *content;
 
-        // read file
-        if ((fp = fopen(fpath, "r")) == NULL) 
-                return NULL;
-        fseek(fp, 0, SEEK_END);
-        long len = ftell(fp);
-        fseek(fp, 0, SEEK_SET);
-        char *content = (char*)malloc(len + 1);
-        fread(content, 1, len, fp);
-        fclose(fp);
-        json_rules = cJSON_Parse(content);                            // parse json
-        if ((json_rules == NULL) || 
-            json_rules->type != cJSON_Object) {
-                printf("Parse failed\n");
+        if (m == SCWS_RULE_JSON_STRING) {
+                content = (char *)r;
+                json_rules = cJSON_Parse(content);
+        }
+        else if (m == SCWS_RULE_JSON_FILE) {
+                FILE *fp;
+                if ((fp = fopen(r, "r")) == NULL) 
+                        return NULL;
+                fseek(fp, 0, SEEK_END);
+                long len = ftell(fp);
+                fseek(fp, 0, SEEK_SET);
+                content = (char*)malloc(len + 1);
+                fread(content, 1, len, fp);
+                fclose(fp);   
+                json_rules = cJSON_Parse(content);
+                free(content);
+        }
+
+        if (!json_rules || json_rules->type != cJSON_Object) {
+                printf("JSON syntax error: %s\n", cJSON_GetErrorPtr());
                 return NULL;
         }
         
@@ -72,26 +79,27 @@ rule_t scws_json_rule_new(const char *fpath)
         }
 
         size_t i = 0;
-        const char *directive;
+        const char *rulename;
         cJSON *json_rule_ents, *json_rule_ent, *json_rule_values;
         if ((json_rule_ents = json_rules->child) == NULL) return NULL;
         json_rule_ent = json_rule_ents;
         while ((json_rule_ent) != NULL) {
-                directive = json_rule_ent->string;
-                printf("\n\nSetting JSON rule entry: %s\n", directive);
-                // cJSON *json_rule_entry = cJSON_GetObjectItem(json_rules, directive);
+                rulename = json_rule_ent->string;
+                printf("\n\nSetting JSON rule entry: %s\n", rulename);
+                // cJSON *json_rule_entry = cJSON_GetObjectItem(json_rules, rulename);
                 // if (json_rule_entry == NULL) continue;
 
                 
+                printf("%d\n", i);
                 strcpy(rules->items[i].name, json_rule_ent->string);
                 rules->items[i].tf = 5.0;
                 rules->items[i].idf = 3.5;
                 strncpy(rules->items[i].attr, "un", 2);
 
                 // set rule.bit
-                if (!strcmp(directive, "special"))
+                if (!strcmp(rulename, "special"))
                         rules->items[i].bit = SCWS_RULE_SPECIAL;
-                else if (!strcmp(directive, "attrs"))
+                else if (!strcmp(rulename, "attrs"))
                         rules->items[i].bit = SCWS_RULE_NOSTATS;
                 else
                         rules->items[i].bit = (1 << i);
@@ -100,20 +108,21 @@ rule_t scws_json_rule_new(const char *fpath)
                 cJSON *json_rule_attrs; 
                 if ((json_rule_attrs = cJSON_GetObjectItem(json_rule_ent, "attrs")) != NULL 
                         && json_rule_attrs->type == cJSON_Object)
-                        scws_set_json_rule_attrs(rules, rule, json_rule_attrs);
+                        scws_rule_json_set_attrs(rules, rule, json_rule_attrs);
 
                 if ((json_rule_values = cJSON_GetObjectItem(json_rule_ent, "value")) != NULL)
-                        scws_set_json_rule(rules, rule, json_rule_values);
+                        scws_rule_json_set(rules, rule, json_rule_values);
                 i++;
                 json_rule_ent = json_rule_ent->next;
         }
 
         xtree_optimize(rules->tree);
-        cJSON_Delete(json_rules);
+        xtree_draw(rules->tree);
+        cJSON_Delete(json_rules);                                       // free cJSON
         return rules;
 }
 
-void scws_set_json_rule(rule_t rules, rule_item_t rule, cJSON *rulevalue)
+void scws_rule_json_set(rule_t rules, rule_item_t rule, cJSON *rulevalue)
 {
         char *rulename = rule->name, *valuestring, *ptr, *qtr;
         size_t valuelen, i;
@@ -129,7 +138,7 @@ void scws_set_json_rule(rule_t rules, rule_item_t rule, cJSON *rulevalue)
                 // while ((rulevalue = rulevalue->next) != NULL) {
                 for (i = 0; i < valuelen; i++) {
                         valuestring = cJSON_GetArrayItem(rulevalue, i)->valuestring;
-                        printf("value line: %s\n", valuestring);
+                        // printf("value line: %s\n", valuestring);
                         if ((ptr = strchr(valuestring, '+')) == NULL) continue;
                         *ptr++ = '\0';
                         if ((qtr = strchr(valuestring, '=')) == NULL) continue;
@@ -198,7 +207,7 @@ void scws_set_json_rule(rule_t rules, rule_item_t rule, cJSON *rulevalue)
                 if ((valuelen = cJSON_GetArraySize(rulevalue)) < 1) return;
                 for (i = 0; i < valuelen; i++) {
                         valuestring = cJSON_GetArrayItem(rulevalue, i)->valuestring;
-                        printf("value line(%d): %s\n", i, valuestring);
+                        // printf("value line(%d): %s\n", (int)i, valuestring);
                         while (isspace(*valuestring)) valuestring++;
                         ptr = valuestring + strlen(valuestring);
                         while (ptr > valuestring && strchr(" \t\r\n", ptr[-1])) ptr--;
@@ -206,20 +215,21 @@ void scws_set_json_rule(rule_t rules, rule_item_t rule, cJSON *rulevalue)
 
                         if (ptr == valuestring) continue;
                         xtree_nput(rules->tree, rule, sizeof(struct scws_rule_item), valuestring, ptr - valuestring);
+                        printf("name: %s, value: %s\n", rule->name, valuestring);
                 }
         }
         // other types?
 }
 
-void scws_set_json_rule_attrs(rule_t rules, rule_item_t rule, cJSON *attrs)
-{        
+static void scws_rule_json_set_attrs(rule_t rules, rule_item_t rule, cJSON *attrs)
+{
         char *attrname;
         cJSON *json_attr;
 
         json_attr = attrs->child;
         while (json_attr != NULL) {
                 attrname = json_attr->string;
-                printf("Setting JSON rule attr: %s\n", attrname);
+                // printf("Setting JSON rule attr: %s\n", attrname);
                 if (!strcmp(attrname, "tf"))
                         rule->tf = (float)json_attr->valuedouble;
                 else if (!strcmp(attrname, "idf"))
@@ -271,7 +281,18 @@ void scws_set_json_rule_attrs(rule_t rules, rule_item_t rule, cJSON *attrs)
 
 rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
 {
-        scws_json_rule_new("rules/rules.utf8.json");
+        return scws_rule_json_new("rules/rules.utf8.json", SCWS_RULE_JSON_FILE);
+        // FILE *jsonfp = fopen("rules/rules.utf8.json", "r");
+        // char *content;
+
+        // fseek(jsonfp, 0, SEEK_END);
+        // long len = ftell(jsonfp);
+        // fseek(jsonfp, 0, SEEK_SET);
+        // content = (char*)malloc(len + 1);
+        // fread(content, 1, len, jsonfp);
+        // fclose(jsonfp); 
+        // scws_rule_json_new(content, SCWS_RULE_JSON_STRING);
+
         FILE *fp;
         rule_t r;
         rule_item_t cr;
@@ -531,8 +552,11 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
                 if (ptr == str)
                         continue;
 
-                if (rbl)        // put entire line
+                if (rbl)        // put entire line 
+                {
                         xtree_nput(r->tree, cr, sizeof(struct scws_rule_item), str, ptr - str);
+                        printf("rule.flag: %x, rule.zmin: %d, rule.zmax: %d, rule.name: %s, rule.attr: %s\n", cr->flag, cr->zmin, cr->zmax, cr->name, cr->attr);
+                }
                 else
                 {
                         while (str < ptr)
@@ -544,6 +568,7 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
                                         fprintf(stderr, "Reapeat word on %s|%s: %.*s\n", cr->name, ((rule_item_t) i)->name, j, str);
 #endif
                                 xtree_nput(r->tree, cr, sizeof(struct scws_rule_item), str, j);
+                                printf("rule.flag: %x, rule.zmin: %d, rule.zmax: %d, rule.name: %s\n, rule.attr: %s\n", cr->flag, cr->zmin, cr->zmax, cr->name, cr->attr);
                                 str += j;
                         }
                 }

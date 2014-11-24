@@ -136,6 +136,14 @@ void scws_set_rule(scws_t s, const char *fpath)
 	s->r = scws_rule_new(fpath, s->mblen);	
 }
 
+void scws_set_rule_json(scws_t s, const char *r, int m)
+{
+	if (s->r != NULL)
+		scws_rule_free(s->r);
+
+	s->r = scws_rule_json_new(r, m);
+}
+
 /* set ignore symbol or multi segments */
 void scws_set_ignore(scws_t s, int yes)
 {
