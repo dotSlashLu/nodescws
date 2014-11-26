@@ -99,7 +99,7 @@ rule_t scws_rule_json_new(const char *r, int m)
                 // set rule.bit
                 if (!strcmp(rulename, "special"))
                         rules->items[i].bit = SCWS_RULE_SPECIAL;
-                else if (!strcmp(rulename, "attrs"))
+                else if (!strcmp(rulename, "nostats"))
                         rules->items[i].bit = SCWS_RULE_NOSTATS;
                 else
                         rules->items[i].bit = (1 << i);
@@ -117,7 +117,6 @@ rule_t scws_rule_json_new(const char *r, int m)
         }
 
         xtree_optimize(rules->tree);
-        xtree_draw(rules->tree);
         cJSON_Delete(json_rules);                                       // free cJSON
         return rules;
 }
@@ -215,7 +214,6 @@ void scws_rule_json_set(rule_t rules, rule_item_t rule, cJSON *rulevalue)
 
                         if (ptr == valuestring) continue;
                         xtree_nput(rules->tree, rule, sizeof(struct scws_rule_item), valuestring, ptr - valuestring);
-                        printf("name: %s, value: %s\n", rule->name, valuestring);
                 }
         }
         // other types?
@@ -553,10 +551,7 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
                         continue;
 
                 if (rbl)        // put entire line 
-                {
                         xtree_nput(r->tree, cr, sizeof(struct scws_rule_item), str, ptr - str);
-                        printf("rule.flag: %x, rule.zmin: %d, rule.zmax: %d, rule.name: %s, rule.attr: %s\n", cr->flag, cr->zmin, cr->zmax, cr->name, cr->attr);
-                }
                 else
                 {
                         while (str < ptr)
@@ -568,7 +563,6 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
                                         fprintf(stderr, "Reapeat word on %s|%s: %.*s\n", cr->name, ((rule_item_t) i)->name, j, str);
 #endif
                                 xtree_nput(r->tree, cr, sizeof(struct scws_rule_item), str, j);
-                                printf("rule.flag: %x, rule.zmin: %d, rule.zmax: %d, rule.name: %s\n, rule.attr: %s\n", cr->flag, cr->zmin, cr->zmax, cr->name, cr->attr);
                                 str += j;
                         }
                 }

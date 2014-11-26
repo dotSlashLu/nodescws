@@ -2,4 +2,5 @@
 *.swo
 build/
 tags
+.tags
 *.out
