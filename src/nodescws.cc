@@ -22,7 +22,7 @@ Nodescws::~Nodescws(){};
 
 int debug = 0;
 
-void scws_debug(int level, const char *msg, ...)
+void scws_log(int level, const char *msg, ...)
 {
         if (debug)
         {
@@ -65,14 +65,15 @@ Handle<Value> Nodescws::New(const Arguments& args)
 {
         HandleScope scope;
 
-        Nodescws *scws = new Nodescws();
+        Nodescws *nodescws = new Nodescws();
         
         if (!args[0]->IsObject()) {
-                ThrowException(Exception::TypeError(String::New("[scws ERROR] init argument should be an object to specify configurations")));
+                ThrowException(Exception::TypeError(String::New("[scws ERROR] init argument \
+                        should be an object to specify configurations")));
                 return scope.Close(Undefined());
         }
         // init scws
-        scws_t ret = scws_new();
+        scws_t scws = scws_new();
         v8::Local<v8::Object> Settings = args[0]->ToObject();
 
         // setup debug mode
@@ -84,21 +85,21 @@ Handle<Value> Nodescws::New(const Arguments& args)
         std::string Charset(*v8::String::Utf8Value(Settings->Get(String::New("charset"))));
         string charset = Charset.c_str();
         if (charset ==  "undefined") {
-                scws_debug(NODESCWS_MSG_WARNING, "Charset not specified\n");
+                scws_log(NODESCWS_MSG_WARNING, "Charset not specified\n");
                 charset = "utf8";
         }
-        else if (charset == "utf8" && charset ==  "gbk")
+        else if (charset == "utf8" && charset == "gbk")
                 charset = "utf8";
-        scws_debug(NODESCWS_MSG_LOG, "Setting charset: %s\n", charset.c_str());
-        scws_set_charset(ret, charset.c_str());
+        scws_log(NODESCWS_MSG_LOG, "Setting charset: %s\n", charset.c_str());
+        scws_set_charset(scws, charset.c_str());
 
         // setup dict
         std::string Dicts(*v8::String::Utf8Value(Settings->Get(String::New("dicts"))));
         char *dicts = (char *)Dicts.c_str();
         if (strcmp(dicts, "undefined") == 0) {
-                scws_debug(NODESCWS_MSG_WARNING, "Dict not specified, loading from the default path\n");
-                if(scws_add_dict(ret, "./node_modules/scws/dicts/dict.utf8.xdb", SCWS_XDICT_XDB) == -1)
-                        scws_debug(NODESCWS_MSG_ERR, "Default dict not loaded\n");
+                scws_log(NODESCWS_MSG_WARNING, "Dict not specified, loading from the default path\n");
+                if(scws_add_dict(scws, "./node_modules/scws/dicts/dict.utf8.xdb", SCWS_XDICT_XDB) == -1)
+                        scws_log(NODESCWS_MSG_ERR, "Default dict not loaded\n");
         }
         else {
                 int dict_mode;
@@ -116,9 +117,9 @@ Handle<Value> Nodescws::New(const Arguments& args)
                                         dict_mode = SCWS_XDICT_TXT;
                                 else
                                         dict_mode = SCWS_XDICT_XDB;
-                                scws_debug(NODESCWS_MSG_LOG, "Setting dict: %s\n", dict);
-                                if (scws_add_dict(ret, dict, dict_mode) == -1)
-                                        scws_debug(NODESCWS_MSG_ERR, "Failed to load dict %s\n", dict);
+                                scws_log(NODESCWS_MSG_LOG, "Setting dict: %s\n", dict);
+                                if (scws_add_dict(scws, dict, dict_mode) == -1)
+                                        scws_log(NODESCWS_MSG_ERR, "Failed to load dict %s\n", dict);
                                 free(dict);
                         }
                 }
@@ -127,9 +128,9 @@ Handle<Value> Nodescws::New(const Arguments& args)
                                 dict_mode = SCWS_XDICT_TXT;
                         else
                                 dict_mode = SCWS_XDICT_XDB;
-                        scws_debug(NODESCWS_MSG_LOG, "Setting dict: %s\n", dicts);
-                        if (scws_add_dict(ret, dicts, dict_mode) == -1) {
-                                scws_debug(NODESCWS_MSG_ERR, "Failed to load dict %s\n", dicts);
+                        scws_log(NODESCWS_MSG_LOG, "Setting dict: %s\n", dicts);
+                        if (scws_add_dict(scws, dicts, dict_mode) == -1) {
+                                scws_log(NODESCWS_MSG_ERR, "Failed to load dict %s\n", dicts);
                         }
                 }
         }
@@ -138,33 +139,37 @@ Handle<Value> Nodescws::New(const Arguments& args)
         std::string Rule(*v8::String::Utf8Value(Settings->Get(String::New("rule"))));
         char *rule = (char *)Rule.c_str();
         if (strcmp(rule, "undefined") == 0) {
-                scws_debug(NODESCWS_MSG_WARNING, "Rule not specified, loading from the default path\n");
-                scws_set_rule(ret, "./node_modules/scws/rules/rules.utf8.ini");
+                scws_log(NODESCWS_MSG_WARNING, "Rule not specified, loading from the default path\n");
+                scws_set_rule(scws, "./node_modules/scws/rules/rules.utf8.ini");
+        }
+        else if (strstr(rule, ".json") != NULL) {
+                scws_log(NODESCWS_MSG_LOG, "Setting specified JSON rule %s\n", rule);
+                scws_set_rule_json(scws, rule, SCWS_RULE_JSON_FILE);
         }
         else {
-                scws_set_rule(ret, rule);
-                scws_debug(NODESCWS_MSG_LOG, "Setting specified rule %s\n", rule);
+                scws_log(NODESCWS_MSG_LOG, "Setting specified rule %s\n", rule);
+                scws_set_rule(scws, rule);
         }
 
         // set ignore punctuation
         Local<Boolean> IgnorePunct = Settings->Get(String::New("ignorePunct"))->ToBoolean();
         if (IgnorePunct->BooleanValue())
-                scws_set_ignore(ret, 1);
+                scws_set_ignore(scws, 1);
         
         Local<Boolean> ApplyStopWord = Settings->Get(String::New("applyStopWord"))->ToBoolean();
         if (ApplyStopWord->BooleanValue()) {
-                scws_set_stopword(ret, 1);
-                scws_debug(NODESCWS_MSG_LOG, "Set apply stop word\n");
+                scws_set_stopword(scws, 1);
+                scws_log(NODESCWS_MSG_LOG, "Set apply stop word\n");
         }
         else {
-                scws_set_stopword(ret, 0);
-                scws_debug(NODESCWS_MSG_LOG, "Set not to apply stop word\n");
+                scws_set_stopword(scws, 0);
+                scws_log(NODESCWS_MSG_LOG, "Set not to apply stop word\n");
         }
 
         std::string Multi(*v8::String::Utf8Value(Settings->Get(String::New("multi"))));
         char *multi = (char *)Multi.c_str();
         if (strcmp(multi, "undefined") == 0)
-                scws_debug(NODESCWS_MSG_WARNING, "Multi mode not set, using default\n");
+                scws_log(NODESCWS_MSG_WARNING, "Multi mode not set, using default\n");
         else {
                 int multi_mode = SCWS_MULTI_SHORT;
                 if (strcmp(multi, "short") == 0)
@@ -175,13 +180,13 @@ Handle<Value> Nodescws::New(const Arguments& args)
                         multi_mode = SCWS_MULTI_ZMAIN;
                 else if(strcmp(multi, "zall") == 0)
                         multi_mode = SCWS_MULTI_ZALL;
-                scws_debug(NODESCWS_MSG_LOG, "Setting multi mode %s\n", multi);
-                scws_set_multi(ret, multi_mode);
+                scws_log(NODESCWS_MSG_LOG, "Setting multi mode %s\n", multi);
+                scws_set_multi(scws, multi_mode);
         }
 
-        // scws->InstanceTemplate()->SetInternalField(0, ret);
-        scws->instance_ = ret;
-        scws->Wrap(args.This());
+        // scws->InstanceTemplate()->SetInternalField(0, scws);
+        nodescws->instance_ = scws;
+        nodescws->Wrap(args.This());
 
         return args.This();
 }
@@ -192,7 +197,8 @@ Handle<Value> Nodescws::Segment(const v8::Arguments& args)
         HandleScope scope;
         
         if (!args[0]->IsString()) {
-                ThrowException(Exception::TypeError(String::New("[scws ERROR] segment argument should be the string to segment")));
+                ThrowException(Exception::TypeError(String::New("[scws ERROR] segment argument \
+                        should be the string to segment")));
                 return scope.Close(Undefined());
         }
 
@@ -216,7 +222,7 @@ Handle<Value> Nodescws::Segment(const v8::Arguments& args)
                         if (result_words_count >= RESMEMSTEP * memsteps) {
                                 long new_size = RESMEMSTEP * (memsteps + 1) * sizeof(scws_result);
                                 if((scws->result_raw_ = (scws_result *)realloc(scws->result_raw_, new_size)) == NULL){
-                                        scws_debug(NODESCWS_MSG_ERR, "Failed to allocate memory for results\n");
+                                        scws_log(NODESCWS_MSG_ERR, "Failed to allocate memory for results\n");
                                         free(scws->result_raw_);
                                         scws_free(ret);
                                         return scope.Close(Array::New(0));

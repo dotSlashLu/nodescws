@@ -85,12 +85,7 @@ rule_t scws_rule_json_new(const char *r, int m)
         json_rule_ent = json_rule_ents;
         while ((json_rule_ent) != NULL) {
                 rulename = json_rule_ent->string;
-                printf("\n\nSetting JSON rule entry: %s\n", rulename);
-                // cJSON *json_rule_entry = cJSON_GetObjectItem(json_rules, rulename);
-                // if (json_rule_entry == NULL) continue;
-
-                
-                printf("%d\n", i);
+                printf("\nSetting JSON rule entry: %s\n", rulename);
                 strcpy(rules->items[i].name, json_rule_ent->string);
                 rules->items[i].tf = 5.0;
                 rules->items[i].idf = 3.5;
@@ -126,7 +121,7 @@ void scws_rule_json_set(rule_t rules, rule_item_t rule, cJSON *rulevalue)
         char *rulename = rule->name, *valuestring, *ptr, *qtr;
         size_t valuelen, i;
 
-        printf("Setting: %s\n", rulename);
+        printf("Setting value: %s\n", rulename);
 
         if (rulevalue == NULL) return;
         // attrs
@@ -225,9 +220,9 @@ static void scws_rule_json_set_attrs(rule_t rules, rule_item_t rule, cJSON *attr
         cJSON *json_attr;
 
         json_attr = attrs->child;
+        printf("Setting attr: %s\n", rule->name);
         while (json_attr != NULL) {
                 attrname = json_attr->string;
-                // printf("Setting JSON rule attr: %s\n", attrname);
                 if (!strcmp(attrname, "tf"))
                         rule->tf = (float)json_attr->valuedouble;
                 else if (!strcmp(attrname, "idf"))
@@ -279,7 +274,7 @@ static void scws_rule_json_set_attrs(rule_t rules, rule_item_t rule, cJSON *attr
 
 rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
 {
-        return scws_rule_json_new("rules/rules.utf8.json", SCWS_RULE_JSON_FILE);
+        // return scws_rule_json_new("rules/rules.utf8.json", SCWS_RULE_JSON_FILE);
         // FILE *jsonfp = fopen("rules/rules.utf8.json", "r");
         // char *content;
 
