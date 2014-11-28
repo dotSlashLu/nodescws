@@ -10,7 +10,7 @@
 class Nodescws : public node::ObjectWrap {
         public:
         static void Init(v8::Handle<v8::Object> target);
-        scws_t instance_; 
+        scws_t scws; 
         scws_result *result_raw_;
 
         private:

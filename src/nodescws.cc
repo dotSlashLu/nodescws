@@ -185,7 +185,7 @@ Handle<Value> Nodescws::New(const Arguments& args)
         }
 
         // scws->InstanceTemplate()->SetInternalField(0, scws);
-        nodescws->instance_ = scws;
+        nodescws->scws = scws;
         nodescws->Wrap(args.This());
 
         return args.This();
@@ -202,42 +202,41 @@ Handle<Value> Nodescws::Segment(const v8::Arguments& args)
                 return scope.Close(Undefined());
         }
 
-        Nodescws *scws = node::ObjectWrap::Unwrap<Nodescws>(args.This());
-        scws_t ret = scws->instance_;
+        Nodescws *nodescws = node::ObjectWrap::Unwrap<Nodescws>(args.This());
+        scws_t scws = nodescws->scws;
         std::string Text(*v8::String::Utf8Value(args[0]->ToString()));
         char *text = (char *)Text.c_str();
-        scws_send_text(ret, text, strlen(text));
+        scws_send_text(scws, text, strlen(text));
 
         scws_res_t res;
         int result_words_count = 0;
         long memsize = RESMEMSTEP * sizeof(scws_result);
         int memsteps = 1;
         // scws_result *results_raw = (scws_result *)malloc(memsize);
-        scws->result_raw_ = (scws_result *)malloc(memsize);
+        nodescws->result_raw_ = (scws_result *)malloc(memsize);
 
-        while ((res = scws_get_result(ret)) != NULL) {
-                while (res != NULL) {
-                        memcpy(&scws->result_raw_[result_words_count], res, sizeof(*res));
-                        result_words_count++;
-                        if (result_words_count >= RESMEMSTEP * memsteps) {
-                                long new_size = RESMEMSTEP * (memsteps + 1) * sizeof(scws_result);
-                                if((scws->result_raw_ = (scws_result *)realloc(scws->result_raw_, new_size)) == NULL){
-                                        scws_log(NODESCWS_MSG_ERR, "Failed to allocate memory for results\n");
-                                        free(scws->result_raw_);
-                                        scws_free(ret);
-                                        return scope.Close(Array::New(0));
-                                };
-                                memsteps++;
+        res = scws_get_result(scws);
+        while (res != NULL) {
+                memcpy(&nodescws->result_raw_[result_words_count], res, sizeof(*res));
+                result_words_count++;
+                if (result_words_count >= RESMEMSTEP * memsteps) {
+                        long new_size = RESMEMSTEP * (memsteps + 1) * sizeof(scws_result);
+                        if ((nodescws->result_raw_ = (scws_result *)realloc(nodescws->result_raw_, new_size)) == NULL) {
+                                scws_log(NODESCWS_MSG_ERR, "Failed to allocate memory for results\n");
+                                free(nodescws->result_raw_);
+                                scws_free(scws);
+                                return scope.Close(Array::New(0));
                         }
-                        res = res->next;
+                        memsteps++;
                 }
-                scws_free_result(res);
+                res = res->next;
         }
+        scws_free_result(res);
 
         
         Handle<Array> array = Array::New(result_words_count);
         for (int i = 0; i < result_words_count; i++) {
-                scws_result *cur = &scws->result_raw_[i];
+                scws_result *cur = &nodescws->result_raw_[i];
                 char *str = (char *)malloc(((int)cur->len + 1) * sizeof(char));
                 sprintf(str, "%.*s", cur->len, text + cur->off);
                 str[(int)cur->len] = '\0';
@@ -252,14 +251,14 @@ Handle<Value> Nodescws::Segment(const v8::Arguments& args)
                 array->Set(i, obj);
         }
 
-        free(scws->result_raw_);
+        free(nodescws->result_raw_);
         return scope.Close(array);
 }
 
 Handle<Value> Nodescws::Destroy(const v8::Arguments& args)
 {
         HandleScope scope;
-        Nodescws *scws = node::ObjectWrap::Unwrap<Nodescws>(args.This());
-        scws_free(scws->instance_);
+        Nodescws *nodescws = node::ObjectWrap::Unwrap<Nodescws>(args.This());
+        scws_free(nodescws->scws);
         return scope.Close(Undefined());
 }
