@@ -1,5 +1,6 @@
 #ifndef NODESCWS_H
 #define NODESCWS_H
+
 #define NODESCWS_MSG_ERR 1
 #define NODESCWS_MSG_WARNING 2
 #define NODESCWS_MSG_LOG 3
@@ -10,7 +11,7 @@
 class Nodescws : public node::ObjectWrap {
         public:
         static void Init(v8::Handle<v8::Object> target);
-        scws_t scws; 
+        scws_t scws;
         scws_result *result_raw_;
 
         private:

@@ -52,14 +52,14 @@ rule_t scws_rule_json_new(const char *r, int m)
         }
         else if (m == SCWS_RULE_JSON_FILE) {
                 FILE *fp;
-                if ((fp = fopen(r, "r")) == NULL) 
+                if ((fp = fopen(r, "r")) == NULL)
                         return NULL;
                 fseek(fp, 0, SEEK_END);
                 long len = ftell(fp);
                 fseek(fp, 0, SEEK_SET);
                 content = (char*)malloc(len + 1);
                 fread(content, 1, len, fp);
-                fclose(fp);   
+                fclose(fp);
                 json_rules = cJSON_Parse(content);
                 free(content);
         }
@@ -68,7 +68,7 @@ rule_t scws_rule_json_new(const char *r, int m)
                 printf("JSON syntax error: %s\n", cJSON_GetErrorPtr());
                 return NULL;
         }
-        
+
         // alloc rules
         rules = (rule_t)malloc(sizeof(rule_st));
         memset(rules, 0, sizeof(rule_st));
@@ -85,7 +85,7 @@ rule_t scws_rule_json_new(const char *r, int m)
         json_rule_ent = json_rule_ents;
         while ((json_rule_ent) != NULL) {
                 rulename = json_rule_ent->string;
-                printf("\nSetting JSON rule entry: %s\n", rulename);
+                // printf("\nSetting JSON rule entry: %s\n", rulename);
                 strcpy(rules->items[i].name, json_rule_ent->string);
                 rules->items[i].tf = 5.0;
                 rules->items[i].idf = 3.5;
@@ -100,8 +100,8 @@ rule_t scws_rule_json_new(const char *r, int m)
                         rules->items[i].bit = (1 << i);
 
                 rule = &(rules->items[i]);
-                cJSON *json_rule_attrs; 
-                if ((json_rule_attrs = cJSON_GetObjectItem(json_rule_ent, "attrs")) != NULL 
+                cJSON *json_rule_attrs;
+                if ((json_rule_attrs = cJSON_GetObjectItem(json_rule_ent, "attrs")) != NULL
                         && json_rule_attrs->type == cJSON_Object)
                         scws_rule_json_set_attrs(rules, rule, json_rule_attrs);
 
@@ -121,12 +121,12 @@ void scws_rule_json_set(rule_t rules, rule_item_t rule, cJSON *rulevalue)
         char *rulename = rule->name, *valuestring, *ptr, *qtr;
         size_t valuelen, i;
 
-        printf("Setting value: %s\n", rulename);
+        // printf("Setting value: %s\n", rulename);
 
         if (rulevalue == NULL) return;
         // attrs
         if (!strcmp(rulename, "attrs")) {
-                if (rulevalue->type != cJSON_Array 
+                if (rulevalue->type != cJSON_Array
                         || (valuelen = cJSON_GetArraySize(rulevalue)) == 0)
                         return;
                 // while ((rulevalue = rulevalue->next) != NULL) {
@@ -220,7 +220,7 @@ static void scws_rule_json_set_attrs(rule_t rules, rule_item_t rule, cJSON *attr
         cJSON *json_attr;
 
         json_attr = attrs->child;
-        printf("Setting attr: %s\n", rule->name);
+        // printf("Setting attr: %s\n", rule->name);
         while (json_attr != NULL) {
                 attrname = json_attr->string;
                 if (!strcmp(attrname, "tf"))
@@ -283,7 +283,7 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
         // fseek(jsonfp, 0, SEEK_SET);
         // content = (char*)malloc(len + 1);
         // fread(content, 1, len, jsonfp);
-        // fclose(jsonfp); 
+        // fclose(jsonfp);
         // scws_rule_json_new(content, SCWS_RULE_JSON_STRING);
 
         FILE *fp;
@@ -292,7 +292,7 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
         int i, j, rbl, aflag;
         rule_attr_t a, rtail;
         char buf[512], *str, *ptr, *qtr;
-                                        
+
         /* loaded or open file failed */
         if ((fp = fopen(fpath, "r")) == NULL)
                 return NULL;
@@ -545,7 +545,7 @@ rule_t scws_rule_new(const char *fpath, unsigned char *mblen)
                 if (ptr == str)
                         continue;
 
-                if (rbl)        // put entire line 
+                if (rbl)        // put entire line
                         xtree_nput(r->tree, cr, sizeof(struct scws_rule_item), str, ptr - str);
                 else
                 {

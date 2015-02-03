@@ -19,7 +19,7 @@ fs.readFile(__dirname + "/test_doc.txt", {
     // rule: "./rules/rules_cht.utf8.ini",
     ignorePunct: true,
     multi: "duality",
-    debug: true,
+    debug: false,
     applyStopWord: true
   });
   // segment text

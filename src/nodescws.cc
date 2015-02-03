@@ -13,6 +13,7 @@
 
 #define RESMEMSTEP 500
 #define MAXDIRLEN 1024
+static int debug = 0;
 
 using namespace v8;
 using std::string;
@@ -20,32 +21,28 @@ using std::string;
 Nodescws::Nodescws(){};
 Nodescws::~Nodescws(){};
 
-int debug = 0;
-
-void scws_log(int level, const char *msg, ...)
+static void scws_log(int level, const char *msg, ...)
 {
-        if (debug)
+        if (!debug) return;
+        va_list msg_args;
+        va_start(msg_args, msg);
+        switch (level)
         {
-                va_list msg_args;
-                va_start(msg_args, msg);
-                switch (level)
-                {
-                        case NODESCWS_MSG_ERR:
-                                printf("[scws ERROR] ");
-                                break;
-                        case NODESCWS_MSG_WARNING:
-                                printf("[scws WARNING] ");
-                                break;
-                        case NODESCWS_MSG_LOG:
-                                printf("[scws LOG] ");
-                                break;
-                }
-                vprintf(msg, msg_args);
-                va_end(msg_args);
+                case NODESCWS_MSG_ERR:
+                        printf("[scws ERROR] ");
+                        break;
+                case NODESCWS_MSG_WARNING:
+                        printf("[scws WARNING] ");
+                        break;
+                case NODESCWS_MSG_LOG:
+                        printf("[scws LOG] ");
+                        break;
         }
+        vprintf(msg, msg_args);
+        va_end(msg_args);
 }
 
-void Nodescws::Init(Handle<Object> target) 
+void Nodescws::Init(Handle<Object> target)
 {
         // Prepare constructor template
         Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
@@ -53,20 +50,20 @@ void Nodescws::Init(Handle<Object> target)
         tpl->InstanceTemplate()->SetInternalFieldCount(1);
         // Prototype
         tpl->PrototypeTemplate()->Set(String::NewSymbol("segment"),
-                FunctionTemplate::New(Segment)->GetFunction());  
+                FunctionTemplate::New(Segment)->GetFunction());
         tpl->PrototypeTemplate()->Set(String::NewSymbol("destroy"),
-                FunctionTemplate::New(Destroy)->GetFunction());  
+                FunctionTemplate::New(Destroy)->GetFunction());
 
         Persistent<Function> constructor = Persistent<Function>::New(tpl->GetFunction());
         target->Set(String::NewSymbol("init"), constructor);
 }
 
-Handle<Value> Nodescws::New(const Arguments& args) 
+Handle<Value> Nodescws::New(const Arguments& args)
 {
         HandleScope scope;
 
         Nodescws *nodescws = new Nodescws();
-        
+
         if (!args[0]->IsObject()) {
                 ThrowException(Exception::TypeError(String::New("[scws ERROR] init argument \
                         should be an object to specify configurations")));
@@ -142,20 +139,27 @@ Handle<Value> Nodescws::New(const Arguments& args)
                 scws_log(NODESCWS_MSG_WARNING, "Rule not specified, loading from the default path\n");
                 scws_set_rule(scws, "./node_modules/scws/rules/rules.utf8.ini");
         }
+        // json
         else if (strstr(rule, ".json") != NULL) {
                 scws_log(NODESCWS_MSG_LOG, "Setting specified JSON rule %s\n", rule);
                 scws_set_rule_json(scws, rule, SCWS_RULE_JSON_FILE);
         }
-        else {
+        // ini
+        else if (strstr(rule, ".ini") > 0) {
                 scws_log(NODESCWS_MSG_LOG, "Setting specified rule %s\n", rule);
                 scws_set_rule(scws, rule);
+        }
+        // JSON string
+        else {
+                scws_log(NODESCWS_MSG_LOG, "Setting specified JSON string rule %s\n", rule);
+                scws_set_rule_json(scws, rule, SCWS_RULE_JSON_STRING);
         }
 
         // set ignore punctuation
         Local<Boolean> IgnorePunct = Settings->Get(String::New("ignorePunct"))->ToBoolean();
         if (IgnorePunct->BooleanValue())
                 scws_set_ignore(scws, 1);
-        
+
         Local<Boolean> ApplyStopWord = Settings->Get(String::New("applyStopWord"))->ToBoolean();
         if (ApplyStopWord->BooleanValue()) {
                 scws_set_stopword(scws, 1);
@@ -195,7 +199,7 @@ Handle<Value> Nodescws::New(const Arguments& args)
 Handle<Value> Nodescws::Segment(const v8::Arguments& args)
 {
         HandleScope scope;
-        
+
         if (!args[0]->IsString()) {
                 ThrowException(Exception::TypeError(String::New("[scws ERROR] segment argument \
                         should be the string to segment")));
@@ -233,7 +237,7 @@ Handle<Value> Nodescws::Segment(const v8::Arguments& args)
         }
         scws_free_result(res);
 
-        
+
         Handle<Array> array = Array::New(result_words_count);
         for (int i = 0; i < result_words_count; i++) {
                 scws_result *cur = &nodescws->result_raw_[i];
