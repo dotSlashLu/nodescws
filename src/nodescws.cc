@@ -2,7 +2,7 @@
 #define BUILDING_NODE_EXTENSION
 #endif
 
-#include <node.h>
+#include <nan.h>
 #include <string>
 #include <iostream>
 #include <cstring>
@@ -20,6 +20,7 @@ using std::string;
 
 Nodescws::Nodescws(){};
 Nodescws::~Nodescws(){};
+Persistent<Function> Nodescws::constructor;
 
 static void scws_log(int level, const char *msg, ...)
 {
@@ -44,42 +45,48 @@ static void scws_log(int level, const char *msg, ...)
 
 void Nodescws::Init(Handle<Object> target)
 {
-        // Prepare constructor template
-        Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
-        tpl->SetClassName(String::NewSymbol("scws"));
-        tpl->InstanceTemplate()->SetInternalFieldCount(1);
-        // Prototype
-        tpl->PrototypeTemplate()->Set(String::NewSymbol("segment"),
-                FunctionTemplate::New(Segment)->GetFunction());
-        tpl->PrototypeTemplate()->Set(String::NewSymbol("destroy"),
-                FunctionTemplate::New(Destroy)->GetFunction());
+		NanScope();
 
-        Persistent<Function> constructor = Persistent<Function>::New(tpl->GetFunction());
-        target->Set(String::NewSymbol("init"), constructor);
+        // Prepare constructor template
+        Local<FunctionTemplate> tpl = NanNew<FunctionTemplate>(New);
+        tpl->SetClassName(NanNew("scws"));
+        tpl->InstanceTemplate()->SetInternalFieldCount(1);
+
+        // Prototype
+        tpl->PrototypeTemplate()->Set(NanNew("segment"),
+				NanNew<FunctionTemplate>(Segment)->GetFunction());
+        tpl->PrototypeTemplate()->Set(NanNew("destroy"),
+				NanNew<FunctionTemplate>(Destroy)->GetFunction());
+		
+		//@fixme unknown
+        //Persistent<Function> constructor = Persistent<Function>::New(tpl->GetFunction());
+		NanAssignPersistent	(constructor, tpl->GetFunction());
+        target->Set(NanNew("init"), tpl->GetFunction());
 }
 
-Handle<Value> Nodescws::New(const Arguments& args)
+NAN_METHOD(Nodescws::New)
 {
-        HandleScope scope;
+        NanScope();
 
         Nodescws *nodescws = new Nodescws();
 
         if (!args[0]->IsObject()) {
-                ThrowException(Exception::TypeError(String::New("[scws ERROR] init argument \
-                        should be an object to specify configurations")));
-                return scope.Close(Undefined());
+				NanThrowTypeError("[scws ERROR] init argument \
+                        should be an object to specify configurations");
+				NanReturnUndefined();
         }
+
         // init scws
         scws_t scws = scws_new();
         v8::Local<v8::Object> Settings = args[0]->ToObject();
 
         // setup debug mode
-        Local<Boolean> Debug = Settings->Get(String::New("debug"))->ToBoolean();
+        Local<Boolean> Debug = Settings->Get(NanNew("debug"))->ToBoolean();
         if (Debug->BooleanValue())
                 debug = 1;
 
         // setup charset
-        std::string Charset(*v8::String::Utf8Value(Settings->Get(String::New("charset"))));
+        std::string Charset(*NanUtf8String(Settings->Get(NanNew("charset"))));
         string charset = Charset.c_str();
         if (charset ==  "undefined") {
                 scws_log(NODESCWS_MSG_WARNING, "Charset not specified\n");
@@ -91,7 +98,7 @@ Handle<Value> Nodescws::New(const Arguments& args)
         scws_set_charset(scws, charset.c_str());
 
         // setup dict
-        std::string Dicts(*v8::String::Utf8Value(Settings->Get(String::New("dicts"))));
+        std::string Dicts(*NanUtf8String(Settings->Get(NanNew("dicts"))));
         char *dicts = (char *)Dicts.c_str();
         if (strcmp(dicts, "undefined") == 0) {
                 scws_log(NODESCWS_MSG_WARNING, "Dict not specified, loading from the default path\n");
@@ -133,7 +140,7 @@ Handle<Value> Nodescws::New(const Arguments& args)
         }
 
         // set rules
-        std::string Rule(*v8::String::Utf8Value(Settings->Get(String::New("rule"))));
+		std::string Rule(*NanUtf8String(Settings->Get(NanNew("rule"))));
         char *rule = (char *)Rule.c_str();
         if (strcmp(rule, "undefined") == 0) {
                 scws_log(NODESCWS_MSG_WARNING, "Rule not specified, loading from the default path\n");
@@ -156,11 +163,11 @@ Handle<Value> Nodescws::New(const Arguments& args)
         }
 
         // set ignore punctuation
-        Local<Boolean> IgnorePunct = Settings->Get(String::New("ignorePunct"))->ToBoolean();
+        Local<Boolean> IgnorePunct = Settings->Get(NanNew("ignorePunct"))->ToBoolean();
         if (IgnorePunct->BooleanValue())
                 scws_set_ignore(scws, 1);
 
-        Local<Boolean> ApplyStopWord = Settings->Get(String::New("applyStopWord"))->ToBoolean();
+        Local<Boolean> ApplyStopWord = Settings->Get(NanNew("applyStopWord"))->ToBoolean();
         if (ApplyStopWord->BooleanValue()) {
                 scws_set_stopword(scws, 1);
                 scws_log(NODESCWS_MSG_LOG, "Set apply stop word\n");
@@ -170,7 +177,7 @@ Handle<Value> Nodescws::New(const Arguments& args)
                 scws_log(NODESCWS_MSG_LOG, "Set not to apply stop word\n");
         }
 
-        std::string Multi(*v8::String::Utf8Value(Settings->Get(String::New("multi"))));
+        std::string Multi(*NanUtf8String(Settings->Get(NanNew("multi"))));
         char *multi = (char *)Multi.c_str();
         if (strcmp(multi, "undefined") == 0)
                 scws_log(NODESCWS_MSG_WARNING, "Multi mode not set, using default\n");
@@ -192,23 +199,23 @@ Handle<Value> Nodescws::New(const Arguments& args)
         nodescws->scws = scws;
         nodescws->Wrap(args.This());
 
-        return args.This();
+        NanReturnValue(args.This());
 }
 
 
-Handle<Value> Nodescws::Segment(const v8::Arguments& args)
+NAN_METHOD(Nodescws::Segment)
 {
-        HandleScope scope;
+		NanScope();
 
         if (!args[0]->IsString()) {
-                ThrowException(Exception::TypeError(String::New("[scws ERROR] segment argument \
-                        should be the string to segment")));
-                return scope.Close(Undefined());
+				NanThrowTypeError("[scws ERROR] segment argument \
+                        should be the string to segment");
+				NanReturnUndefined();
         }
 
         Nodescws *nodescws = node::ObjectWrap::Unwrap<Nodescws>(args.This());
         scws_t scws = nodescws->scws;
-        std::string Text(*v8::String::Utf8Value(args[0]->ToString()));
+        std::string Text(*NanUtf8String(args[0]->ToString()));
         char *text = (char *)Text.c_str();
         scws_send_text(scws, text, strlen(text));
 
@@ -229,7 +236,7 @@ Handle<Value> Nodescws::Segment(const v8::Arguments& args)
                                 scws_log(NODESCWS_MSG_ERR, "Failed to allocate memory for results\n");
                                 free(nodescws->result_raw_);
                                 scws_free(scws);
-                                return scope.Close(Array::New(0));
+                                NanReturnValue(Array::New(0));
                         }
                         memsteps++;
                 }
@@ -238,31 +245,31 @@ Handle<Value> Nodescws::Segment(const v8::Arguments& args)
         scws_free_result(res);
 
 
-        Handle<Array> array = Array::New(result_words_count);
+        Handle<Array> array = NanNew<Array>(result_words_count);
         for (int i = 0; i < result_words_count; i++) {
                 scws_result *cur = &nodescws->result_raw_[i];
                 char *str = (char *)malloc(((int)cur->len + 1) * sizeof(char));
                 sprintf(str, "%.*s", cur->len, text + cur->off);
                 str[(int)cur->len] = '\0';
 
-                Local<Object> obj = Object::New();
-                obj->Set(String::NewSymbol("word"), String::New(str));
+                Local<Object> obj = NanNew<Object>();
+                obj->Set(NanNew<String>("word"), NanNew(str));
                 free(str);
-                obj->Set(String::NewSymbol("offset"), Number::New(cur->off));
-                obj->Set(String::NewSymbol("length"), Number::New(cur->len));
-                obj->Set(String::NewSymbol("attr"), String::New(cur->attr));
-                obj->Set(String::NewSymbol("idf"), Number::New(cur->idf));
+                obj->Set(NanNew<String>("offset"), NanNew<Number>(cur->off));
+                obj->Set(NanNew<String>("length"), NanNew<Number>(cur->len));
+                obj->Set(NanNew<String>("attr"), NanNew(cur->attr));
+                obj->Set(NanNew<String>("idf"), NanNew<Number>(cur->idf));
                 array->Set(i, obj);
         }
 
         free(nodescws->result_raw_);
-        return scope.Close(array);
+        NanReturnValue(array);
 }
 
-Handle<Value> Nodescws::Destroy(const v8::Arguments& args)
+NAN_METHOD(Nodescws::Destroy)
 {
-        HandleScope scope;
+		NanScope();
         Nodescws *nodescws = node::ObjectWrap::Unwrap<Nodescws>(args.This());
         scws_free(nodescws->scws);
-        return scope.Close(Undefined());
+		NanReturnUndefined();
 }
