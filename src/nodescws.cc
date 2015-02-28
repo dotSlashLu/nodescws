@@ -20,7 +20,6 @@ using std::string;
 
 Nodescws::Nodescws(){};
 Nodescws::~Nodescws(){};
-Persistent<Function> Nodescws::constructor;
 
 static void scws_log(int level, const char *msg, ...)
 {
@@ -58,8 +57,7 @@ void Nodescws::Init(Handle<Object> target)
         tpl->PrototypeTemplate()->Set(NanNew("destroy"),
 				NanNew<FunctionTemplate>(Destroy)->GetFunction());
 		
-		//@fixme unknown
-        //Persistent<Function> constructor = Persistent<Function>::New(tpl->GetFunction());
+		Persistent<Function> constructor;
 		NanAssignPersistent	(constructor, tpl->GetFunction());
         target->Set(NanNew("init"), tpl->GetFunction());
 }
@@ -78,7 +76,7 @@ NAN_METHOD(Nodescws::New)
 
         // init scws
         scws_t scws = scws_new();
-        v8::Local<v8::Object> Settings = args[0]->ToObject();
+		Local<Object> Settings = args[0]->ToObject();
 
         // setup debug mode
         Local<Boolean> Debug = Settings->Get(NanNew("debug"))->ToBoolean();
