@@ -17,8 +17,8 @@ class Nodescws : public node::ObjectWrap {
         private:
         Nodescws();
         ~Nodescws();
-		static NAN_METHOD(New);
-		static NAN_METHOD(Segment);
-		static NAN_METHOD(Destroy);
+        static NAN_METHOD(New);
+        static NAN_METHOD(Segment);
+        static NAN_METHOD(Destroy);
 };
 #endif

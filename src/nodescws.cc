@@ -44,7 +44,7 @@ static void scws_log(int level, const char *msg, ...)
 
 void Nodescws::Init(Handle<Object> target)
 {
-		NanScope();
+        NanScope();
 
         // Prepare constructor template
         Local<FunctionTemplate> tpl = NanNew<FunctionTemplate>(New);
@@ -53,12 +53,12 @@ void Nodescws::Init(Handle<Object> target)
 
         // Prototype
         tpl->PrototypeTemplate()->Set(NanNew("segment"),
-				NanNew<FunctionTemplate>(Segment)->GetFunction());
+                NanNew<FunctionTemplate>(Segment)->GetFunction());
         tpl->PrototypeTemplate()->Set(NanNew("destroy"),
-				NanNew<FunctionTemplate>(Destroy)->GetFunction());
-		
-		Persistent<Function> constructor;
-		NanAssignPersistent	(constructor, tpl->GetFunction());
+                NanNew<FunctionTemplate>(Destroy)->GetFunction());
+        
+        Persistent<Function> constructor;
+        NanAssignPersistent    (constructor, tpl->GetFunction());
         target->Set(NanNew("init"), tpl->GetFunction());
 }
 
@@ -69,14 +69,14 @@ NAN_METHOD(Nodescws::New)
         Nodescws *nodescws = new Nodescws();
 
         if (!args[0]->IsObject()) {
-				NanThrowTypeError("[scws ERROR] init argument \
+                NanThrowTypeError("[scws ERROR] init argument \
                         should be an object to specify configurations");
-				NanReturnUndefined();
+                NanReturnUndefined();
         }
 
         // init scws
         scws_t scws = scws_new();
-		Local<Object> Settings = args[0]->ToObject();
+        Local<Object> Settings = args[0]->ToObject();
 
         // setup debug mode
         Local<Boolean> Debug = Settings->Get(NanNew("debug"))->ToBoolean();
@@ -138,7 +138,7 @@ NAN_METHOD(Nodescws::New)
         }
 
         // set rules
-		std::string Rule(*NanUtf8String(Settings->Get(NanNew("rule"))));
+        std::string Rule(*NanUtf8String(Settings->Get(NanNew("rule"))));
         char *rule = (char *)Rule.c_str();
         if (strcmp(rule, "undefined") == 0) {
                 scws_log(NODESCWS_MSG_WARNING, "Rule not specified, loading from the default path\n");
@@ -203,12 +203,12 @@ NAN_METHOD(Nodescws::New)
 
 NAN_METHOD(Nodescws::Segment)
 {
-		NanScope();
+        NanScope();
 
         if (!args[0]->IsString()) {
-				NanThrowTypeError("[scws ERROR] segment argument \
+                NanThrowTypeError("[scws ERROR] segment argument \
                         should be the string to segment");
-				NanReturnUndefined();
+                NanReturnUndefined();
         }
 
         Nodescws *nodescws = node::ObjectWrap::Unwrap<Nodescws>(args.This());
@@ -266,8 +266,8 @@ NAN_METHOD(Nodescws::Segment)
 
 NAN_METHOD(Nodescws::Destroy)
 {
-		NanScope();
+        NanScope();
         Nodescws *nodescws = node::ObjectWrap::Unwrap<Nodescws>(args.This());
         scws_free(nodescws->scws);
-		NanReturnUndefined();
+        NanReturnUndefined();
 }
