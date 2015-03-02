@@ -1,7 +1,7 @@
 #ifndef BUILDING_NODE_EXTENSION
 #define BUILDING_NODE_EXTENSION
 #endif
-#include <node.h>
+#include <nan.h>
 #include "nodescws.h"
 
 using namespace v8;

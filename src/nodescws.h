@@ -5,7 +5,7 @@
 #define NODESCWS_MSG_WARNING 2
 #define NODESCWS_MSG_LOG 3
 
-#include <node.h>
+#include <nan.h>
 #include "libscws/scws.h"
 
 class Nodescws : public node::ObjectWrap {
@@ -17,9 +17,8 @@ class Nodescws : public node::ObjectWrap {
         private:
         Nodescws();
         ~Nodescws();
-
-        static v8::Handle<v8::Value> New(const v8::Arguments& args);
-        static v8::Handle<v8::Value> Segment(const v8::Arguments& args);
-        static v8::Handle<v8::Value> Destroy(const v8::Arguments& args);
+        static NAN_METHOD(New);
+        static NAN_METHOD(Segment);
+        static NAN_METHOD(Destroy);
 };
 #endif
