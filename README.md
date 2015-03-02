@@ -20,7 +20,7 @@ On a server with a single core Xeon CPU and 3.0G memory running FreeBSD 6.2, Seg
 ------
 
 ## nodescws
-Current release: v0.2.1 (versions lower than v0.2.0 are no longer maintained. See Changelog)
+Current release: v0.2.4
 
 - 项目主页: [https://github.com/dotSlashLu/nodescws][4]
 - 使用问题，bug report: [https://github.com/dotSlashLu/nodescws/issues][5]
@@ -56,7 +56,7 @@ Current release: v0.2.1 (versions lower than v0.2.0 are no longer maintained. Se
             若该配置缺失则默认使用自带utf8的规则文件。
 
       		v0.2.3添加了JSON支持，避免繁复的ini语法。
-      		若以.json结尾，则会解析对应的JSON rule文件，也可以直接传JSON string来进行配置。
+      		若以.json结尾，则会解析对应的JSON rule文件，也可以直接传JSON string来进行配置。语法参考 ./rules/rules.utf8.json
 
 
     - ignorePunct: `Bool`, *Optional*
@@ -130,6 +130,9 @@ Return `Array`
     })
 
 ### Changelog
+#### v0.2.4
+- Thanks to [@mike820324][6] now scws supports io.js
+
 #### v0.2.3
 - Changed project structure
 - Refactored node bindings
@@ -152,6 +155,8 @@ Added new setting entry `debug`. Setting `config.debug = true` will make scws ou
 #### v0.1.3
 Published to npm registry. usage: `scws(text, settings);` available setting entries: charset, dicts, rule, ignorePunct, multi.
 
+### Contributors
+- [@mike820324][6]
 
 
 [1]: http://www.hightman.cn
@@ -159,4 +164,5 @@ Published to npm registry. usage: `scws(text, settings);` available setting entr
 [3]: https://github.com/hightman/scws
 [4]: https://github.com/dotSlashLu/nodescws
 [5]: https://github.com/dotSlashLu/nodescws/issues
+[6]: https://github.com/mike820324
 
