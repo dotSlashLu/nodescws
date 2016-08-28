@@ -21,4 +21,6 @@ class Nodescws : public node::ObjectWrap {
         static NAN_METHOD(Segment);
         static NAN_METHOD(Destroy);
 };
+
+static void scws_log(int level, const char *msg, ...);
 #endif

@@ -21,27 +21,6 @@ using std::string;
 Nodescws::Nodescws(){};
 Nodescws::~Nodescws(){};
 
-static void scws_log(int level, const char *msg, ...)
-{
-        if (!debug) return;
-        va_list msg_args;
-        va_start(msg_args, msg);
-        switch (level)
-        {
-                case NODESCWS_MSG_ERR:
-                        printf("[scws ERROR] ");
-                        break;
-                case NODESCWS_MSG_WARNING:
-                        printf("[scws WARNING] ");
-                        break;
-                case NODESCWS_MSG_LOG:
-                        printf("[scws LOG] ");
-                        break;
-        }
-        vprintf(msg, msg_args);
-        va_end(msg_args);
-}
-
 void Nodescws::Init(Handle<Object> target)
 {
         NanScope();
@@ -56,7 +35,7 @@ void Nodescws::Init(Handle<Object> target)
                 NanNew<FunctionTemplate>(Segment)->GetFunction());
         tpl->PrototypeTemplate()->Set(NanNew("destroy"),
                 NanNew<FunctionTemplate>(Destroy)->GetFunction());
-        
+
         Persistent<Function> constructor;
         NanAssignPersistent    (constructor, tpl->GetFunction());
         target->Set(NanNew("init"), tpl->GetFunction());
@@ -107,7 +86,7 @@ NAN_METHOD(Nodescws::New)
                 int dict_mode;
                 if (strchr(dicts, ':') != NULL) {
                         while (*dicts != '\0') {
-                                char *dict = (char *)malloc(sizeof(char) * MAXDIRLEN);
+                                char *dict = (char *)malloc(MAXDIRLEN);
                                 int i = 0;
                                 while (i < MAXDIRLEN && *dicts != ':' && *dicts != '\0')
                                         dict[i++] = *dicts++;
@@ -246,7 +225,7 @@ NAN_METHOD(Nodescws::Segment)
         Handle<Array> array = NanNew<Array>(result_words_count);
         for (int i = 0; i < result_words_count; i++) {
                 scws_result *cur = &nodescws->result_raw_[i];
-                char *str = (char *)malloc(((int)cur->len + 1) * sizeof(char));
+                char *str = (char *)malloc(((int)cur->len + 1));
                 sprintf(str, "%.*s", cur->len, text + cur->off);
                 str[(int)cur->len] = '\0';
 
@@ -271,3 +250,26 @@ NAN_METHOD(Nodescws::Destroy)
         scws_free(nodescws->scws);
         NanReturnUndefined();
 }
+
+static void scws_log(int level, const char *msg, ...)
+{
+        if (!debug) return;
+        va_list msg_args;
+        va_start(msg_args, msg);
+        switch (level)
+        {
+                case NODESCWS_MSG_ERR:
+                        printf("[scws ERROR] ");
+                        break;
+                case NODESCWS_MSG_WARNING:
+                        printf("[scws WARNING] ");
+                        break;
+                case NODESCWS_MSG_LOG:
+                        printf("[scws LOG] ");
+                        break;
+        }
+        vprintf(msg, msg_args);
+        va_end(msg_args);
+}
+
+

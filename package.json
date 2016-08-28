@@ -23,6 +23,6 @@
   "gypfile": true,
   "license": "BSD",
   "dependencies": {
-    "nan": "^1.6.2"
+    "nan": "^2.4.0"
   }
 }

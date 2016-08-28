@@ -1,0 +1,14 @@
+const Scws = require("nodescws")
+const scws = Scws.init({})
+scws.segment(text, function(){
+  //
+  this.destroy();
+})
+
+===
+
+scws = {
+  init: () => {},
+  segment: (text, callback) => {},
+  destroy(): () => {}
+}
