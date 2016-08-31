@@ -1,0 +1,16 @@
+{
+  "name": "nan-test",
+  "version": "0.0.0",
+  "author": "Dotslash Lu <dotslash.lu@gmail.com>",
+  "description": "scws(Simple Chinese Word Segmentation) node module",
+  "main": "build/Release/scws.node",
+  "scripts": {
+    "install": "node-gyp rebuild"
+  },
+  "private": true,
+  "gypfile": true,
+  "license": "BSD",
+  "dependencies": {
+    "nan": "^2.4.0"
+  }
+}
