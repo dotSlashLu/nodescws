@@ -2,24 +2,27 @@
 
 #include <nan.h>
 
-using Nan::FunctionCallbackInfo;
+using v8::Value;
 using v8::Local;
+using v8::Object;
+
+using Nan::Persistent;
+using Nan::FunctionCallbackInfo;
 
 class NodeScws : public Nan::ObjectWrap {
         public:
-        static void Init(v8::Local<v8::Object> module);
+        static void Init(Local<Object> module);
 
         private:
-        // explicit NodeScws(const v8::Local<v8::Object>);
-        explicit NodeScws(const v8::Local<v8::Object>);
+        explicit NodeScws(Local<Object>);
         ~NodeScws();
 
         static Nan::Persistent<v8::Function> constructor;
-        static void New(const FunctionCallbackInfo<v8::Value>& info);
-        static void ScwsInit(const FunctionCallbackInfo<v8::Value>& info);
-        static void ScwsSegment(const FunctionCallbackInfo<v8::Value>& info);
-        static void ScwsDestroy(const FunctionCallbackInfo<v8::Value>& info);
-        static void ScwsGetConfig(const FunctionCallbackInfo<v8::Value>& info);
+        static void New(const FunctionCallbackInfo<Value>& info);
+        static void ScwsInit(const FunctionCallbackInfo<Value>& info);
+        static void ScwsSegment(const FunctionCallbackInfo<Value>& info);
+        static void ScwsDestroy(const FunctionCallbackInfo<Value>& info);
+        static void ScwsGetConfig(const FunctionCallbackInfo<Value>& info);
 
-        Local<v8::Object> Config;
+        Persistent<Object> Config;
 };

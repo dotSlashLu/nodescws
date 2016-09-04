@@ -1,21 +1,23 @@
 #include "nodescws2.h"
-#include <iostream>
 
 using v8::Local;
+using v8::Object;
 using v8::FunctionTemplate;
+
+using Nan::Persistent;
+using Nan::CopyablePersistentTraits;
 
 Nan::Persistent<v8::Function> NodeScws::constructor;
 
-// NodeScws::NodeScws(const v8::Local<v8::Object> conf) : Config(conf)
-// {
-// }
-
-NodeScws::NodeScws(const Local<v8::Object> config) : Config(config)
+NodeScws::NodeScws(Local<Object> config)
 {
+        Persistent<Object> conf(config);
+        Config.Reset(conf);
 }
 
 NodeScws::~NodeScws()
 {
+        Config.Reset();
 }
 
 void NodeScws::Init(v8::Local<v8::Object> module)
@@ -26,7 +28,7 @@ void NodeScws::Init(v8::Local<v8::Object> module)
         tpl->SetClassName(Nan::New("scws").ToLocalChecked());
         tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-        // proto
+        // prototypes
         Nan::SetPrototypeMethod(tpl, "segment", ScwsSegment);
         Nan::SetPrototypeMethod(tpl, "destroy", ScwsDestroy);
         Nan::SetPrototypeMethod(tpl, "getConfig", ScwsGetConfig);
@@ -36,23 +38,22 @@ void NodeScws::Init(v8::Local<v8::Object> module)
 }
 
 void NodeScws::New(const Nan::FunctionCallbackInfo<v8::Value>& info) {
-        if (info.IsConstructCall()) {
-                // Invoked as constructor: `new NodeScws(...)`
-                Local<v8::Object> Config = info[0]->IsUndefined() ?
-                                Nan::New<v8::Object>() :
-                                info[0]->ToObject();
-                NodeScws* Scws = new NodeScws(Config);
-                // auto val = Nan::To<v8::Number>(Scws->Config->Get(Nan::New<v8::String>("a").ToLocalChecked())).ToLocalChecked();
-                Scws->Wrap(info.This());
-                info.GetReturnValue().Set(info.This());
-        }
         // makes no sense to invoke like a function
-        else {
-                auto msg = "Direct function call not supported, "
-                        "use constructor call.";
-                Nan::ThrowError(msg);
+        if (!info.IsConstructCall()) {
+                Nan::ThrowError("Direct function call not supported, "
+                        "use constructor call.");
                 return;
         }
+
+        if (!info[0]->IsObject()) {
+                Nan::ThrowTypeError("Config should be an object.");
+                return;
+        }
+
+        Local<Object> conf = info[0].As<Object>();
+        NodeScws* nscwsp = new NodeScws(conf);
+        nscwsp->Wrap(info.This());
+        info.GetReturnValue().Set(info.This());
 }
 
 void NodeScws::ScwsInit(const Nan::FunctionCallbackInfo<v8::Value>& info)
@@ -72,6 +73,7 @@ void NodeScws::ScwsDestroy(const Nan::FunctionCallbackInfo<v8::Value>& info)
 
 void NodeScws::ScwsGetConfig(const Nan::FunctionCallbackInfo<v8::Value>& info)
 {
-        NodeScws* scws = ObjectWrap::Unwrap<NodeScws>(info.This());
-        info.GetReturnValue().Set(Nan::New(scws->Config));
+        NodeScws* scws = ObjectWrap::Unwrap<NodeScws>(info.Holder());
+        Local<Object> conf = Nan::New(scws->Config);
+        info.GetReturnValue().Set(conf);
 }
