@@ -12,7 +12,7 @@
 #ifdef WIN32
 #	include "config_win32.h"
 #endif
- 
+
 #ifdef __cplusplus
 extern C {
 #endif
@@ -133,7 +133,7 @@ void scws_set_rule(scws_t s, const char *fpath)
 	if (s->r != NULL)
 		scws_rule_free(s->r);
 
-	s->r = scws_rule_new(fpath, s->mblen);	
+	s->r = scws_rule_new(fpath, s->mblen);
 }
 
 void scws_set_rule_json(scws_t s, const char *r, int m)
@@ -158,7 +158,7 @@ void scws_set_multi(scws_t s, int mode)
 {
 	s->mode &= ~SCWS_MULTI_MASK;
 
-	if (mode & SCWS_MULTI_MASK)	
+	if (mode & SCWS_MULTI_MASK)
 		s->mode |= mode;
 }
 
@@ -310,7 +310,7 @@ static void _scws_alnum_multi(scws_t s, int start, int wlen)
 	}
 
 	if (j > 0)
-	{	
+	{
 		chunk[j] = (char) (i-k);
 		ch = start;
 		for (i = 0; i <= j; i++)
@@ -369,8 +369,8 @@ static void _scws_ssegment(scws_t s, int end)
 
 	/* check special words (need strtoupper) */
 	if (wlen > 1)
-	{	
-		txt = (char *) _mem_ndup(s->txt + start, wlen);	
+	{
+		txt = (char *) _mem_ndup(s->txt + start, wlen);
 		_str_toupper(txt, txt);
 		if (SCWS_IS_SPECIAL(txt, wlen))
 		{
@@ -381,8 +381,8 @@ static void _scws_ssegment(scws_t s, int end)
 		free(txt);
 	}
 
-	txt = s->txt;	
-	/* check brief words such as S.H.E M.R. */	
+	txt = s->txt;
+	/* check brief words such as S.H.E M.R. */
 	if (SCWS_IS_ALPHA(txt[start]) && txt[start+1] == '.')
 	{
 		for (ch = start + 2; ch < end; ch++)
@@ -435,7 +435,7 @@ static void _scws_ssegment(scws_t s, int end)
 						// strict must add: !$this->_is_digit(ord($this->txt[$start+1])))
 						if ((pflag & PFLAG_ADDSYM) || ch != 0x2e || !SCWS_IS_DIGIT(txt[start+1]))
 							break;
-						pflag |= PFLAG_ADDSYM;												
+						pflag |= PFLAG_ADDSYM;
 					}
 				}
 				else
@@ -483,7 +483,7 @@ static int _scws_mget_word(scws_t s, int i, int j)
 		{
 			r = k;
 			if (!(item->flag & SCWS_WORD_PART))
-				break;					
+				break;
 		}
 	}
 	return r;
@@ -495,7 +495,7 @@ static void _scws_mset_word(scws_t s, int i, int j)
 
 	item = s->wmap[i][j];
 	/* hightman.070705: 加入 item == null 判断, 防止超长词(255字以上)unsigned char溢出 */
-	if ((item == NULL) || ((s->mode & SCWS_IGN_SYMBOL) 
+	if ((item == NULL) || ((s->mode & SCWS_IGN_SYMBOL)
       && !SCWS_IS_ECHAR(item->flag) && !memcmp(item->attr, attr_un, 2)))
 		return;
 
@@ -509,7 +509,7 @@ static void _scws_mset_word(scws_t s, int i, int j)
 			s->zis = i;
 			if (k < 0)
 				return;
-			
+
 			i = (k & ~SCWS_ZIS_USED);
 			if ((i != (j-1)) || (!(k & SCWS_ZIS_USED) && s->wend == i))
 			{
@@ -531,7 +531,7 @@ static void _scws_mset_word(scws_t s, int i, int j)
 			s->zis = -1;
 		}
 	}
-  
+
 	SCWS_PUT_RES(s->zmap[i].start, item->idf, (s->zmap[j].end - s->zmap[i].start), item->attr);
 
 	// hightman.070902: multi segment
@@ -549,7 +549,7 @@ static void _scws_mset_word(scws_t s, int i, int j)
 				{
 					// 3 chars at most
 					if ((n == j && m == i) || (n - m) > 2) break;
-					item = s->wmap[m][n];	
+					item = s->wmap[m][n];
 					if (!item) continue;
 					// first shortest or last longest word
 					if ((item->flag & SCWS_WORD_FULL) && (k == m || n == j))
@@ -559,7 +559,7 @@ static void _scws_mset_word(scws_t s, int i, int j)
 				// short word not found, stop to find, passed to next loop
 				if (k == m)
 					break;
-				
+
 				// save the short word
 				item = s->wmap[m][k];
 				SCWS_PUT_RES(s->zmap[m].start, item->idf, (s->zmap[k].end - s->zmap[m].start), item->attr);
@@ -645,7 +645,7 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 		j = _scws_mget_word(s, i, (x > i ? x - 1 : t));
 		if (j == i) continue;
 		// skip NR in NR
-		if (j < j2 && wmap[i][j]->attr[0] == 'n' && wmap[i][j]->attr[1] == 'r') continue;				
+		if (j < j2 && wmap[i][j]->attr[0] == 'n' && wmap[i][j]->attr[1] == 'r') continue;
 		if (i > j2 && (wmap[i][j]->flag & SCWS_WORD_USED)) continue;
 
 		/* one word only */
@@ -656,7 +656,7 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 			mpath[1] = 0xff;
 			break;
 		}
-		
+
 		if (i != f && (wmap[i][j]->flag & SCWS_WORD_RULE))
 			continue;
 
@@ -681,7 +681,7 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 			if (n > m)
 			{
 				nweight *= pow(n-m,4);
-				wmap[m][n]->flag |= SCWS_WORD_USED;	
+				wmap[m][n]->flag |= SCWS_WORD_USED;
 			}
 			else sz++;
 
@@ -692,7 +692,7 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 
 		/* my self */
 		npath[x++] = j - i;
-		
+
 		if (attr1[0] != '\0')
 			nweight *= scws_rule_attr_ratio(s->r, attr1, wmap[i][j]->attr, &npath[x-2]);
 		memcpy(attr1, wmap[i][j]->attr, 2);
@@ -706,14 +706,14 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 			if (n > m)
 			{
 				nweight *= pow(n-m,4);
-				wmap[m][n]->flag |= SCWS_WORD_USED;	
+				wmap[m][n]->flag |= SCWS_WORD_USED;
 			}
 			else sz++;
 
 			nweight *= scws_rule_attr_ratio(s->r, attr1, wmap[m][n]->attr, &npath[x-2]);
 			memcpy(attr1, wmap[m][n]->attr, 2);
 		}
-		
+
 		npath[x] = 0xff;
 		nweight /= pow(x+sz-1,5);
 
@@ -722,7 +722,7 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 		if (s->mode & SCWS_DEBUG)
 		{
 			fprintf(stderr, "PATH by keyword = %.*s, (weight=%.4f):\n",
-				s->zmap[j].end - s->zmap[i].start, s->txt + s->zmap[i].start, nweight);	
+				s->zmap[j].end - s->zmap[i].start, s->txt + s->zmap[i].start, nweight);
 			for (x = 0, m = f; (n = npath[x]) != 0xff; x++)
 			{
 				n += m;
@@ -730,7 +730,7 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 				m = n + 1;
 			}
 			fprintf(stderr, "\n--\n");
-		}		
+		}
 #endif
 
 		j2 = x = j;
@@ -743,14 +743,14 @@ static void _scws_mseg_zone(scws_t s, int f, int t)
 			weight = nweight;
 			swap = mpath;
 			mpath = npath;
-			npath = swap;			
+			npath = swap;
 		}
 	}
 
 	/* set the result, mpath != NULL */
 	if (mpath == NULL)
 		return;
-	
+
 	for (x = 0, m = f; (n = mpath[x]) != 0xff; x++)
 	{
 		n += m;
@@ -833,11 +833,11 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 					wmap[i][i]->flag |= SCWS_ZFLAG_SYMBOL;
 
 				if (ch & SCWS_WORD_MALLOCED)
-					free(query);							
+					free(query);
 			}
 			start += clen;
 		}
-		
+
 		zmap[i].start = start - clen;
 		zmap[i].end = start;
 	}
@@ -870,9 +870,9 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 				free(query);
 
 			if (!(ch & SCWS_WORD_PART))
-				break;		
+				break;
 		}
-		
+
 		if (k--)
 		{
 			/* set nr2 to some short name */
@@ -882,7 +882,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 					wmap[i][i]->flag |= SCWS_ZFLAG_NR2;
 				//if (wmap[i][k]->attr[0] == 'n')
 					//wmap[i][i]->flag |= SCWS_ZFLAG_N2;
-			}				
+			}
 
 			/* clean the PART flag for the last word */
 			if (k < j)
@@ -892,7 +892,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 
 	if (s->r == NULL)
 		goto do_segment;
-	
+
 	/* auto rule set for name & zone & chinese numeric */
 
 	/* one word auto rule check */
@@ -907,7 +907,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 
 		clen = r1->zmin > 0 ? r1->zmin : 1;
 		if ((r1->flag & SCWS_ZRULE_PREFIX) && (i < (zlen - clen)))
-		{			
+		{
 			/* prefix, check after (zmin~zmax) */
 			// 先检查 zmin 字内是否全部符合要求
 			// 再在 zmax 范围内取得符合要求的字
@@ -941,7 +941,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 					continue;
 				wmap[i][i+1]->flag |= SCWS_WORD_PART;
 			}
-			
+
 			/* ok, got: i & clen */
 			k = i + clen;
 			wmap[i][k] = (word_t) pmalloc(p, sizeof(word_st));
@@ -951,7 +951,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 			strncpy(wmap[i][k]->attr, r1->attr, 2);
 
 			wmap[i][i]->flag |= SCWS_ZFLAG_WHEAD;
-			for (j = i+1; j <= k; j++)			
+			for (j = i+1; j <= k; j++)
 				wmap[j][j]->flag |= SCWS_ZFLAG_WPART;
 
 			if (!(wmap[i][i]->flag & SCWS_ZFLAG_WPART))
@@ -959,7 +959,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 
 			continue;
 		}
-		
+
 		if ((r1->flag & SCWS_ZRULE_SUFFIX) && (i >= clen))
 		{
 			/* suffix, check before */
@@ -969,7 +969,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 				___ZRULE_CHECKER2___
 				___ZRULE_CHECKER3___
 			}
-			
+
 			if (ch <= clen)
 				continue;
 
@@ -1017,7 +1017,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 		k = i+1;
 		r1 = scws_rule_get(s->r, txt + zmap[i].start, zmap[k].end - zmap[i].start);
 		if (r1 == NULL)
-			continue;		
+			continue;
 
 		clen = r1->zmin > 0 ? r1->zmin : 1;
 		if ((r1->flag & SCWS_ZRULE_PREFIX) && (k < (zlen - clen)))
@@ -1053,7 +1053,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 			strncpy(wmap[i][k]->attr, r1->attr, 2);
 
 			wmap[i][i+1]->flag |= SCWS_WORD_PART;
-			for (j = i+2; j <= k; j++)			
+			for (j = i+2; j <= k; j++)
 				wmap[j][j]->flag |= SCWS_ZFLAG_WPART;
 
 			i--;
@@ -1069,7 +1069,7 @@ static void _scws_msegment(scws_t s, int end, int zlen)
 				___ZRULE_CHECKER2___
 				___ZRULE_CHECKER3___
 			}
-			
+
 			if (ch <= clen)
 				continue;
 
@@ -1132,7 +1132,7 @@ do_segment:
 		_scws_mseg_zone(s, j, i-1);
 
 	/* the last single for duality */
-	if ((s->mode & SCWS_DUALITY) && (s->zis >= 0) && !(s->zis & SCWS_ZIS_USED))	
+	if ((s->mode & SCWS_DUALITY) && (s->zis >= 0) && !(s->zis & SCWS_ZIS_USED))
 	{
 		i = s->zis;
 		SCWS_PUT_RES(s->zmap[i].start, s->wmap[i][i]->idf, (s->zmap[i].end - s->zmap[i].start), s->wmap[i][i]->attr);
@@ -1183,7 +1183,7 @@ scws_res_t scws_get_result(scws_t s)
 	while ((off = (off+clen)) < len)
 	{
 		ch = txt[off];
-		if (ch <= 0x20 || SCWS_CHAR_TOKEN(ch)) break;		
+		if (ch <= 0x20 || SCWS_CHAR_TOKEN(ch)) break;
 		clen = SCWS_CHARLEN(ch);
 		if (!(pflag & PFLAG_WITH_MB))
 		{
@@ -1222,7 +1222,7 @@ scws_res_t scws_get_result(scws_t s)
 			// mb + single-byte. allowd: alpha+num + 中文
 			if (!SCWS_IS_ALNUM(ch))
 				break;
-			
+
 			pflag &= ~PFLAG_VALID;
 			// 夹在中文间的英文数字最多允许 2 个字符 (超过2可以独立成词没啥问题)
 			for (i = off+1; i < (off+3); i++)
@@ -1236,8 +1236,8 @@ scws_res_t scws_get_result(scws_t s)
 
 				if (!SCWS_IS_ALNUM(ch))
 					break;
-			}		
-			
+			}
+
 			if (!(pflag & PFLAG_VALID))
 				break;
 
@@ -1249,7 +1249,7 @@ scws_res_t scws_get_result(scws_t s)
 	}
 
 	/* hightman.070624: 处理半个字的问题 */
-	if ((ch = off) > len)	
+	if ((ch = off) > len)
 		off -= clen;
 
 	/* do the real segment */
@@ -1270,7 +1270,7 @@ scws_res_t scws_get_result(scws_t s)
 
 			idf = SCWS_EN_IDF(zlen);
 			SCWS_PUT_RES(s->off, idf, zlen, attr_en);
-		
+
 			/* hightman.090523: 为字母数字混合再度拆解, 纯数字, (>1 ? 纯字母 : 数字+字母) */
 			if ((s->mode & SCWS_MULTI_DUALITY) && zlen > 2)
 				_scws_alnum_multi(s, s->off, zlen);
@@ -1315,7 +1315,7 @@ static void _tops_load_node(node_t node, scws_top_t *values, int *start)
 
 	if (node == NULL)
 		return;
-	
+
 	values[i] = node->value;
 	values[i]->word = node->key;
 
@@ -1327,15 +1327,15 @@ static void _tops_load_node(node_t node, scws_top_t *values, int *start)
 static void _tops_load_all(xtree_t xt, scws_top_t *values)
 {
 	int i, start;
-	
-	for (i = 0, start = 0; i < xt->prime; i++)	
+
+	for (i = 0, start = 0; i < xt->prime; i++)
 		_tops_load_node(xt->trees[i], values, &start);
 }
 
 typedef char word_attr[4];
 static inline int _attr_belong(const char *a, word_attr *at)
 {
-	if ((*at)[0] == '\0') return 1;	
+	if ((*at)[0] == '\0') return 1;
 	while ((*at)[0])
 	{
 		if (!strcmp(a, *at)) return 1;
@@ -1364,7 +1364,7 @@ static inline int _attr_belong(const char *a, word_attr *at)
 scws_top_t scws_get_tops(scws_t s, int limit, char *xattr)
 {
 	int off, cnt, xmode = SCWS_NA;
-	xtree_t xt;	
+	xtree_t xt;
 	scws_res_t res, cur;
 	scws_top_t top, *list, tail, base;
 	char *word;
@@ -1442,7 +1442,7 @@ scws_top_t scws_get_tops(scws_t s, int limit, char *xattr)
 		/* save to return pointer */
 		if (!limit || limit > cnt)
 			limit = cnt;
-		
+
 		top = tail = (scws_top_t) malloc(sizeof(struct scws_topword));
 		memcpy(top, list[0], sizeof(struct scws_topword));
 		top->word = strdup(list[0]->word);
@@ -1462,7 +1462,7 @@ scws_top_t scws_get_tops(scws_t s, int limit, char *xattr)
 
 	// restore the offset
 	s->off = off;
-	xtree_free(xt);	
+	xtree_free(xt);
 	return top;
 }
 
@@ -1472,7 +1472,7 @@ int scws_has_word(scws_t s, char *xattr)
 	int off, cnt, xmode = SCWS_NA;
 	scws_res_t res, cur;
 	char *word;
-	word_attr *at = NULL;	
+	word_attr *at = NULL;
 
 	if (!s || !s->txt)
 		return 0;
@@ -1494,7 +1494,7 @@ int scws_has_word(scws_t s, char *xattr)
 
 				if ((xmode == SCWS_YEA) && !_attr_belong(cur->attr, at))
 					cnt = 1;
-			}		
+			}
 		}
 		while (!cnt && (cur = cur->next) != NULL);
 		scws_free_result(res);
@@ -1510,7 +1510,7 @@ int scws_has_word(scws_t s, char *xattr)
 scws_top_t scws_get_words(scws_t s, char *xattr)
 {
 	int off, cnt, xmode = SCWS_NA;
-	xtree_t xt;	
+	xtree_t xt;
 	scws_res_t res, cur;
 	scws_top_t top, tail, base;
 	char *word;
@@ -1586,7 +1586,7 @@ void scws_free_tops(scws_top_t tops)
 	{
 		tops = cur->next;
 		if (cur->word)
-			free(cur->word);			
+			free(cur->word);
 		free(cur);
 	}
 }
