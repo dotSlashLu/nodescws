@@ -21,14 +21,15 @@ Current release: v0.5.0
 
 ### Usage
 ```js
-    var Scws = require("scws");
-    var scws = new Scws(settings);
-    var results = scws.segment(text);
-    scws.destroy(); // DO NOT forget this or your memory may be corrupted
+var Scws = require("scws");
+var scws = new Scws(settings); // NOTE: before v0.5.0, do new Scws.init(settings)
+var results = scws.segment(text);
+scws.destroy(); // DO NOT forget this or your memory may be corrupted
 ```
 
 
 #### new Scws(settings)
+**注意**，在v0.5.0之前，使用`new Scws.init(settings)`初始化。
 * settings: `Object`, 分词设置, 支持charset, dicts, rule, ignorePunct, multi, debug：
     - charset: `String`, *Optional*
 
@@ -78,48 +79,50 @@ Current release: v0.5.0
 
 Return `Array`
 
-    [
-        {
-            word: '可读性',
-            offset: 183, // 该词在文档中的位置
-            length: 9, // byte
-            attr: 'n', // 词性，采用《现代汉语语料库加工规范——词语切分与词性标注》标准，涵义请参考 http://blog.csdn.net/dbigbear/article/details/1488087
-            idf: 7.800000190734863
-        },
-        ...
-    ]
+```js
+[
+    {
+        word: '可读性',
+        offset: 183, // 该词在文档中的位置
+        length: 9, // byte
+        attr: 'n', // 词性，采用《现代汉语语料库加工规范——词语切分与词性标注》标准，涵义请参考 http://blog.csdn.net/dbigbear/article/details/1488087
+        idf: 7.800000190734863
+    },
+    ...
+]
+```
 
 ### Example 用例
 ```js
-    var fs   = require("fs")
-        Scws = require("scws");
+var fs   = require("fs")
+    Scws = require("scws");
 
-    fs.readFile("./test_doc.txt", {
-      encoding: "utf8"
-    }, function(err, data){
-      if (err)
-        return console.error(err);
+fs.readFile("./test_doc.txt", {
+  encoding: "utf8"
+}, function(err, data){
+  if (err)
+    return console.error(err);
 
-      // initialize scws with config entries
-      var scws = new Scws({
-        charset: "utf8",
-        //dicts: "./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt",
-        dicts: "./dicts/dict.utf8.xdb",
-        rule: "./rules/rules.utf8.ini",
-        ignorePunct: true,
-        multi: "duality",
-        debug: true
-      });
+  // initialize scws with config entries
+  var scws = new Scws({
+    charset: "utf8",
+    //dicts: "./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt",
+    dicts: "./dicts/dict.utf8.xdb",
+    rule: "./rules/rules.utf8.ini",
+    ignorePunct: true,
+    multi: "duality",
+    debug: true
+  });
 
-      // segment text
-      res = scws.segment(data);
-      res1 = scws.segment("大家好我来自德国，我是德国人");
+  // segment text
+  res = scws.segment(data);
+  res1 = scws.segment("大家好我来自德国，我是德国人");
 
-      console.log(res, res1);
+  console.log(res, res1);
 
-      // destroy scws, recollect memory
-      scws.destroy();
-    })
+  // destroy scws, recollect memory
+  scws.destroy();
+})
 ```
 
 更多请参考`test/`中的测试
@@ -131,7 +134,7 @@ Return `Array`
 - Fixes [#11][issue11]
 
 #### v0.2.4
-- Thanks to [@mike820324][7] now scws supports io.js
+- Thanks to [@mike820324][mike820324] now scws supports io.js
 
 #### v0.2.3
 - Changed project structure
@@ -156,7 +159,7 @@ Added new setting entry `debug`. Setting `config.debug = true` will make scws ou
 Published to npm registry. usage: `scws(text, settings);` available setting entries: charset, dicts, rule, ignorePunct, multi.
 
 ### Contributors
-- [@mike820324][6]
+- [@mike820324][mike820324]
 
 
 [1]: http://www.hightman.cn
@@ -164,7 +167,7 @@ Published to npm registry. usage: `scws(text, settings);` available setting entr
 [3]: https://github.com/hightman/scws
 [4]: https://github.com/dotSlashLu/nodescws
 [5]: https://github.com/dotSlashLu/nodescws/issues
-[6]: https://github.com/mike820324
+[mike820324]: https://github.com/mike820324
 [issue11]: https://github.com/dotSlashLu/nodescws/issues/11
 [frully]: https://github.com/Frully
 
