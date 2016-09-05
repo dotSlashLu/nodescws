@@ -1,6 +1,6 @@
 {
   "name": "scws",
-  "version": "0.2.4",
+  "version": "0.5.0",
   "author": "Dotslash Lu <dotslash.lu@gmail.com>",
   "description": "scws(Simple Chinese Word Segmentation) node module",
   "repository": {
@@ -17,7 +17,7 @@
     "Chinese",
     "word segment",
     "中文",
-    "中文分词"
+    "分词"
   ],
   "private": false,
   "gypfile": true,
