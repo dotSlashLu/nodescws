@@ -3,24 +3,15 @@
 ### scws
 
 ##### About
-scws即Simple Chinese Word Segmentation。是C语言开发的基于词频词典的机械式中文分词引擎。scws的作者为[hightman][1]，采用BSD许可协议发布。nodescws的作者在libscws上添加功能并添加了node.js binding，除自己的代码外，不持有任何libscws的著作权。
+scws即Simple Chinese Word Segmentation。是C语言开发的基于词频词典的机械式中文分词引擎。scws的作者为[hightman][1]，采用BSD许可协议发布。nodescws的作者在libscws上添加功能(包括停用词、忽略符号、json格式配置等)并添加了node.js binding，除自己代码，不持有libscws著作权。
 
-scws(Simple Chinese Word Segmentation) is a mechanistic Chinese word segement engine written in C. The author of this library is hightman. scws is published under BSD license. As the author of nodescws, I just added some features to the lib and wrap this great library as a node addon, thus holding no copyright of any of the library's code but my own work.
-
-scws的主页: [http://www.xunsearch.com/scws][2], GitHub: [https://github.com/hightman/scws][3]
-
-
-##### Performance
-
-在 FreeBSD 6.2 系统，单核单 CPU 至强 3.0G 的服务器上，测试长度为 80,535 的文本。 用附带的命令行工具耗时将约 0.17 秒。
-分词精度 95.60%，召回率 90.51% (F-1: 0.93)
-
-On a server with a single core Xeon CPU and 3.0G memory running FreeBSD 6.2, Segmenting a 80,535 text using the cli tool based on this library took 0.17 seconds, with the accuracy of 95.60% and recall of 90.51%(F-1 0.93).
+scws的主页: [http://www.xunsearch.com/scws][2], 
+GitHub: [https://github.com/hightman/scws][3]
 
 ------
 
 ## nodescws
-Current release: v0.2.4
+Current release: v0.5.0
 
 - 项目主页: [https://github.com/dotSlashLu/nodescws][4]
 - 使用问题，bug report: [https://github.com/dotSlashLu/nodescws/issues][5]
@@ -29,14 +20,16 @@ Current release: v0.2.4
 `npm install scws`
 
 ### Usage
+```js
     var Scws = require("scws");
-    var scws = new Scws.init(settings);
+    var scws = new Scws(settings);
     var results = scws.segment(text);
     scws.destroy(); // DO NOT forget this or your memory may be corrupted
+```
 
 
-#### new Scws.init(settings)
-* settings: `Object`, 分词设置, 支持charset, dicts, rule, ignorePunct, multi, debug
+#### new Scws(settings)
+* settings: `Object`, 分词设置, 支持charset, dicts, rule, ignorePunct, multi, debug：
     - charset: `String`, *Optional*
 
             采用的encoding，支持"utf8"，"gbk"， 默认值"utf8"
@@ -55,8 +48,8 @@ Current release: v0.2.4
             详见该extension目录下(一般是node_modules/scws/)的rules/rules.utf8.ini。
             若该配置缺失则默认使用自带utf8的规则文件。
 
-      		v0.2.3添加了JSON支持，避免繁复的ini语法。
-      		若以.json结尾，则会解析对应的JSON rule文件，也可以直接传JSON string来进行配置。语法参考 ./rules/rules.utf8.json
+              v0.2.3添加了JSON支持，避免繁复的ini语法。
+              若以.json结尾，则会解析对应的JSON rule文件，也可以直接传JSON string来进行配置。语法参考 ./rules/rules.utf8.json
 
 
     - ignorePunct: `Bool`, *Optional*
@@ -97,7 +90,7 @@ Return `Array`
     ]
 
 ### Example 用例
-
+```js
     var fs   = require("fs")
         Scws = require("scws");
 
@@ -128,10 +121,18 @@ Return `Array`
       // destroy scws, recollect memory
       scws.destroy();
     })
+```
+
+更多请参考`test/`中的测试
 
 ### Changelog
+#### v0.5.0
+- Update NAN, supports all major node.js versions
+- New js API design
+- Fixes [#11][issue11]
+
 #### v0.2.4
-- Thanks to [@mike820324][6] now scws supports io.js
+- Thanks to [@mike820324][7] now scws supports io.js
 
 #### v0.2.3
 - Changed project structure
@@ -139,7 +140,7 @@ Return `Array`
 - Added rule setting by JSON file and JSON string thus making adding stop words more easier with node
 
 #### v0.2.2
-- Some small bug fixes, including issue #5(Thanks to @Frully)
+- Some small bug fixes, including issue #5(Thanks to [@Frully][frully])
 
 #### v0.2.1
 - Add stop words support
@@ -165,4 +166,6 @@ Published to npm registry. usage: `scws(text, settings);` available setting entr
 [4]: https://github.com/dotSlashLu/nodescws
 [5]: https://github.com/dotSlashLu/nodescws/issues
 [6]: https://github.com/mike820324
+[issue11]: https://github.com/dotSlashLu/nodescws/issues/11
+[frully]: https://github.com/Frully
 
