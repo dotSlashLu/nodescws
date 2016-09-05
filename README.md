@@ -101,7 +101,7 @@ Return `Array`
         return console.error(err);
 
       // initialize scws with config entries
-      var scws = new Scws.init({
+      var scws = new Scws({
         charset: "utf8",
         //dicts: "./dicts/dict.utf8.xdb:./dicts/dict_cht.utf8.xdb:./dicts/dict.test.txt",
         dicts: "./dicts/dict.utf8.xdb",
@@ -115,8 +115,7 @@ Return `Array`
       res = scws.segment(data);
       res1 = scws.segment("大家好我来自德国，我是德国人");
 
-      console.log(res);
-      console.log("test reuse of scws: ", res1);
+      console.log(res, res1);
 
       // destroy scws, recollect memory
       scws.destroy();
