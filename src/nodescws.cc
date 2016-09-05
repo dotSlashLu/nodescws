@@ -275,7 +275,8 @@ void NodeScws::ScwsDestroy(const Nan::FunctionCallbackInfo<v8::Value>& info)
         NodeScws* nscwsp = ObjectWrap::Unwrap<NodeScws>(info.Holder());
 
         // only free scws, other Local values will be GCed by v8
-        scws_free(nscwsp->scws);
+        if (nscwsp->scws)
+                scws_free(nscwsp->scws);
         nscwsp->scws = NULL;
 
         info.GetReturnValue().Set(Nan::True());
