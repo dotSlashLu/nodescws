@@ -22,6 +22,17 @@ catch (e) {
   console.log();
 }
 
+try {
+  var scws = new NodeScws({});
+  scws.destroy();
+  scws.segment("abc");
+}
+catch (e) {
+  console.log("should raise error: already destroy()ed");
+  console.log(e);
+  console.log();
+}
+
 const conf = {
   charset: "utf8",
   debug: false,
@@ -32,11 +43,13 @@ const conf = {
   ignorePunct: true,
   multi: "duality"
 }
-var content = fs.readFileSync(__dirname + "/test_doc.txt", {encoding: "utf8"});
+var content = fs.readFileSync(__dirname + "/test_doc.txt", {encoding: "utf8"}),
+    content_en = "引言 VMwareTools 是 VMware 虚拟机中很重要的一个工具包，有些时候在虚拟机中安装完操作系统会缺少网卡驱动，不能上网，这时只要安装 VMwareTools 就可以解决问题，下面以 CentOS 为例，来说明 VMwareTools 的安装方法";
 var start = new Date().valueOf(), end;
 var scws = new NodeScws(conf);
 // console.log(scws.getConfig());
 console.log(scws.segment(content));
+console.log(scws.segment(content_en));
 console.log(scws.destroy());
 end = new Date().valueOf();
 console.log("time used: " + (end - start) + "ms");

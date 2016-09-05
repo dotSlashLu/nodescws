@@ -196,8 +196,8 @@ void NodeScws::ScwsInit()
 void NodeScws::ScwsSegment(const Nan::FunctionCallbackInfo<v8::Value>& info)
 {
         if (!info[0]->IsString()) {
-                Nan::ThrowTypeError("[scws ERROR] Argument \
-                        should be the string to segment");
+                Nan::ThrowTypeError("[scws ERROR] Argument "
+                        "should be the string to segment");
                 // return undefined
                 info.GetReturnValue()
                         .Set(Nan::Undefined());
@@ -206,35 +206,48 @@ void NodeScws::ScwsSegment(const Nan::FunctionCallbackInfo<v8::Value>& info)
 
         NodeScws *nscwsp = ObjectWrap::Unwrap<NodeScws>(info.Holder());
         scws_t scws = nscwsp->scws;
+        // destroyed?
+        if (!scws) {
+                Nan::ThrowError("[scws ERROR] scws instance not found, "
+                        "possibly already been destroy()ed.");
+                // return undefined
+                info.GetReturnValue()
+                        .Set(Nan::Undefined());
+                return;
+        }
+
         // convert v8::String to char *
         std::string Text(*Nan::Utf8String(info[0]->ToString()));
         char *text = (char *)Text.c_str();
         scws_send_text(scws, text, strlen(text));
 
-        scws_res_t res, res0;
+        scws_res_t res;
         int res_wc = 0;
         long memsize = RESMEMSTEP * sizeof(scws_result);
         int memsteps = 1;
 
         nscwsp->result_raw_ = (scws_result *)malloc(memsize);
 
-        res = res0 = scws_get_result(scws);
+        res = scws_get_result(scws);
         while (res != NULL) {
-                memcpy(&nscwsp->result_raw_[res_wc], res, sizeof(*res));
-                res_wc++;
-                if (res_wc >= RESMEMSTEP * memsteps) {
-                        long new_size = RESMEMSTEP * (memsteps + 1) * sizeof(scws_result);
-                        if ((nscwsp->result_raw_ = (scws_result *)realloc(nscwsp->result_raw_, new_size)) == NULL) {
-                                Log(NODESCWS_MSG_ERR, "Failed to allocate memory for results\n");
-                                free(nscwsp->result_raw_);
-                                scws_free(scws);
-                                info.GetReturnValue().Set(Array::New(0));
+                while (res != NULL) {
+                        memcpy(&nscwsp->result_raw_[res_wc], res, sizeof(*res));
+                        res_wc++;
+                        if (res_wc >= RESMEMSTEP * memsteps) {
+                                long new_size = RESMEMSTEP * (memsteps + 1) * sizeof(scws_result);
+                                if ((nscwsp->result_raw_ = (scws_result *)realloc(nscwsp->result_raw_, new_size)) == NULL) {
+                                        Log(NODESCWS_MSG_ERR, "Failed to allocate memory for results\n");
+                                        free(nscwsp->result_raw_);
+                                        scws_free(scws);
+                                        info.GetReturnValue().Set(Array::New(0));
+                                }
+                                memsteps++;
                         }
-                        memsteps++;
+                        res = res->next;
                 }
-                res = res->next;
+                scws_free_result(res);
+                res = scws_get_result(scws);
         }
-        scws_free_result(res0);
 
         Local<Array> resArr = Nan::New<Array>(res_wc);
         for (int i = 0; i < res_wc; i++) {
@@ -259,9 +272,12 @@ void NodeScws::ScwsSegment(const Nan::FunctionCallbackInfo<v8::Value>& info)
 
 void NodeScws::ScwsDestroy(const Nan::FunctionCallbackInfo<v8::Value>& info)
 {
-        info.GetReturnValue().Set(Nan::New("destroy").ToLocalChecked());
         NodeScws* nscwsp = ObjectWrap::Unwrap<NodeScws>(info.Holder());
+
+        // only free scws, other Local values will be GCed by v8
         scws_free(nscwsp->scws);
+        nscwsp->scws = NULL;
+
         info.GetReturnValue().Set(Nan::True());
 }
 
