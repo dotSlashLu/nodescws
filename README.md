@@ -11,7 +11,7 @@ GitHub: [https://github.com/hightman/scws][3]
 ------
 
 ## nodescws
-Current release: v0.5.0
+Current release: v0.5.1
 
 - 项目主页: [https://github.com/dotSlashLu/nodescws][4]
 - 使用问题，bug report: [https://github.com/dotSlashLu/nodescws/issues][5]
@@ -128,10 +128,14 @@ fs.readFile("./test_doc.txt", {
 更多请参考`test/`中的测试
 
 ### Changelog
+#### v0.5.1
+- fix macOS build issue [#18](https://github.com/dotSlashLu/nodescws/issues/18) thanks to [agj](https://github.com/agj)
+
+
 #### v0.5.0
 - Update NAN, supports all major node.js versions
 - New js API design
-- Fixes [#11][issue11]
+- Fix [#11][issue11]
 
 #### v0.2.4
 - Thanks to [@mike820324][mike820324] now scws supports io.js

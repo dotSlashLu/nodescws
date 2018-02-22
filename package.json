@@ -1,6 +1,6 @@
 {
   "name": "scws",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": "Dotslash Lu <dotslash.lu@gmail.com>",
   "description": "scws(Simple Chinese Word Segmentation) node module",
   "repository": {
