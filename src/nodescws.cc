@@ -147,7 +147,7 @@ void NodeScws::ScwsInit()
                 scws_set_rule_json(scws, rule, SCWS_RULE_JSON_FILE);
         }
         // ini
-        else if (strstr(rule, ".ini") > 0) {
+        else if (strstr(rule, ".ini") != NULL) {
                 Log(NODESCWS_MSG_LOG, "Setting specified rule %s\n", rule);
                 scws_set_rule(scws, rule);
         }
